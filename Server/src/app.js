@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const swaggerUi = require('swagger-ui-express');
-const swaggerFile = require('./swagger-output.json');
+const swaggerFile = require('../swagger-output.json'); // adjust path
 const authRouter = require("./router/auth.routes");
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
