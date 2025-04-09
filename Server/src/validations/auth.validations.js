@@ -6,7 +6,7 @@ const signupDataValidations = [
     .withMessage("Enter a valid email")
     .trim()
     .toLowerCase(),
-  body("passwordHash")
+  body("password")
     .isStrongPassword()
     .withMessage("Enter a strong password")
     .isString()
@@ -35,4 +35,4 @@ const loginDataValidation = [
     .withMessage("minimum length of password is 6"),
 ];
 
-module.exports = { signupDataValidations };
+module.exports = { signupDataValidations, loginDataValidation };

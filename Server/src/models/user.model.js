@@ -1,12 +1,17 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const config = require("../config/config");
 
 const userSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
       required: [true, "FirstName is Required"],
+    },
+    role:{
+      type: String,
+      default: "user"
     },
     lastName: {
       type: String,
@@ -19,10 +24,7 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: [true, "Email is required"],
-      unique: [
-        true,
-        "email already exists! you are already a user, please try log in",
-      ],
+      unique: [true],
     },
     password: {
       type: String,
@@ -93,7 +95,10 @@ userSchema.statics.hashPassword = async function (password) {
 };
 
 userSchema.methods.comparePassword = async function (password) {
+  
   if (!password) throw new Error("Password is required");
+  if (!this.password) throw new Error("Password not set on user document");
+
   return await bcrypt.compare(password, this.password);
 };
 
