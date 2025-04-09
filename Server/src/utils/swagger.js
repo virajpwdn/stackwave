@@ -15,7 +15,7 @@ const doc = {
   ],
 };
 
-const outputFile = './swagger-output.json'; // ⬅️ generate this in project root
+const outputFile = '../../swagger-output.json'; // ⬅️ generate this in project root
 const endpointsFiles = ['./src/app.js']; // ⬅️ must include router paths
 
 swaggerAutogen(outputFile, endpointsFiles, doc);
