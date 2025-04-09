@@ -6,12 +6,13 @@ const questionSchema = new mongoose.Schema(
       required: [true, "Title is required"],
       minLength: [3, "Length of question should be greater then 3"],
       maxLength: [150, "Length of question should be at most 150 words"],
+      unique: [true, "Question Already Exists"]
     },
     content: {
       type: String,
       required: [true, "Question Body is required, only add valid question"],
     },
-    tags: [{ type: String }],
+    tags: [{ type: String, }],
     authorId: {
       type: String,
       required: [true, "author id is required"],
@@ -36,4 +37,4 @@ const questionSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Question", questionSchema)
+module.exports = mongoose.model("Question", questionSchema);
