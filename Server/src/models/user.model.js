@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema(
   {
@@ -23,7 +24,7 @@ const userSchema = new mongoose.Schema(
         "email already exists! you are already a user, please try log in",
       ],
     },
-    passwordHash: {
+    password: {
       type: String,
       required: [true, "Password is required"],
       select: false,
@@ -85,5 +86,33 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+userSchema.statics.hashPassword = async function (password) {
+  if (!password) throw new Error("Password is required");
+  return await bcrypt.hash(password, 10);
+};
+
+userSchema.methods.comparePassword = async function (password) {
+  if (!password) throw new Error("Password is required");
+  return await bcrypt.compare(password, this.password);
+};
+
+userSchema.methods.generateJWT = function () {
+  const token = jwt.sign(
+    { _id: this._id, username: this.username, email: this.email },
+    config.JWT,
+    {
+      expiresIn: config.JWT_EXP,
+    }
+  );
+  return token;
+};
+
+userSchema.statics.verifyToken = function (token) {
+  if (!token) {
+    throw new Error("Token is required");
+  }
+  return jwt.verify(token, config.JWT);
+};
 
 module.exports = mongoose.model("User", userSchema);
