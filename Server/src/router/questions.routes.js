@@ -11,6 +11,6 @@ questionRouter.post(
   "/answer/create/:questionId",
   controller.answerQuestionController
 );
-// questionRouter.get("/get/answer/:questionId")
+questionRouter.get("/get/answer/:questionId", controller.getAnswerController);
 
 module.exports = questionRouter;
