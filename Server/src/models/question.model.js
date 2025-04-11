@@ -6,22 +6,25 @@ const questionSchema = new mongoose.Schema(
       required: [true, "Title is required"],
       minLength: [3, "Length of question should be greater then 3"],
       maxLength: [150, "Length of question should be at most 150 words"],
-      unique: [true, "Question Already Exists"]
+      unique: [true, "Question Already Exists"],
     },
     content: {
       type: String,
       required: [true, "Question Body is required, only add valid question"],
     },
-    tags: [{ type: String, }],
+    tags: [{ type: String }],
     authorId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       required: [true, "author id is required"],
+      ref: "User",
     },
     upVote: {
       type: Number,
+      default: 0,
     },
     downVote: {
       type: Number,
+      default: 0,
     },
     isResolved: {
       type: Boolean,
@@ -29,9 +32,11 @@ const questionSchema = new mongoose.Schema(
     },
     views: {
       type: Number,
+      default: 0,
     },
     commentId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Comment",
     },
   },
   { timestamps: true }
