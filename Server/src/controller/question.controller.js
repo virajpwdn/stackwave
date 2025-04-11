@@ -36,9 +36,10 @@ module.exports.viewQuestionController = asyncHandler(async (req, res) => {
   findQuestion.views++;
   await findQuestion.save();
 
-//   const findAnswers = await AnswerModel.find({questionId: questionId});
-//   if(!findAnswers) throw new AppError(404);
-// TODO This should be an aggeration query because we want to send only one data in response it should be combined
+    const findAnswers = await AnswerModel.find({questionId: questionId});
+    console.log(findAnswers);
+  //   if(!findAnswers) throw new AppError(404);
+  // This should be an aggeration query because we want to send only one data in response it should be combined
 
   res.status(200).json(new AppResponse(200, findQuestion, "Question Opened"));
 });
@@ -47,10 +48,13 @@ module.exports.answerQuestionController = asyncHandler(async (req, res) => {
   const { questionId } = req.params;
   if (!questionId) throw new AppError(400, "Question Id is missing");
 
-  const { content } = req.body;
+  const { content, authorId } = req.body;
+  if(!content || !authorId) throw new AppError(400, "All fields are required, content && author id");
+
   const newAnswer = await AnswerModel.create({
     questionId,
     content,
+    authorId,
   });
 
   res
