@@ -47,10 +47,13 @@ module.exports.loginController = asyncHandler(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) throw new AppError(400, errors.array());
 
-  const isUserExists = await UserModel.findOne({ email }).select('+password');
+  const isUserExists = await UserModel.findOne({ email }).select("+password");
   if (!isUserExists) throw new AppError(401, "Invalid Credentials");
 
-  const validatePassword = await isUserExists.comparePassword(password, isUserExists.password);
+  const validatePassword = await isUserExists.comparePassword(
+    password,
+    isUserExists.password
+  );
   if (!validatePassword) throw new AppError(401, "Invalid Credentials");
 
   const token = isUserExists.generateJWT();
@@ -63,4 +66,24 @@ module.exports.loginController = asyncHandler(async (req, res) => {
   res
     .status(200)
     .json(new AppResponse(200, isUserExists, "You are successfully loggedIn"));
+});
+
+module.exports.selectTagsController = asyncHandler(async (req, res) => {
+  const token = req.cookies?.token;
+  if (!token) {
+    console.error("Token not found");
+    throw new AppError(400, "UnAuthorized");
+  }
+
+  const { tags } = req.body;
+  if (!tags) throw new AppError(400, "Select at least one tag");
+  if (!Array.isArray(tags)) {
+    console.error("tags should be an array");
+    throw new AppError(400, "Not an array");
+  }
+
+  const sanitizedtags = tags.map(tag => tag.trim().toLowerCase());
+  user.tags.push(...sanitizedtags);
+
+  res.status(200).json(new AppResponse(200, {}, "Your tags are saved"));
 });

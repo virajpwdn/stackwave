@@ -13,10 +13,12 @@ const authMiddleware = asyncFunction(async (req, res, next) => {
     throw new AppError(400, "Token not found");
   }
 
-  const decode = UserModel.verifyToken(token);
-  if (!decode) {
-    console.error("Token is not decoding");
-    throw new AppError(404, "Token not found");
+  let decode;
+  try {
+    decode = UserModel.verifyToken(token);
+  } catch (error) {
+    console.error("Token Invalid");
+    throw new AppError(400, "UnAuthorized");
   }
 
   const user = await UserModel.findOne({_id: decode._id});

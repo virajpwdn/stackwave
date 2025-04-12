@@ -2,6 +2,7 @@ const { Router } = require("express");
 const controller = require("../controller/auth.controller");
 const authRouter = Router();
 const userValidations = require("../validations/auth.validations");
+const authMiddleware = require("../middleware/auth.middleware");
 
 // #swagger.tags = ['Auth']
 // #swagger.summary = 'Register user'
@@ -16,6 +17,12 @@ authRouter.post(
   "/login",
   userValidations.loginDataValidation,
   controller.loginController
+);
+
+authRouter.post(
+  "/select-tags",
+  authMiddleware,
+  controller.selectTagsController
 );
 
 module.exports = authRouter;
