@@ -53,9 +53,13 @@ module.exports.loginController = asyncHandler(async (req, res) => {
   const validatePassword = await isUserExists.comparePassword(password, isUserExists.password);
   if (!validatePassword) throw new AppError(401, "Invalid Credentials");
 
+  const token = isUserExists.generateJWT();
+
   const userObject = isUserExists.toObject();
   delete userObject.password;
 
+  res.cookie("token", token);
+  // TODO -> In response only send selected data, later fix this
   res
     .status(200)
     .json(new AppResponse(200, isUserExists, "You are successfully loggedIn"));
