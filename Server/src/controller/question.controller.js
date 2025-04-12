@@ -68,7 +68,7 @@ module.exports.getAnswerController = asyncHandler(async (req, res) => {
   if (!questionId) throw new AppError(400, "QuestionId is missing");
 
   const answers = await AnswerModel.find({ questionId: questionId });
-//   Find returns an empty array so there no need to add validation for it, but still to be safe it is added
+  //   Find returns an empty array so there no need to add validation for it, but still to be safe it is added
   if (!answers)
     return res
       .status(200)
@@ -83,14 +83,25 @@ module.exports.getAnswerController = asyncHandler(async (req, res) => {
   res.status(200).json(new AppResponse(200, answers, "All answers and sent"));
 });
 
-module.exports.totalQuestionCountController = asyncHandler(async(req,res)=>{
-    const totalQuestions = await QuestionModel.estimatedDocumentCount();
-    if(!totalQuestions) return res.status(200).json(new AppResponse(200, null, "0 questions"))
-    
-    res.status(200).json(new AppResponse(200, totalQuestions, "Total Questions"));
-})
+module.exports.totalQuestionCountController = asyncHandler(async (req, res) => {
+  const totalQuestions = await QuestionModel.estimatedDocumentCount();
+  if (!totalQuestions)
+    return res.status(200).json(new AppResponse(200, null, "0 questions"));
 
+  res.status(200).json(new AppResponse(200, totalQuestions, "Total Questions"));
+});
 
-module.exports.getAllQuestions = asyncHandler(async(req,res)=>{
-    
-})
+module.exports.getAllQuestions = asyncHandler(async (req, res) => {
+  let page = parseInt(req.query.page) || 1;
+  let limit = 10;
+  let skip = (page - 1) * 10;
+
+  const allQuestion = await QuestionModel.find()
+    .skip(skip)
+    .limit(limit)
+    .sort({ createdAt: -1 });
+
+    if(allQuestion.length === 0) return res.status(200).json(new AppResponse(200, null, "NO More Question"));
+
+    res.status(200).json(new AppResponse(200, allQuestion, "Fetching 10 Questions At a time"));
+});
