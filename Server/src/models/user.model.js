@@ -44,9 +44,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "bronze",
     },
-    role: {
-      type: String,
-    },
+    // role: {
+    //   type: String,
+    // },
     refreshToken: {
       type: String,
     },
@@ -62,6 +62,7 @@ const userSchema = new mongoose.Schema(
     badges: [
       {
         type: String,
+        // TODO add a default badge that should be bronze
       },
     ],
     answers: {
