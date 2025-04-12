@@ -13,4 +13,11 @@ questionRouter.post(
 );
 questionRouter.get("/get/answer/:questionId", controller.getAnswerController);
 
+questionRouter.get(
+  "/total/question/count",
+  controller.totalQuestionCountController
+);
+
+questionRouter.get("/all-questions", controller.getAllQuestions)
+
 module.exports = questionRouter;

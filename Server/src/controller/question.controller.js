@@ -68,6 +68,7 @@ module.exports.getAnswerController = asyncHandler(async (req, res) => {
   if (!questionId) throw new AppError(400, "QuestionId is missing");
 
   const answers = await AnswerModel.find({ questionId: questionId });
+//   Find returns an empty array so there no need to add validation for it, but still to be safe it is added
   if (!answers)
     return res
       .status(200)
@@ -81,3 +82,15 @@ module.exports.getAnswerController = asyncHandler(async (req, res) => {
 
   res.status(200).json(new AppResponse(200, answers, "All answers and sent"));
 });
+
+module.exports.totalQuestionCountController = asyncHandler(async(req,res)=>{
+    const totalQuestions = await QuestionModel.estimatedDocumentCount();
+    if(!totalQuestions) return res.status(200).json(new AppResponse(200, null, "0 questions"))
+    
+    res.status(200).json(new AppResponse(200, totalQuestions, "Total Questions"));
+})
+
+
+module.exports.getAllQuestions = asyncHandler(async(req,res)=>{
+    
+})
