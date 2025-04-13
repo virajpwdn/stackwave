@@ -14,8 +14,8 @@ function initSocket(server) {
   io.use(async (socket, next) => {
     try {
       const rawCookie = socket.handshake.headers?.cookie;
-      const cookie = cookie.parse(rawCookie);
-      const token = rawCookie || socket.handshake.headers.token;
+      const cookie = cookie.parse(rawCookie || "");
+      const token = rawCookie.token || socket.handshake.headers.token;
       if (!token) {
         console.error("Token is missing");
         return next(new Error("Token not found"));
