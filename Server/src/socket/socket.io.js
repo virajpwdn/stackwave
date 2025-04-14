@@ -4,6 +4,8 @@ const cookie = require("cookie");
 const sendSocketError = require("../utils/SocketError");
 const mongoose = require("mongoose");
 const crypto = require("crypto");
+const RoomModel = require("../models/room.model");
+const MessageModel = require("../models/message.model");
 
 function hashRoomId(roomId) {
   return crypto.createHash("sha256").update(roomId).digest("hex");
@@ -21,7 +23,7 @@ function initSocket(server) {
   io.use(async (socket, next) => {
     try {
       const rawCookie = socket.handshake.headers?.cookie;
-      const cookies = cookie.parse(rawCookie || "")
+      const cookies = cookie.parse(rawCookie || "");
       const token = cookies.token || socket.handshake.headers.token;
       if (!token) {
         console.error("Token is missing");
@@ -81,17 +83,65 @@ function initSocket(server) {
     //   }
     // });
 
-    socket.on("create-room", ({userId})=>{
-        if(!userId) {
-            console.error("user id is missing to create room");
-            return sendSocketError(socket, "Authentication failed, please login again", 400);
+    socket.on("create-room", async ({ userId }) => {
+      if (!userId) {
+        console.error("user id is missing to create room");
+        return sendSocketError(
+          socket,
+          "Authentication failed, please login again",
+          400
+        );
+      }
+      // TODO -> Save room id into RoomModel who created it and etc. Then create schema for codeContent && participants
+      roomId = hashRoomId(userId);
+
+      const newRoom = await RoomModel.create({
+        roomId: roomId,
+        roomCreatedBy: socket.user._id,
+        participants: 1,
+      });
+
+      socket.join(roomId);
+      console.log(`${socket.user.firstName} has joined room ${roomId}`);
+    });
+
+    socket.on("send-message", async ({ userId, roomKey, text }) => {
+      try {
+        if (!userId || !roomKey || !text) {
+          console.error("All Fields are required");
+          return sendSocketError(
+            socket,
+            "Please retry sending message again",
+            400
+          );
         }
-        
-        roomId = hashRoomId(userId);
-        console.log(roomId);
-        socket.join(roomId);
-        console.log(`${socket.user.firstName} has joined room ${roomId}`);
-    })
+
+        const isValidMongoId = mongoose.Types.ObjectId.isValid(userId);
+        if (!isValidMongoId) {
+          console.error("Not a valid Mongo ID");
+          return sendSocketError(socket, "Please Login again", 400);
+        }
+
+        const isRoomId = await RoomModel.findOne({ roomId: roomKey });
+        if (!isRoomId) {
+          console.error("Room Id Not Found in documents");
+          return sendSocketError(socket, "Room Not Found", 400);
+        }
+
+        const message = await MessageModel.create({
+          senderId: userId,
+          roomId: roomKey,
+          text: text,
+        });
+
+        io.to(roomKey).emit("chat-message", {
+          userId,
+          text,
+        });
+      } catch (error) {
+        console.error(`Something went wrong: ${error.message}`);
+      }
+    });
   });
 }
 
