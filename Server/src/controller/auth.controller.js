@@ -62,6 +62,7 @@ module.exports.loginController = asyncHandler(async (req, res) => {
   delete userObject.password;
 
   res.cookie("token", token);
+  console.log(token);
   // TODO -> In response only send selected data, later fix this
   res
     .status(200)
