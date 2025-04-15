@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const crypto = require("crypto");
 const RoomModel = require("../models/room.model");
 const MessageModel = require("../models/message.model");
+const CCModel = require("../models/codecontent.model");
 
 function hashRoomId(roomId) {
   return crypto.createHash("sha256").update(roomId).digest("hex");
@@ -92,7 +93,7 @@ function initSocket(server) {
           400
         );
       }
-      // TODO -> Save room id into RoomModel who created it and etc. Then create schema for codeContent && participants
+
       roomId = hashRoomId(userId);
 
       const newRoom = await RoomModel.create({
@@ -135,6 +136,53 @@ function initSocket(server) {
         });
 
         io.to(roomKey).emit("chat-message", {
+          userId,
+          text,
+        });
+      } catch (error) {
+        console.error(`Something went wrong: ${error.message}`);
+      }
+    });
+
+    socket.on("join-room", async ({ userId, roomKey }) => {
+      const findRoom = await RoomModel.findOne({ roomId: roomKey });
+      if (!findRoom) return sendSocketError(socket, "Room not found", 404);
+
+      socket.join(roomKey);
+      console.log(`User ${userId} joined room ${roomKey}`);
+    });
+
+    socket.on("code-content", async ({ userId, roomKey, text }) => {
+      try {
+        if (!userId || !roomKey || !text) {
+          console.error("All Fields are required");
+          return sendSocketError(
+            socket,
+            "Please retry sending message again",
+            400
+          );
+        }
+
+        const isValidMongoId = mongoose.Types.ObjectId.isValid(userId);
+        if (!isValidMongoId) {
+          console.error("Not a valid Mongo ID");
+          return sendSocketError(socket, "Please Login again", 400);
+        }
+
+        const isRoomId = await RoomModel.findOne({ roomId: roomKey });
+        if (!isRoomId) {
+          console.error("Room Id Not Found in documents");
+          return sendSocketError(socket, "Room Not Found", 400);
+        }
+
+        const codeContent = await CCModel.create({
+          content: text,
+          senderId: userId,
+          roomId: roomKey,
+        });
+        // console.log(text);
+        socket.join(roomKey);
+        io.to(roomKey).emit("code-content", {
           userId,
           text,
         });
