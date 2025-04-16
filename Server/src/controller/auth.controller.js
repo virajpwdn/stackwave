@@ -33,6 +33,7 @@ module.exports.signupController = asyncHandler(async (req, res, next) => {
 
   const userObject = user.toObject();
   delete userObject.password;
+  await user.save();
 
   res.cookie("token", token);
   res
@@ -60,6 +61,7 @@ module.exports.loginController = asyncHandler(async (req, res) => {
 
   const userObject = isUserExists.toObject();
   delete userObject.password;
+  await isUserExists.save();
 
   res.cookie("token", token);
   console.log(token);
