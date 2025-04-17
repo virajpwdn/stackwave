@@ -1,10 +1,12 @@
-const {Router} = require("express");
+const { Router } = require("express");
 const aiRouter = Router();
-const generateContent = require("../utils/ai");
+const {generateContent} = require("../utils/ai");
 
-aiRouter.get("/ai/test", async (req,res)=>{
-   
-    await res.send(generateContent());
-})
+aiRouter.post("/generate", async (req, res) => {
+    const {prompt} = req.body;
+    const response = await generateContent(prompt);
+
+    res.send(response);
+});
 
 module.exports = aiRouter;

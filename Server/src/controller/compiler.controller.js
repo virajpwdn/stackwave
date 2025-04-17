@@ -6,19 +6,11 @@ const axios = require("axios");
 
 let language_id = 102;
 
-//! TODO: In this controller fix all the responses and errors which are sent to frontend
+//! TODO: In this controller fix all the responses and errors which are sent to frontend, add middleware for auth
 
 module.exports.createSubmissionController = asyncHandler(async (req, res) => {
-  const sourceCode = `
-  #include <stdio.h>
-
-  int main(void) {
-    char name[10];
-    scanf("%s", name);
-    printf("hello, %s\\n", name);
-    return 0;
-  }
-  `;
+  const {code} = req.body;
+  const sourceCode = code; /* Maybe we have to write this in tempelate literals */
 
   const stdin = "Judge0";
 
@@ -121,6 +113,6 @@ module.exports.selectLanguageController = asyncHandler(async(req,res)=>{
   const {languageId} = req.body;
   language_id = languageId;
   console.log(language_id);
-  
+
   res.send("Id is selected");
 })
