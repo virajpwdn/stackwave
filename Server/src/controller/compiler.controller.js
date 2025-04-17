@@ -93,3 +93,21 @@ module.exports.getCodeAnswers = asyncHandler(async (req, res) => {
   }
 });
 
+module.exports.showLanguagesController = asyncHandler(async (req, res) => {
+  const options = {
+    method: "GET",
+    url: "https://judge0-ce.p.rapidapi.com/languages",
+    headers: {
+      "x-rapidapi-host": config.JUDGEO_HOST,
+      "x-rapidapi-key": config.JUDGEO_API_KEY,
+    },
+  };
+
+  try {
+    const response = await axios.request(options);
+    console.log(response.data);
+    res.send(response.data)
+  } catch (error) {
+    console.error(error);
+  }
+});
