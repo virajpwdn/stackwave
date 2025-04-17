@@ -5,5 +5,6 @@ const controller = require("../controller/compiler.controller");
 compilerRoutes.post("/create-submission", controller.createSubmissionController);
 compilerRoutes.get("/getanswers/:token", controller.getCodeAnswers);
 compilerRoutes.get("/showlanguages", controller.showLanguagesController);
+compilerRoutes.post("/selectLanguage", controller.selectLanguageController);
 
 module.exports = compilerRoutes;

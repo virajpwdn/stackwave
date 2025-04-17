@@ -4,6 +4,10 @@ const AppResonse = require("../utils/ApiResponse");
 const config = require("../config/config");
 const axios = require("axios");
 
+let language_id = 102;
+
+//! TODO: In this controller fix all the responses and errors which are sent to frontend
+
 module.exports.createSubmissionController = asyncHandler(async (req, res) => {
   const sourceCode = `
   #include <stdio.h>
@@ -32,7 +36,7 @@ module.exports.createSubmissionController = asyncHandler(async (req, res) => {
       "Content-Type": "application/json",
     },
     data: {
-      language_id: 52,
+      language_id: language_id,
       source_code: Buffer.from(sourceCode).toString("base64"),
       stdin: Buffer.from(stdin).toString("base64"),
     },
@@ -106,8 +110,17 @@ module.exports.showLanguagesController = asyncHandler(async (req, res) => {
   try {
     const response = await axios.request(options);
     console.log(response.data);
-    res.send(response.data)
+    res.send(response.data);
   } catch (error) {
     console.error(error);
   }
 });
+
+// TODO: Data Sanitazation, Error handling, Responses
+module.exports.selectLanguageController = asyncHandler(async(req,res)=>{
+  const {languageId} = req.body;
+  language_id = languageId;
+  console.log(language_id);
+  
+  res.send("Id is selected");
+})
