@@ -41,17 +41,17 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-neutral-100 via-white to-neutral-200 dark:from-neutral-900 dark:via-neutral-950 dark:to-neutral-800 transition-colors">
+    <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-neutral-100 via-white to-neutral-200 dark:from-neutral-900 dark:via-neutral-950 dark:to-neutral-800 transition-colors font-[gilroy-medium]">
       <form
         ref={formRef}
         onSubmit={signupSubmitHandler}
         className="w-full max-w-lg bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-xl rounded-2xl p-8 space-y-6 transition-colors overflow-hidden"
       >
-        <h2 className="text-3xl font-bold text-center text-neutral-900 dark:text-white">
-          <span className="text-transparent bg-gradient-to-br from-blue-700 via-blue-300 to-blue-500 bg-clip-text">
+        <h2 className="max-sm:text-2xl sm:text-3xl font-bold text-center text-neutral-900 dark:text-white">
+          <span className="font-[gilroy-bold] text-transparent bg-gradient-to-br from-blue-700 via-blue-300 to-blue-500 bg-clip-text">
             StackWave
           </span>{" "}
-          | Signup
+          | <span className="text-zinc-300 font-[gilroy-medium] text-lg">Signup</span>
         </h2>
 
         {/* Name Fields */}
