@@ -5,11 +5,12 @@ const Authentication = ({ children }) => {
   const navigate = useNavigate();
   useEffect(() => {
     try {
-      const cookie = document.cookie.split("; ").find(row => row.startsWith("="));
-      if (!cookie) {
+      const cookie = document.cookie?.split("; ");
+      const tokenCookie = cookie?.find((row) => row.startsWith("token="));
+      if (!tokenCookie) {
         return navigate("/login");
       }
-      const token = cookie.split("=")[1];
+      const token = tokenCookie.split("=")[1];
       console.log(token);
       if (!token) {
         return navigate("/login");
@@ -18,7 +19,7 @@ const Authentication = ({ children }) => {
       return navigate("/signup");
     }
   }, []);
-  return {children};
+  return <>{children}</>;
 };
 
 export default Authentication;
