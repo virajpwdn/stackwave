@@ -35,7 +35,12 @@ module.exports.signupController = asyncHandler(async (req, res, next) => {
   delete userObject.password;
   await user.save();
 
-  res.cookie("token", token);
+  //!  ON PRODUCTION CHANGE SECURE: TRUE & SAMESITE: NONE
+  res.cookie("token", token, {
+    secure: false,
+    httpOnly: true,
+    sameSite: 'Lax'
+  });
   res
     .status(201)
     .json(new AppResponse(201, user, "Account Successfully created"));
