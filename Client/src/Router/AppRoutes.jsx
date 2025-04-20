@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Signup from "../ui/Auth/Signup";
 import Login from "../ui/Auth/Login";
 import Authentication from "./Authentication";
@@ -12,6 +12,7 @@ const AppRoutes = () => {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<QuestionFeed />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route
@@ -23,12 +24,16 @@ const AppRoutes = () => {
           }
         />
         <Route path="/tags-selection" element={<TagSelectionPage />} />
-        <Route path='/questions' element={<QuestionFeed />} />
-        <Route path='/ask-question' element={<CreateQuestion />} />
-        {/* <Route path='/login' element={<Login />} /> */}
-        {/* <Route path='/login' element={<Login />} /> */}
-        {/* <Route path='/login' element={<Login />} /> */}
-        {/* <Route path='/login' element={<Login />} /> */}
+        <Route path="/questions" element={<QuestionFeed />} />
+        <Route 
+          path="/ask-question" 
+          element={
+            <Authentication>
+              <CreateQuestion />
+            </Authentication>
+          } 
+        />
+        <Route path="*" element={<QuestionFeed />} />
       </Routes>
     </Router>
   );

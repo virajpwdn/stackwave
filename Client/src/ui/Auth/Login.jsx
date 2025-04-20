@@ -2,9 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import axios from "axios";
 import { BASE_URL } from "../../config/baseurl";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/user.slice";
 
 const Login = () => {
   const formRef = useRef(null);
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState("user12@gmail.com");
   const [password, setPassword] = useState("User@123");
@@ -26,6 +29,7 @@ const Login = () => {
         { withCredentials: true }
       );
       console.log(res.data);
+      dispatch(setUser(res.data.data));
       // Redirect or set auth context here
     } catch (err) {
       console.error(err);

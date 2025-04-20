@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import axios from "axios";
 import { BASE_URL } from "../../config/baseurl";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/user.slice";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const formRef = useRef(null);
@@ -11,6 +14,9 @@ const Signup = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     gsap.fromTo(
@@ -34,9 +40,22 @@ const Signup = () => {
         },
         { withCredentials: true }
       );
-      console.log(response);
+      
+      // Make sure the token is properly set in cookies
+      if (response.data && response.data.data) {
+        // Store user in Redux
+        dispatch(setUser(response.data.data));
+        
+        // Check if token is in the response and manually set it if needed
+        if (response.data.token) {
+          document.cookie = `token=${response.data.token}; path=/; max-age=86400`;
+        }
+        
+        // Navigate to tour page
+        navigate("/tour");
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Signup error:", error);
     }
   };
 
