@@ -5,6 +5,8 @@ import Login from "../ui/Auth/Login";
 import Authentication from "./Authentication";
 import Tour from "../ui/Tour/Tour";
 import TagSelectionPage from "../ui/Tour/Tags";
+import QuestionFeed from "../ui/Question/Questions";
+import CreateQuestion from "../ui/Question/CreateQuestion";
 
 const AppRoutes = () => {
   return (
@@ -21,8 +23,8 @@ const AppRoutes = () => {
           }
         />
         <Route path="/tags-selection" element={<TagSelectionPage />} />
-        {/* <Route path='/login' element={<Login />} /> */}
-        {/* <Route path='/login' element={<Login />} /> */}
+        <Route path='/questions' element={<QuestionFeed />} />
+        <Route path='/ask-question' element={<CreateQuestion />} />
         {/* <Route path='/login' element={<Login />} /> */}
         {/* <Route path='/login' element={<Login />} /> */}
         {/* <Route path='/login' element={<Login />} /> */}
