@@ -55,7 +55,7 @@ const Questions = () => {
     <div
       key={question._id}
       className="p-6 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-lg transition-all cursor-pointer group"
-      onClick={() => navigate(`/question/${question._id}`)}
+      onClick={() => navigate(`/view-question/${question._id}`)}
     >
       <h2 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 break-words">
         {question.title}

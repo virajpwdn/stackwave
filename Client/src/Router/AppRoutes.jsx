@@ -7,6 +7,7 @@ import Tour from "../ui/Tour/Tour";
 import TagSelectionPage from "../ui/Tour/Tags";
 import QuestionFeed from "../ui/Question/Questions";
 import CreateQuestion from "../ui/Question/CreateQuestion";
+import ViewQuestion from "../ui/Question/ViewQuestion";
 
 const AppRoutes = () => {
   return (
@@ -33,6 +34,7 @@ const AppRoutes = () => {
             </Authentication>
           } 
         />
+        <Route path="/view-question/:id" element={<Authentication><ViewQuestion /></Authentication>} />
         <Route path="*" element={<QuestionFeed />} />
       </Routes>
     </Router>
