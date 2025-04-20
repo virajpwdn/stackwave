@@ -25,4 +25,6 @@ authRouter.post(
   controller.selectTagsController
 );
 
+authRouter.get("/verification", authMiddleware, controller.verificationController)
+
 module.exports = authRouter;

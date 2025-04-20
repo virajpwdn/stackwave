@@ -83,15 +83,20 @@ module.exports.selectTagsController = asyncHandler(async (req, res) => {
     throw new AppError(400, "UnAuthorized");
   }
 
-  const { tags } = req.body;
-  if (!tags) throw new AppError(400, "Select at least one tag");
-  if (!Array.isArray(tags)) {
+  const { selectedSubcategories } = req.body;
+  if (!selectedSubcategories) throw new AppError(400, "Select at least one tag");
+  if (!Array.isArray(selectedSubcategories)) {
     console.error("tags should be an array");
     throw new AppError(400, "Not an array");
   }
 
-  const sanitizedtags = tags.map(tag => tag.trim().toLowerCase());
-  user.tags.push(...sanitizedtags);
-
+  const sanitizedtags = selectedSubcategories.map(tag => tag.trim().toLowerCase());
+  req.user.tags.push(...sanitizedtags);
+  req.user.save();
   res.status(200).json(new AppResponse(200, {}, "Your tags are saved"));
 });
+
+module.exports.verificationController = asyncHandler(async (req,res) => {
+  const user = req.user;
+  return res.status(200).json(new AppResponse(200, user, "User is verified"));
+})
