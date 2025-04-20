@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import { BASE_URL } from "../config/baseurl";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../store/user.slice";
+
 
 const Authentication = ({ children }) => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const user = useSelector(state => state.user.user);
+  const disptach = useDispatch();
   
   useEffect(() => {
     const verify = async () => {
@@ -47,6 +50,7 @@ const Authentication = ({ children }) => {
         }
         
         // User is authenticated, continue
+        disptach(setUser(verifyUser.data.data));
         console.log("User verified successfully");
         setIsAuthenticated(true);
       } catch (error) {

@@ -4,6 +4,8 @@ import { Menu, Tag, HelpCircle, Code, Bold, Italic, List } from "lucide-react";
 import Sidebar from "../../components/Sidebar";
 import ReactMarkdown from "react-markdown";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { BASE_URL } from '../../config/baseurl';
 
 const AskQuestion = () => {
   const [title, setTitle] = useState("");
@@ -14,6 +16,9 @@ const AskQuestion = () => {
   const [previewMode, setPreviewMode] = useState(false);
   const formRef = useRef(null);
   const sidebarRef = useRef(null);
+  const store = useSelector((state) => state.user.user);
+  
+  const authorId = store._id;
 
   // Function to insert markdown syntax
   const insertMarkdown = (syntax) => {
@@ -67,9 +72,8 @@ const AskQuestion = () => {
     }
     console.log({ title, content, tags });
     axios
-      .post(
-        "http://localhost:3000/api/v1/questions/create-question",
-        { title, content, tags },
+      .post( BASE_URL + "/questions/create-question",
+        { title, content, tags, authorId },
         { withCredentials: true }
       )
       .then((res) => {
