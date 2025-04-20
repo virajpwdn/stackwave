@@ -2,14 +2,21 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import { useSelector } from "react-redux";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Tour = () => {
   const navigate = useNavigate();
-
+  const user = useSelector(state => state.user.user);
+  
+  console.log("Tour component rendering, user:", user);
+  
   useEffect(() => {
-    gsap.utils.toArray(".fade-up").forEach((el) => {
+    // Create a single animation timeline for better performance
+    const fadeElements = gsap.utils.toArray(".fade-up");
+    
+    fadeElements.forEach((el) => {
       gsap.fromTo(
         el,
         { opacity: 0, y: 30 },
@@ -25,13 +32,20 @@ const Tour = () => {
         }
       );
     });
+    
+    return () => {
+      // Clean up ScrollTrigger instances when component unmounts
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
   }, []);
 
   const handleAccept = () => {
-    navigate("/signup");
+    // Navigate to tags selection instead of signup since user is already signed up
+    navigate("/tags-selection");
   };
 
   const handleDecline = () => {
+    //! Later logout user and delete his details from database
     navigate("/");
   };
 
@@ -39,7 +53,7 @@ const Tour = () => {
     <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white px-6 py-10 md:px-20 lg:px-32">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold text-blue-600 mb-6 fade-up">
-          👋 Welcome to StackWave Tour
+          👋 Welcome to StackWave, {user?.firstName || 'User'}!
         </h1>
 
         <div className="space-y-6 text-base leading-relaxed text-gray-800 dark:text-gray-200">
@@ -70,21 +84,21 @@ const Tour = () => {
           </p>
 
           <div className="mt-10 p-6 border border-gray-300 dark:border-gray-700 rounded-xl shadow-sm bg-gray-50 dark:bg-gray-900 fade-up">
-            <p className="mb-4 text-gray-900 dark:text-white">
+            <p className="mb-4 text-gray-900 dark:text-white font-medium">
               ✅ Accept the terms to continue using StackWave.
             </p>
             <div className="flex gap-4 flex-col sm:flex-row">
               <button
                 onClick={handleAccept}
-                className="px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition"
+                className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium"
               >
                 Accept & Continue
               </button>
               <button
                 onClick={handleDecline}
-                className="px-6 py-2 border border-gray-400 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                className="px-6 py-3 border border-gray-400 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               >
-                Click here if you do not accept
+                Decline
               </button>
             </div>
           </div>

@@ -22,7 +22,7 @@ const Sidebar = () => {
       {/* Sidebar for both mobile and desktop */}
       <aside 
         className={`
-          fixed md:static top-0 left-0 h-full w-64 
+          fixed md:static top-0 left-0 h-screen w-64 
           bg-gray-100 dark:bg-black 
           text-black dark:text-white 
           p-4 
@@ -30,6 +30,7 @@ const Sidebar = () => {
           ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
           z-40 md:z-auto
           shadow-lg md:shadow-none
+          overflow-y-auto
         `}
       >
         <div className="flex flex-col h-full">

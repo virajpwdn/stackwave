@@ -1,110 +1,60 @@
 import React, { useState, useEffect } from "react";
 import { gsap } from "gsap";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../config/baseurl";
 
 const tagsData = [
   {
     name: "Frontend",
     subcategories: [
-      "React",
-      "Vue.js",
-      "Angular",
-      "HTML",
-      "CSS",
-      "JavaScript",
-      "Tailwind CSS",
-      "Next.js",
+      "React", "Vue.js", "Angular", "HTML", "CSS", 
+      "JavaScript", "Tailwind CSS", "Next.js",
     ],
   },
   {
     name: "Backend",
     subcategories: [
-      "Node.js",
-      "Express.js",
-      "Python",
-      "Django",
-      "Flask",
-      "Ruby on Rails",
-      "RESTful APIs",
-      "GraphQL",
+      "Node.js", "Express.js", "Python", "Django", 
+      "Flask", "Ruby on Rails", "RESTful APIs", "GraphQL",
     ],
   },
   {
     name: "Database",
     subcategories: [
-      "MongoDB",
-      "PostgreSQL",
-      "MySQL",
-      "SQL Server",
-      "Firebase",
-      "NoSQL",
+      "MongoDB", "PostgreSQL", "MySQL", 
+      "SQL Server", "Firebase", "NoSQL",
     ],
   },
   {
     name: "Mobile",
     subcategories: [
-      "React Native",
-      "Flutter",
-      "Android",
-      "iOS",
-      "Swift",
-      "Kotlin",
+      "React Native", "Flutter", "Android", 
+      "iOS", "Swift", "Kotlin",
     ],
   },
   {
     name: "DevOps",
     subcategories: [
-      "Docker",
-      "Kubernetes",
-      "AWS",
-      "Azure",
-      "CI/CD",
-      "Jenkins",
-      "Git",
+      "Docker", "Kubernetes", "AWS", 
+      "Azure", "CI/CD", "Jenkins", "Git",
     ],
   },
 ];
 
-const FullPageTags = () => {
-  const [selectedCategory, setSelectedCategory] = useState(null);
+const TagSelectionPage = () => {
   const [selectedSubcategories, setSelectedSubcategories] = useState([]);
-  const [darkMode, setDarkMode] = useState(false);
-
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
+  
+  // Animation for initial load
   useEffect(() => {
     gsap.fromTo(
-      ".main-category-tag",
-      { opacity: 0, y: 10 },
-      { opacity: 1, y: 0, stagger: 0.1, duration: 0.4, ease: "power2.out" }
+      ".tag-category",
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, stagger: 0.1, duration: 0.5, ease: "power2.out" }
     );
   }, []);
-
-  useEffect(() => {
-    if (selectedCategory) {
-      gsap.fromTo(
-        `.subcategory-container-${selectedCategory}`,
-        { opacity: 0, y: 10, display: "none" },
-        {
-          opacity: 1,
-          y: 0,
-          display: "flex",
-          stagger: 0.05,
-          duration: 0.3,
-          ease: "power2.out",
-        }
-      );
-    }
-  }, [selectedCategory]);
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
-
-  const handleCategoryClick = (categoryName) => {
-    setSelectedCategory(
-      categoryName === selectedCategory ? null : categoryName
-    );
-  };
 
   const handleSubcategoryClick = (subcategory) => {
     if (selectedSubcategories.includes(subcategory)) {
@@ -120,111 +70,119 @@ const FullPageTags = () => {
     selectedSubcategories.includes(subcategory);
 
   const handleSubmit = async () => {
-    // In a real application, you would send this data to your backend API
-    console.log("Selected Subcategories:", selectedSubcategories);
+    if (selectedSubcategories.length < 3) {
+      alert("Please select at least 3 tags to continue");
+      return;
+    }
+    
     try {
       const response = await axios.post(
-        BASE_URL + "/auth/select-tags",
-        {
-          selectedSubcategories,
-        },
+        `${BASE_URL}/auth/select-tags`,
+        { selectedSubcategories },
         { withCredentials: true }
       );
-      console.log(response.data);
+      
+      if (response.data.success) {
+        navigate("/"); // Navigate to home page after successful submission
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Error saving tags:", error);
     }
   };
 
+  const handleSkip = () => {
+    navigate("/");
+  };
+
+  // Filter tags based on search term
+  const filteredTags = searchTerm 
+    ? tagsData.map(category => ({
+        ...category,
+        subcategories: category.subcategories.filter(tag => 
+          tag.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      })).filter(category => category.subcategories.length > 0)
+    : tagsData;
+
   return (
-    <div
-      className={`min-h-screen w-full py-10 flex flex-col items-center ${
-        darkMode
-          ? "bg-neutral-900 text-neutral-100"
-          : "bg-neutral-100 text-neutral-800"
-      }`}
-    >
-      <div
-        className={`bg-neutral-50 rounded-lg shadow-md p-10 w-4/5 max-w-4xl flex flex-col ${
-          darkMode ? "bg-neutral-800 shadow-neutral-700" : "bg-neutral-50"
-        }`}
-      >
-        <div className="flex justify-end mb-6">
-          <button
-            onClick={toggleDarkMode}
-            className={`relative w-12 h-6 rounded-full transition duration-300 ease-in-out focus:outline-none ${
-              darkMode ? "bg-neutral-700" : "bg-neutral-300"
-            }`}
-          >
-            <span
-              className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow-md transition duration-300 ease-in-out ${
-                darkMode ? "translate-x-full" : ""
-              }`}
-            />
-          </button>
+    <div className="min-h-screen bg-white text-black flex flex-col items-center py-10 px-4">
+      <div className="w-full max-w-4xl">
+        <div className="text-center mb-10">
+          <h1 className="text-3xl font-bold mb-3">Personalize your feed</h1>
+          <p className="text-gray-600 max-w-xl mx-auto">
+            Select at least 3 topics you're interested in to help us customize your feed.
+            You can always change these later.
+          </p>
         </div>
 
-        <h2 className="text-3xl font-semibold mb-8 text-center">
-          Tell us what you're interested in
-        </h2>
+        {/* Search bar */}
+        <div className="mb-8">
+          <input
+            type="text"
+            placeholder="Search for topics..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
 
-        <div className="flex flex-wrap gap-4 mb-8 justify-center">
-          {tagsData.map((category) => (
+        {/* Selected tags count */}
+        <div className="mb-6 flex justify-between items-center">
+          <span className="text-gray-600">
+            {selectedSubcategories.length} topics selected
+          </span>
+          {selectedSubcategories.length > 0 && (
             <button
-              key={category.name}
-              className={`main-category-tag px-4 py-2 rounded-full text-lg font-medium transition duration-200 ease-in-out ${
-                selectedCategory === category.name
-                  ? darkMode
-                    ? "bg-blue-500 text-neutral-100 hover:bg-blue-600"
-                    : "bg-blue-500 text-neutral-100 hover:bg-blue-600"
-                  : darkMode
-                  ? "bg-neutral-700 text-neutral-300 hover:bg-neutral-600"
-                  : "bg-neutral-200 text-neutral-700 hover:bg-neutral-300"
-              }`}
-              onClick={() => handleCategoryClick(category.name)}
+              onClick={() => setSelectedSubcategories([])}
+              className="text-blue-600 hover:text-blue-800"
             >
-              {category.name}
+              Clear all
             </button>
+          )}
+        </div>
+
+        {/* Tags sections */}
+        <div className="space-y-8 mb-10">
+          {filteredTags.map((category) => (
+            <div key={category.name} className="tag-category">
+              <h2 className="text-xl font-semibold mb-4">{category.name}</h2>
+              <div className="flex flex-wrap gap-3">
+                {category.subcategories.map((subcategory) => (
+                  <button
+                    key={subcategory}
+                    onClick={() => handleSubcategoryClick(subcategory)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                      isSubcategorySelected(subcategory)
+                        ? "bg-blue-600 text-white hover:bg-blue-700"
+                        : "bg-gray-100 text-gray-800 hover:bg-gray-200 border border-gray-200"
+                    }`}
+                  >
+                    {subcategory}
+                  </button>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
 
-        {tagsData.map((category) => (
-          <div
-            key={category.name}
-            className={`subcategory-container subcategory-container-${
-              category.name
-            } flex flex-wrap gap-4 mt-6 transition-all duration-300 ease-in-out justify-center ${
-              selectedCategory === category.name ? "flex" : "hidden"
-            }`}
-          >
-            {category.subcategories.map((subcategory) => (
-              <button
-                key={subcategory}
-                className={`px-4 py-2 rounded-full text-lg font-medium transition duration-200 ease-in-out ${
-                  isSubcategorySelected(subcategory)
-                    ? darkMode
-                      ? "bg-green-500 text-neutral-100 hover:bg-green-600"
-                      : "bg-green-500 text-neutral-100 hover:bg-green-600"
-                    : darkMode
-                    ? "bg-neutral-600 text-neutral-200 hover:bg-neutral-500"
-                    : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200 border border-neutral-300"
-                }`}
-                onClick={() => handleSubcategoryClick(subcategory)}
-              >
-                {subcategory}
-              </button>
-            ))}
-          </div>
-        ))}
-
-        <div className="mt-10 flex justify-center">
+        {/* Action buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
           <button
             onClick={handleSubmit}
-            className={`bg-blue-600 text-neutral-100 py-3 px-8 rounded-md text-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200 ease-in-out ${
-              darkMode ? "bg-blue-500 hover:bg-blue-600" : ""
+            disabled={selectedSubcategories.length < 3}
+            className={`px-8 py-3 rounded-lg font-medium text-white transition-colors ${
+              selectedSubcategories.length < 3
+                ? "bg-blue-400 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700"
             }`}
           >
-            Submit Interests
+            Save preferences
+          </button>
+          <button
+            onClick={handleSkip}
+            className="px-8 py-3 rounded-lg font-medium text-gray-700 border border-gray-300 hover:bg-gray-100 transition-colors"
+          >
+            Skip for now
           </button>
         </div>
       </div>
@@ -232,4 +190,4 @@ const FullPageTags = () => {
   );
 };
 
-export default FullPageTags;
+export default TagSelectionPage;
