@@ -1,21 +1,34 @@
-import React, { useEffect } from 'react';
-import { Video, Users, Clock, Plus, Search } from 'lucide-react';
-import Sidebar from '../../components/Sidebar';
-import socket from '../../utils/socket';
+import React, { useEffect, useState } from "react";
+import { Video, Users, Clock, Plus, Search } from "lucide-react";
+import Sidebar from "../../components/Sidebar";
+import socket from "../../utils/socket";
+import axios from "axios";
+import { BASE_URL } from "../../config/baseurl";
 
 const Room = () => {
   // Mock data for rooms
+  const [Rooms, setRooms] = useState([]);
 
   useEffect(() => {
     socket.connect(); // or connect only after auth
     socket.on("connect", () => console.log("Connected: ", socket.id));
-  
-    return () => {
-      socket.disconnect(); // cleanup on unmount
+
+    const getRoom = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/room/all-rooms`, {
+          withCredentials: true,
+        });
+        console.log(res.data.allRooms);
+        setRooms(res.data.allRooms);
+      } catch (error) {
+        console.error(error);
+      }
+      return () => {
+        socket.disconnect(); // cleanup on unmount
+      };
     };
+    getRoom();
   }, []);
-
-
 
   const mockRooms = [
     {
@@ -25,7 +38,7 @@ const Room = () => {
       participants: 12,
       tags: ["JavaScript", "Web Development", "Beginners"],
       duration: "1h 20m",
-      isLive: true
+      isLive: true,
     },
     {
       id: 2,
@@ -34,7 +47,7 @@ const Room = () => {
       participants: 8,
       tags: ["React", "Hooks", "Frontend"],
       duration: "45m",
-      isLive: true
+      isLive: true,
     },
     {
       id: 3,
@@ -43,7 +56,7 @@ const Room = () => {
       participants: 15,
       tags: ["Node.js", "API", "Backend"],
       duration: "2h 5m",
-      isLive: true
+      isLive: true,
     },
     {
       id: 4,
@@ -52,7 +65,7 @@ const Room = () => {
       participants: 20,
       tags: ["Algorithms", "Data Structures", "Interviews"],
       duration: "1h 30m",
-      isLive: true
+      isLive: true,
     },
     {
       id: 5,
@@ -61,8 +74,8 @@ const Room = () => {
       participants: 6,
       tags: ["TypeScript", "JavaScript", "Web Development"],
       duration: "55m",
-      isLive: true
-    }
+      isLive: true,
+    },
   ];
 
   return (
@@ -99,15 +112,18 @@ const Room = () => {
                 placeholder="Search rooms..."
                 className="w-full px-4 py-3 pl-10 rounded-xl bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
               />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400" size={18} />
+              <Search
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400"
+                size={18}
+              />
             </div>
           </div>
 
           {/* Rooms grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {mockRooms.map((room) => (
-              <div 
-                key={room.id} 
+              <div
+                key={room.id}
                 className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-all overflow-hidden"
               >
                 {/* Room header with live indicator */}
@@ -120,29 +136,32 @@ const Room = () => {
                     </span>
                   )}
                 </div>
-                
+
                 {/* Room content */}
                 <div className="p-5">
                   <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">
                     {room.title}
                   </h3>
-                  
+
                   <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                    Hosted by <span className="font-medium text-blue-600 dark:text-blue-400">{room.host}</span>
+                    Hosted by{" "}
+                    <span className="font-medium text-blue-600 dark:text-blue-400">
+                      {room.host}
+                    </span>
                   </p>
-                  
+
                   {/* Tags */}
                   <div className="flex flex-wrap gap-2 mb-4">
                     {room.tags.map((tag, index) => (
-                      <span 
-                        key={index} 
+                      <span
+                        key={index}
                         className="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded-full"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
-                  
+
                   {/* Room stats */}
                   <div className="flex justify-between items-center text-sm text-gray-600 dark:text-gray-400">
                     <div className="flex items-center gap-1">
@@ -154,7 +173,7 @@ const Room = () => {
                       <span>{room.duration}</span>
                     </div>
                   </div>
-                  
+
                   {/* Join button */}
                   <button className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition-colors flex items-center justify-center gap-2">
                     <Video size={16} />
@@ -164,13 +183,17 @@ const Room = () => {
               </div>
             ))}
           </div>
-          
+
           {/* Empty state (hidden when rooms exist) */}
           {mockRooms.length === 0 && (
             <div className="text-center py-16 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
               <Video size={48} className="mx-auto text-gray-400 mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">No active rooms</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">Be the first to create a live room and start the discussion!</p>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                No active rooms
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                Be the first to create a live room and start the discussion!
+              </p>
               <button className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-md hover:shadow-xl">
                 <Plus size={18} />
                 Create Room
