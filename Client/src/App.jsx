@@ -1,12 +1,9 @@
 import React from 'react'
-import Signup from './ui/Auth/Signup'
-import Login from './ui/Auth/Login'
 import AppRoutes from './Router/AppRoutes'
-
 
 const App = () => {
   return (
-    <div>
+    <div className="min-h-screen bg-white dark:bg-[#0e0e0e] text-black dark:text-white transition-all">
       <AppRoutes />
     </div>
   )
