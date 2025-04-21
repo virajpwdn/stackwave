@@ -1,9 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Video, Users, Clock, Plus, Search } from 'lucide-react';
 import Sidebar from '../../components/Sidebar';
+import socket from '../../utils/socket';
 
 const Room = () => {
   // Mock data for rooms
+
+  useEffect(() => {
+    socket.connect(); // or connect only after auth
+    socket.on("connect", () => console.log("Connected: ", socket.id));
+  
+    return () => {
+      socket.disconnect(); // cleanup on unmount
+    };
+  }, []);
+
+
+
   const mockRooms = [
     {
       id: 1,
