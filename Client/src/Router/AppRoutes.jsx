@@ -9,6 +9,7 @@ import QuestionFeed from "../ui/Question/Questions";
 import CreateQuestion from "../ui/Question/CreateQuestion";
 import ViewQuestion from "../ui/Question/ViewQuestion";
 import Navbar from "../components/Navbar";
+import Room from "../ui/Room/Room";
 
 // Layout component that includes Navbar and renders children through Outlet
 const Layout = () => {
@@ -51,6 +52,9 @@ const AppRoutes = () => {
             } 
           />
           <Route path="/view-question/:id" element={<Authentication><ViewQuestion /></Authentication>} />
+          <Route path="/live-rooms" element={<Room />} />
+
+          
           <Route path="*" element={<QuestionFeed />} />
         </Route>
       </Routes>

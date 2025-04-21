@@ -4,9 +4,16 @@ import axios from "axios";
 import { gsap } from "gsap";
 import ReactMarkdown from "react-markdown";
 import { useSelector } from "react-redux";
-import { 
-  ThumbsUp, ThumbsDown, MessageSquare, 
-  Share2, Bookmark, Code, Bold, Italic, List 
+import {
+  ThumbsUp,
+  ThumbsDown,
+  MessageSquare,
+  Share2,
+  Bookmark,
+  Code,
+  Bold,
+  Italic,
+  List,
 } from "lucide-react";
 import Sidebar from "../../components/Sidebar";
 import { BASE_URL } from "../../config/baseurl";
@@ -19,18 +26,20 @@ const ViewQuestion = () => {
   const [error, setError] = useState(null);
   const [answerContent, setAnswerContent] = useState("");
   const [previewMode, setPreviewMode] = useState(false);
-  
+
   const contentRef = useRef(null);
   const answerFormRef = useRef(null);
   const answersRef = useRef(null);
-  
+
   const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
     const fetchQuestionDetails = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`${BASE_URL}/questions/view/question/${id}`);
+        const res = await axios.get(
+          `${BASE_URL}/questions/view/question/${id}`,{withCredentials:true}
+        );
         setQuestion(res.data.data);
         setAnswers(res.data.data.answers || []);
       } catch (err) {
@@ -40,11 +49,28 @@ const ViewQuestion = () => {
         setLoading(false);
       }
     };
+    //! TODO -> Create a aggeration pipeline on backend in one query you should get both questions and answers
+    const fetchAnswers = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/questions/get/answer/${id}`, {
+          withCredentials: true,
+        });
+        console.log(res);
+        setAnswers([...answers, res.data.data]);
+        console.log(answers);
+      } catch (error) {
+        console.error("Failed to fetch question:", err);
+        setError("Failed to load question details. Please try again later.");
+      }
+    };
+
+    fetchAnswers();
 
     if (id) {
       fetchQuestionDetails();
     }
   }, [id]);
+
 
   useEffect(() => {
     if (!loading && question && contentRef.current) {
@@ -52,42 +78,42 @@ const ViewQuestion = () => {
       gsap.fromTo(
         contentRef.current.children,
         { y: 30, opacity: 0 },
-        { 
-          y: 0, 
-          opacity: 1, 
-          stagger: 0.1, 
-          duration: 0.8, 
-          ease: "power3.out" 
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.1,
+          duration: 0.8,
+          ease: "power3.out",
         }
       );
-      
+
       // Animate answer form
       if (answerFormRef.current) {
         gsap.fromTo(
           answerFormRef.current,
           { y: 30, opacity: 0 },
-          { 
-            y: 0, 
-            opacity: 1, 
-            duration: 0.8, 
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
             delay: 0.3,
-            ease: "power3.out" 
+            ease: "power3.out",
           }
         );
       }
-      
+
       // Animate answers
       if (answersRef.current && answersRef.current.children.length > 0) {
         gsap.fromTo(
           answersRef.current.children,
           { y: 30, opacity: 0 },
-          { 
-            y: 0, 
-            opacity: 1, 
-            stagger: 0.1, 
-            duration: 0.8, 
+          {
+            y: 0,
+            opacity: 1,
+            stagger: 0.1,
+            duration: 0.8,
             delay: 0.5,
-            ease: "power3.out" 
+            ease: "power3.out",
           }
         );
       }
@@ -118,7 +144,9 @@ const ViewQuestion = () => {
       case "code":
         newText =
           answerContent.substring(0, start) +
-          `\`\`\`\n${selectedText || "// code here with preserved formatting"}\n\`\`\`` +
+          `\`\`\`\n${
+            selectedText || "// code here with preserved formatting"
+          }\n\`\`\`` +
           answerContent.substring(end);
         break;
       case "list":
@@ -144,25 +172,27 @@ const ViewQuestion = () => {
       alert("Please write an answer before submitting.");
       return;
     }
-    
+
     try {
       const res = await axios.post(
         `${BASE_URL}/questions/answer/create/${id}`,
-        { 
-          content: answerContent, 
-          authorId: user._id 
+        {
+          content: answerContent,
+          authorId: user._id,
         },
         { withCredentials: true }
       );
-      
+
       // Add the new answer to the list
       setAnswers([...answers, res.data.data]);
       setAnswerContent("");
       setPreviewMode(false);
-      
+
       // Scroll to the new answer
       setTimeout(() => {
-        const newAnswer = document.getElementById(`answer-${res.data.data._id}`);
+        const newAnswer = document.getElementById(
+          `answer-${res.data.data._id}`
+        );
         if (newAnswer) {
           newAnswer.scrollIntoView({ behavior: "smooth" });
         }
@@ -229,43 +259,54 @@ const ViewQuestion = () => {
                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 leading-tight">
                   {question.title}
                 </h1>
-                
+
                 <div className="flex flex-wrap gap-2 mb-6">
                   {question.tags?.map((tag, index) => (
-                    <span 
-                      key={index} 
+                    <span
+                      key={index}
                       className="px-2 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 text-xs rounded-full"
                     >
                       {tag}
                     </span>
                   ))}
                 </div>
-                
+
                 <div className="prose dark:prose-invert max-w-none whitespace-pre-wrap">
                   <ReactMarkdown
                     components={{
-                      code({node, inline, className, children, ...props}) {
+                      code({ node, inline, className, children, ...props }) {
                         return (
-                          <code className={`${className || ''} ${inline ? '' : 'block p-2 bg-gray-100 dark:bg-gray-800 rounded'}`} {...props}>
+                          <code
+                            className={`${className || ""} ${
+                              inline
+                                ? ""
+                                : "block p-2 bg-gray-100 dark:bg-gray-800 rounded"
+                            }`}
+                            {...props}
+                          >
                             {children}
                           </code>
-                        )
-                      }
+                        );
+                      },
                     }}
                   >
-                    {question.content || ''}
+                    {question.content || ""}
                   </ReactMarkdown>
                 </div>
-                
+
                 <div className="flex justify-between items-center text-sm text-gray-600 dark:text-gray-400 mb-6">
                   <div>
-                    Asked by <span className="font-medium text-blue-600 dark:text-blue-400">{question.author?.username || "Anonymous"}</span>
+                    Asked by{" "}
+                    <span className="font-medium text-blue-600 dark:text-blue-400">
+                      {question.author?.username || "Anonymous"}
+                    </span>
                   </div>
                   <div>
-                    {new Date(question.createdAt).toLocaleDateString()} at {new Date(question.createdAt).toLocaleTimeString()}
+                    {new Date(question.createdAt).toLocaleDateString()} at{" "}
+                    {new Date(question.createdAt).toLocaleTimeString()}
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-4 mb-6">
                   <button className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                     <ThumbsUp className="w-5 h-5" />
@@ -287,45 +328,61 @@ const ViewQuestion = () => {
                   </button>
                 </div>
               </div>
-              
+
               {/* Answers section */}
               <div className="mb-10">
                 <h2 className="text-xl font-bold mb-6 border-b border-gray-200 dark:border-gray-700 pb-2">
                   {answers.length} {answers.length === 1 ? "Answer" : "Answers"}
                 </h2>
-                
+
                 <div ref={answersRef} className="space-y-6">
                   {answers.map((answer) => (
-                    <div 
-                      key={answer._id} 
+                    <div
+                      key={answer._id}
                       id={`answer-${answer._id}`}
                       className="p-6 bg-white dark:bg-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm"
                     >
                       <div className="prose dark:prose-invert max-w-none mb-4">
                         <ReactMarkdown
                           components={{
-                            code({node, inline, className, children, ...props}) {
+                            code({
+                              node,
+                              inline,
+                              className,
+                              children,
+                              ...props
+                            }) {
                               return (
-                                <code className={`${className || ''} ${inline ? '' : 'block p-2 bg-gray-100 dark:bg-gray-800 rounded'}`} {...props}>
+                                <code
+                                  className={`${className || ""} ${
+                                    inline
+                                      ? ""
+                                      : "block p-2 bg-gray-100 dark:bg-gray-800 rounded"
+                                  }`}
+                                  {...props}
+                                >
                                   {children}
                                 </code>
-                              )
-                            }
+                              );
+                            },
                           }}
                         >
-                          {answer.content || ''}
+                          {answer.content || ""}
                         </ReactMarkdown>
                       </div>
-                      
+
                       <div className="flex justify-between items-center text-sm text-gray-600 dark:text-gray-400">
                         <div>
-                          Answered by <span className="font-medium text-blue-600 dark:text-blue-400">{answer.author?.username || "Anonymous"}</span>
+                          Answered by{" "}
+                          <span className="font-medium text-blue-600 dark:text-blue-400">
+                            {answer.author?.username || "Anonymous"}
+                          </span>
                         </div>
                         <div>
                           {new Date(answer.createdAt).toLocaleDateString()}
                         </div>
                       </div>
-                      
+
                       <div className="flex items-center gap-4 mt-4">
                         <button className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                           <ThumbsUp className="w-4 h-4" />
@@ -344,11 +401,11 @@ const ViewQuestion = () => {
                   ))}
                 </div>
               </div>
-              
+
               {/* Answer form */}
               <div ref={answerFormRef} className="mb-10">
                 <h2 className="text-xl font-bold mb-6">Your Answer</h2>
-                
+
                 <form onSubmit={handleSubmitAnswer} className="space-y-4">
                   {/* Markdown toolbar */}
                   <div className="flex items-center space-x-2 mb-2 p-2 bg-gray-50 dark:bg-gray-800 rounded-t-xl border border-gray-300 dark:border-gray-700">
@@ -399,16 +456,29 @@ const ViewQuestion = () => {
                     <div className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-b-xl bg-white dark:bg-[#1a1a1a] text-black dark:text-white min-h-[200px] prose dark:prose-invert max-w-none">
                       <ReactMarkdown
                         components={{
-                          code({node, inline, className, children, ...props}) {
+                          code({
+                            node,
+                            inline,
+                            className,
+                            children,
+                            ...props
+                          }) {
                             return (
-                              <code className={`${className || ''} ${inline ? '' : 'block p-2 bg-gray-100 dark:bg-gray-800 rounded'}`} {...props}>
+                              <code
+                                className={`${className || ""} ${
+                                  inline
+                                    ? ""
+                                    : "block p-2 bg-gray-100 dark:bg-gray-800 rounded"
+                                }`}
+                                {...props}
+                              >
                                 {children}
                               </code>
-                            )
-                          }
+                            );
+                          },
                         }}
                       >
-                        {answerContent || ''}
+                        {answerContent || ""}
                       </ReactMarkdown>
                     </div>
                   ) : (
@@ -421,7 +491,7 @@ const ViewQuestion = () => {
                       className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-b-xl bg-white dark:bg-[#1a1a1a] text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none font-mono"
                     />
                   )}
-                  
+
                   <button
                     type="submit"
                     className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl shadow-md hover:shadow-xl transition-all w-full sm:w-fit"
