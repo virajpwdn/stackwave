@@ -27,4 +27,6 @@ authRouter.post(
 
 authRouter.get("/verification", authMiddleware, controller.verificationController)
 
+authRouter.get("/guest-dashboard", authMiddleware, controller.guestDashboard)
+
 module.exports = authRouter;

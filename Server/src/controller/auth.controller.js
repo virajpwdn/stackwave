@@ -100,3 +100,7 @@ module.exports.verificationController = asyncHandler(async (req,res) => {
   const user = req.user;
   return res.status(200).json(new AppResponse(200, user, "User is verified"));
 })
+
+module.exports.guestDashboard = asyncHandler(async (req,res) =>{
+  
+})

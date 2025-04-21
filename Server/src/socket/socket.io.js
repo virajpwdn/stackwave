@@ -16,7 +16,7 @@ function initSocket(server) {
   console.log("Initialized socket io");
   const io = new Server(server, {
     cors: {
-      origin: "http://localhost:3000",
+      origin: "http://localhost:5173",
       credentials: true,
     },
   });
@@ -145,8 +145,14 @@ function initSocket(server) {
     });
 
     socket.on("join-room", async ({ userId, roomKey }) => {
+      console.log("hey");
+      if(!roomKey) return sendSocketError(socket, "Room Key is required", 404);
+
       const findRoom = await RoomModel.findOne({ roomId: roomKey });
       if (!findRoom) return sendSocketError(socket, "Room not found", 404);
+
+      findRoom.participants += 1;
+      await findRoom.save();
 
       socket.join(roomKey);
       console.log(`User ${userId} joined room ${roomKey}`);
