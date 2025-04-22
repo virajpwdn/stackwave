@@ -84,9 +84,9 @@ function initSocket(server) {
     //   }
     // });
 
-    socket.on("create-room", async ({ userId }) => {
-      if (!userId) {
-        console.error("user id is missing to create room");
+    socket.on("create-room", async ({ userId, title, tags }) => {
+      if (!userId || !title) {
+        console.error("user id or title is missing to create room");
         return sendSocketError(
           socket,
           "Authentication failed, please login again",
@@ -97,6 +97,7 @@ function initSocket(server) {
       roomId = hashRoomId(userId);
 
       const newRoom = await RoomModel.create({
+        title,
         roomId: roomId,
         roomCreatedBy: socket.user._id,
         participants: 1,

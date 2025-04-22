@@ -5,6 +5,11 @@ const roomSchema = new mongoose.Schema(
       type: String,
       required: [true, "Title is required"],
     },
+    tags: [
+      {
+        type: String,
+      },
+    ],
     roomId: {
       type: String,
       required: [true, "Room Id is required"],
