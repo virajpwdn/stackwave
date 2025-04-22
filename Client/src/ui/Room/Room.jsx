@@ -7,7 +7,7 @@ import { BASE_URL } from "../../config/baseurl";
 
 const Room = () => {
   // Mock data for rooms
-  const [Rooms, setRooms] = useState([]);
+  const [room, setRooms] = useState([]);
 
   useEffect(() => {
     socket.connect(); // or connect only after auth
@@ -78,6 +78,33 @@ const Room = () => {
     },
   ];
 
+  const formatDuration = (timestamp) => {
+    if (!timestamp) return "N/A";
+    
+    try {
+      // Parse the timestamp into a Date object
+      const createdAt = new Date(timestamp);
+      const now = new Date();
+      
+      // Calculate the difference in milliseconds
+      const diffMs = now - createdAt;
+      
+      // Convert to hours and minutes
+      const hours = Math.floor(diffMs / (1000 * 60 * 60));
+      const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+      
+      // Format the output
+      if (hours > 0) {
+        return `${hours}h ${minutes}m`;
+      } else {
+        return `${minutes}m`;
+      }
+    } catch (error) {
+      console.error("Error formatting duration:", error);
+      return "N/A";
+    }
+  };
+
   return (
     <div className="min-h-screen flex bg-white dark:bg-[#0e0e0e] text-black dark:text-white transition-all">
       {/* Sidebar component - 25% width */}
@@ -121,9 +148,9 @@ const Room = () => {
 
           {/* Rooms grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mockRooms.map((room) => (
+            {room.map((room) => (
               <div
-                key={room.id}
+                key={room._id}
                 className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-all overflow-hidden"
               >
                 {/* Room header with live indicator */}
@@ -170,7 +197,9 @@ const Room = () => {
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock size={16} />
-                      <span>{room.duration}</span>
+                      <span>
+                        {room.createdAt ? formatDuration(room.createdAt) : "N/A"}
+                      </span>
                     </div>
                   </div>
 
