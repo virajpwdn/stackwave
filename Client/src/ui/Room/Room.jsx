@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Video, Users, Clock, Plus, Search } from "lucide-react";
+import { Video, Users, Clock, Plus, Search, X } from "lucide-react";
 import Sidebar from "../../components/Sidebar";
 import socket from "../../utils/socket";
 import axios from "axios";
 import { BASE_URL } from "../../config/baseurl";
+import { useNavigate } from "react-router";
 
 const Room = () => {
   // Mock data for rooms
   const [room, setRooms] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     socket.connect(); // or connect only after auth
@@ -30,53 +33,13 @@ const Room = () => {
     getRoom();
   }, []);
 
-  const mockRooms = [
-    {
-      id: 1,
-      title: "JavaScript Fundamentals Discussion",
-      host: "Sarah Johnson",
-      participants: 12,
-      tags: ["JavaScript", "Web Development", "Beginners"],
-      duration: "1h 20m",
-      isLive: true,
-    },
-    {
-      id: 2,
-      title: "React Hooks Deep Dive",
-      host: "Michael Chen",
-      participants: 8,
-      tags: ["React", "Hooks", "Frontend"],
-      duration: "45m",
-      isLive: true,
-    },
-    {
-      id: 3,
-      title: "Building RESTful APIs with Node.js",
-      host: "Alex Rodriguez",
-      participants: 15,
-      tags: ["Node.js", "API", "Backend"],
-      duration: "2h 5m",
-      isLive: true,
-    },
-    {
-      id: 4,
-      title: "Data Structures for Coding Interviews",
-      host: "Priya Patel",
-      participants: 20,
-      tags: ["Algorithms", "Data Structures", "Interviews"],
-      duration: "1h 30m",
-      isLive: true,
-    },
-    {
-      id: 5,
-      title: "Introduction to TypeScript",
-      host: "David Wilson",
-      participants: 6,
-      tags: ["TypeScript", "JavaScript", "Web Development"],
-      duration: "55m",
-      isLive: true,
-    },
-  ];
+  const createRoomHandler = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   const formatDuration = (timestamp) => {
     if (!timestamp) return "N/A";
@@ -125,7 +88,7 @@ const Room = () => {
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
               Live Rooms
             </h1>
-            <button className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-md hover:shadow-xl w-full sm:w-fit">
+            <button onClick={createRoomHandler} className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-md hover:shadow-xl w-full sm:w-fit">
               <Plus size={18} />
               Create Room
             </button>
@@ -214,7 +177,7 @@ const Room = () => {
           </div>
 
           {/* Empty state (hidden when rooms exist) */}
-          {mockRooms.length === 0 && (
+          {room.length === 0 && (
             <div className="text-center py-16 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
               <Video size={48} className="mx-auto text-gray-400 mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
@@ -231,6 +194,42 @@ const Room = () => {
           )}
         </div>
       </main>
+
+      {/* Create Room Modal */}
+      {showModal && (
+        <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl w-full max-w-md mx-auto overflow-hidden transition-all">
+            {/* Modal header */}
+            <div className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-800">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Create New Room</h3>
+              <button 
+                onClick={closeModal}
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            
+            {/* Modal content */}
+            <div className="p-6">
+              <p className="text-gray-700 dark:text-gray-300">Room creation form will go here</p>
+            </div>
+            
+            {/* Modal footer */}
+            <div className="flex justify-end gap-3 p-4 border-t border-gray-200 dark:border-gray-800">
+              <button 
+                onClick={closeModal}
+                className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+              >
+                Cancel
+              </button>
+              <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+                Create Room
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
