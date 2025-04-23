@@ -1,11 +1,38 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../../config/baseurl";
+import Editor from "@monaco-editor/react";
+import Terminal from "./Terminal";
 
 const Code = () => {
-  // Initialize with empty array instead of string array
   const [languages, setLanguages] = useState([]);
   const [selectedLanguage, setSelectedLanguage] = useState(102); // Default to JavaScript
+  const [code, setCode] = useState("// Write your code here");
+  const [editorLanguage, setEditorLanguage] = useState("javascript");
+
+  // Language mapping from API IDs to Monaco language identifiers
+  // const themes = ["vs", "vs-dark", "hc-black", "my-cool-theme"];
+  const themes = [
+    {
+      style: "vs",
+      id: 1,
+    },
+    {
+      style: "vs-dark",
+      id: 2,
+    },
+    {
+      style: "hc-black",
+      id: 3,
+    },
+    {
+      style: "my-cool-theme",
+      id: 4,
+    },
+  ];
+
+  const [theme, setTheme] = useState(themes);
+  const [selectTheme, setSelectTheme] = useState();
 
   useEffect(() => {
     const getAllLanguages = async () => {
@@ -13,7 +40,6 @@ const Code = () => {
         const response = await axios.get(BASE_URL + "/compiler/showlanguages", {
           withCredentials: true,
         });
-        // Make sure we're setting an array of objects with id and name
         if (Array.isArray(response.data.data)) {
           setLanguages(response.data.data);
         }
@@ -25,16 +51,30 @@ const Code = () => {
     getAllLanguages();
   }, []);
 
+  useEffect(() => {
+    // Update editor language when selectedLanguage changes
+    setEditorLanguage(selectedLanguage || "javascript");
+  }, [selectedLanguage]);
+
   const handleLanguageChange = (e) => {
     const languageId = parseInt(e.target.value, 10);
     setSelectedLanguage(languageId);
+  };
+
+  const handleEditorChange = (value) => {
+    setCode(value);
+    console.log(code);
+  };
+
+  const changeThemeHandler = (e) => {
+    setSelectTheme(e.target.value);
   };
 
   return (
     <div className="w-full mx-auto h-screen bg-white dark:bg-gray-900 overflow-hidden rounded-lg shadow-lg">
       <div className="flex flex-col h-full">
         {/* Top div - 20% height */}
-        <div className="w-ful max-sm:h-1/4 h-[8%] bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <div className="w-full max-sm:h-1/4 h-[8%] bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
           {/* Top section with two divs */}
           <div className="flex max-sm:flex-col gap-4 justify-between items-center p-4 h-full">
             {/* Left div */}
@@ -53,6 +93,26 @@ const Code = () => {
                 ) : (
                   <option value={102} key={102}>
                     Javascript
+                  </option>
+                )}
+              </select>
+            </div>
+            {/* changes */}
+            <div className="flex items-center">
+              <select
+                value={selectTheme}
+                onChange={changeThemeHandler}
+                className="px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {themes && themes.length > 0 ? (
+                  themes.map((elem) => (
+                    <option key={elem.id} value={elem.style}>
+                      {elem.style}
+                    </option>
+                  ))
+                ) : (
+                  <option value={1} key={vs}>
+                    vs
                   </option>
                 )}
               </select>
@@ -76,8 +136,22 @@ const Code = () => {
 
         {/* Bottom div - 80% height */}
         <div className="w-full max-sm:min-h-screen h-[92%] bg-gray-50 dark:bg-gray-800">
-          {/* Bottom div content will go here */}
+          <Editor
+            height="100%"
+            defaultLanguage={selectedLanguage}
+            language={editorLanguage}
+            value={code}
+            onChange={handleEditorChange}
+            theme={selectTheme}
+            options={{
+              minimap: { enabled: true },
+              scrollBeyondLastLine: false,
+              fontSize: 14,
+              automaticLayout: true,
+            }}
+          />
         </div>
+        <Terminal />
       </div>
     </div>
   );
