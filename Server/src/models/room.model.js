@@ -26,6 +26,9 @@ const roomSchema = new mongoose.Schema(
     participants: {
       type: Number,
     },
+    description: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

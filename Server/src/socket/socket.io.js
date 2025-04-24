@@ -84,7 +84,7 @@ function initSocket(server) {
     //   }
     // });
 
-    socket.on("create-room", async ({ userId, title, tags }) => {
+    socket.on("create-room", async ({ userId, title, tags, description }) => {
       if (!userId || !title) {
         console.error("user id or title is missing to create room");
         return sendSocketError(

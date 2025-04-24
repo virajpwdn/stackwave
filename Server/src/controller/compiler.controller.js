@@ -9,8 +9,11 @@ let language_id = 102;
 //! TODO: In this controller fix all the responses and errors which are sent to frontend, add middleware for auth
 
 module.exports.createSubmissionController = asyncHandler(async (req, res) => {
-  const {code} = req.body;
-  const sourceCode = code; /* Maybe we have to write this in tempelate literals */
+  const { code, selectedLanguage } = req.body;
+  const sourceCode =
+    code; /* Maybe we have to write this in tempelate literals */
+  language_id = selectedLanguage;
+  console.log(language_id);
 
   const stdin = "Judge0";
 
@@ -36,17 +39,19 @@ module.exports.createSubmissionController = asyncHandler(async (req, res) => {
 
   try {
     const response = await axios.request(options);
-    res.send(response.data); // Contains token
+    res
+      .status(200)
+      .json(new AppResonse(200, response.data, "code compilation successfull")); // Contains token
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
 module.exports.getCodeAnswers = asyncHandler(async (req, res) => {
-  // const token = req.query.token; // Expecting client to send token as query param
-
-  // if (!token) return res.status(400).json({ error: "Missing token" });
-  const token = "612d53c3-173c-40ea-9d8e-fc8f3cd411a9";
+  const token = req.params.token; // Expecting client to send token as query param
+  console.log(token);
+  if (!token) return res.status(400).json({ error: "Missing token" });
+  // const token = "612d53c3-173c-40ea-9d8e-fc8f3cd411a9";
 
   const options = {
     method: "GET",
@@ -78,7 +83,7 @@ module.exports.getCodeAnswers = asyncHandler(async (req, res) => {
       ? Buffer.from(compile_output, "base64").toString()
       : null;
 
-    res.send({
+    res.status(200).json({
       status,
       output: decodedOutput,
       error: decodedError,
@@ -101,18 +106,19 @@ module.exports.showLanguagesController = asyncHandler(async (req, res) => {
 
   try {
     const response = await axios.request(options);
-    console.log(response.data);
-    res.send(response.data);
+    res
+      .status(200)
+      .json(new AppResonse(200, response.data, "All language code"));
   } catch (error) {
     console.error(error);
   }
 });
 
 // TODO: Data Sanitazation, Error handling, Responses
-module.exports.selectLanguageController = asyncHandler(async(req,res)=>{
-  const {languageId} = req.body;
+module.exports.selectLanguageController = asyncHandler(async (req, res) => {
+  const { languageId } = req.body;
   language_id = languageId;
   console.log(language_id);
 
   res.send("Id is selected");
-})
+});
