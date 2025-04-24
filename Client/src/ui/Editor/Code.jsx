@@ -1,38 +1,46 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { BASE_URL } from "../../config/baseurl";
 import Editor from "@monaco-editor/react";
 import Terminal from "./Terminal";
+import {
+  ChevronDown,
+  Play,
+  Code as CodeIcon,
+  RefreshCw,
+  Eye,
+} from "lucide-react";
 
 const Code = () => {
   const [languages, setLanguages] = useState([]);
   const [selectedLanguage, setSelectedLanguage] = useState(102); // Default to JavaScript
   const [code, setCode] = useState("// Write your code here");
   const [editorLanguage, setEditorLanguage] = useState("javascript");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showTerminal, setShowTerminal] = useState(false);
+  const [terminalOutput, setTerminalOutput] = useState("");
+  const menuRef = useRef(null);
 
-  // Language mapping from API IDs to Monaco language identifiers
-  // const themes = ["vs", "vs-dark", "hc-black", "my-cool-theme"];
   const themes = [
-    {
-      style: "vs",
-      id: 1,
-    },
-    {
-      style: "vs-dark",
-      id: 2,
-    },
-    {
-      style: "hc-black",
-      id: 3,
-    },
-    {
-      style: "my-cool-theme",
-      id: 4,
-    },
+    { id: "vs", name: "Light" },
+    { id: "vs-dark", name: "Dark" },
+    { id: "hc-black", name: "High Contrast Dark" },
+    { id: "hc-light", name: "High Contrast Light" },
   ];
 
-  const [theme, setTheme] = useState(themes);
-  const [selectTheme, setSelectTheme] = useState();
+  const [selectedTheme, setSelectedTheme] = useState("vs-dark"); // Default theme
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const getAllLanguages = async () => {
@@ -61,24 +69,78 @@ const Code = () => {
     setSelectedLanguage(languageId);
   };
 
-  const handleEditorChange = (value) => {
-    setCode(value);
-    console.log(code);
+  const handleThemeChange = (e) => {
+    setSelectedTheme(e.target.value);
   };
 
-  const changeThemeHandler = (e) => {
-    setSelectTheme(e.target.value);
+  const handleEditorChange = (value) => {
+    setCode(value);
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const toggleTerminal = () => {
+    setShowTerminal(!showTerminal);
+    setIsMenuOpen(false); // Close menu after action
+  };
+
+  const submitAnswer = () => {
+    console.log("Submitting answer:", code);
+    setIsMenuOpen(false); // Close menu after action
+    // Add your submission logic here
+  };
+
+  const aiRefactorization = () => {
+    console.log("AI Refactorization requested");
+    setIsMenuOpen(false); // Close menu after action
+    // Add your AI refactorization logic here
+  };
+
+  const viewAICode = () => {
+    console.log("View AI Code requested");
+    setIsMenuOpen(false); // Close menu after action
+    // Add your view AI code logic here
+  };
+
+  const runCode = async () => {
+    console.log("Running code:", code);
+    setIsMenuOpen(false);
+
+    try {
+      const response = await axios.post(
+        BASE_URL + "/compiler/create-submission",
+        { code, selectedLanguage },
+        { withCredentials: true }
+      );
+      const token = response.data.data.token;
+      console.log(token);
+
+      setTimeout(async ()=>{
+        try {
+          const responseResult = await axios.get(
+            `${BASE_URL}/compiler/getanswers/${token}`
+          );
+          setTerminalOutput(responseResult.data.output)
+          console.log(responseResult.data.output);
+        } catch (error) {
+          console.error(error);
+        }
+      }, 3000)
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <div className="w-full mx-auto h-screen bg-white dark:bg-gray-900 overflow-hidden rounded-lg shadow-lg">
       <div className="flex flex-col h-full">
-        {/* Top div - 20% height */}
-        <div className="w-full max-sm:h-1/4 h-[8%] bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-          {/* Top section with two divs */}
-          <div className="flex max-sm:flex-col gap-4 justify-between items-center p-4 h-full">
-            {/* Left div */}
-            <div className="flex items-center">
+        {/* Top div */}
+        <div className="w-full h-[8%] bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex justify-between items-center p-4 h-full">
+            {/* Left div - Language selector */}
+            <div className="flex items-center space-x-3">
               <select
                 value={selectedLanguage}
                 onChange={handleLanguageChange}
@@ -96,53 +158,86 @@ const Code = () => {
                   </option>
                 )}
               </select>
-            </div>
-            {/* changes */}
-            <div className="flex items-center">
+
               <select
-                value={selectTheme}
-                onChange={changeThemeHandler}
+                value={selectedTheme}
+                onChange={handleThemeChange}
                 className="px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                {themes && themes.length > 0 ? (
-                  themes.map((elem) => (
-                    <option key={elem.id} value={elem.style}>
-                      {elem.style}
-                    </option>
-                  ))
-                ) : (
-                  <option value={1} key={vs}>
-                    vs
+                {themes.map((theme) => (
+                  <option key={theme.id} value={theme.id}>
+                    {theme.name}
                   </option>
-                )}
+                ))}
               </select>
             </div>
 
-            {/* Right div with two buttons */}
-            <div className="flex space-x-3">
-              <div>
-                <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors">
-                  AI Refactorization
+            {/* Right div - Run button and Actions dropdown wrapped in one div */}
+            <div className="flex items-center space-x-3">
+              <button
+                onClick={runCode}
+                className="flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-md transition-colors"
+              >
+                <Play className="mr-2 h-4 w-4" /> Run Code
+              </button>
+
+              <div className="relative" ref={menuRef}>
+                <button
+                  onClick={toggleMenu}
+                  className="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors"
+                >
+                  Actions <ChevronDown className="ml-2 h-4 w-4" />
                 </button>
-              </div>
-              <div>
-                <button className="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white font-medium rounded-md transition-colors">
-                  View AI Code
-                </button>
+
+                {isMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-20 border border-gray-200 dark:border-gray-700">
+                    <div className="py-1">
+                      <button
+                        onClick={aiRefactorization}
+                        className="w-full text-left px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center"
+                      >
+                        <RefreshCw className="mr-2 h-4 w-4" /> AI
+                        Refactorization
+                      </button>
+                      <button
+                        onClick={viewAICode}
+                        className="w-full text-left px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center"
+                      >
+                        <Eye className="mr-2 h-4 w-4" /> View AI Code
+                      </button>
+                      <button
+                        onClick={submitAnswer}
+                        className="w-full text-left px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center"
+                      >
+                        <CodeIcon className="mr-2 h-4 w-4" /> Submit Answer
+                      </button>
+                      <button
+                        onClick={toggleTerminal}
+                        className="w-full text-left px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center"
+                      >
+                        <CodeIcon className="mr-2 h-4 w-4" /> Toggle Terminal
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Bottom div - 80% height */}
-        <div className="w-full max-sm:min-h-screen h-[92%] bg-gray-50 dark:bg-gray-800">
+        {/* Editor div */}
+        <div
+          className={`w-full ${
+            showTerminal ? "h-[65%]" : "h-[92%]"
+          } bg-gray-50 dark:bg-gray-800`}
+        >
           <Editor
             height="100%"
-            defaultLanguage={selectedLanguage}
+            defaultLanguage="javascript"
             language={editorLanguage}
             value={code}
             onChange={handleEditorChange}
-            theme={selectTheme}
+            theme={selectedTheme}
             options={{
               minimap: { enabled: true },
               scrollBeyondLastLine: false,
@@ -151,7 +246,9 @@ const Code = () => {
             }}
           />
         </div>
-        <Terminal />
+
+        {/* Terminal */}
+        {showTerminal && <Terminal output={terminalOutput} />}
       </div>
     </div>
   );
