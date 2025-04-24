@@ -61,12 +61,14 @@ const Code = () => {
 
   useEffect(() => {
     // Update editor language when selectedLanguage changes
-    setEditorLanguage(selectedLanguage || "javascript");
+    setEditorLanguage(editorLanguage);
+    console.log(selectedLanguage);
   }, [selectedLanguage]);
 
   const handleLanguageChange = (e) => {
     const languageId = parseInt(e.target.value, 10);
     setSelectedLanguage(languageId);
+    console.log(selectedLanguage);
   };
 
   const handleThemeChange = (e) => {
@@ -135,7 +137,7 @@ const Code = () => {
 
   return (
     <div className="w-full mx-auto h-screen bg-white dark:bg-gray-900 overflow-hidden rounded-lg shadow-lg">
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-screen">
         {/* Top div */}
         <div className="w-full h-[8%] bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
           <div className="flex justify-between items-center p-4 h-full">
