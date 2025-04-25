@@ -11,6 +11,8 @@ import {
   Eye,
 } from "lucide-react";
 import socket from "../../utils/socket";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router";
 
 const Code = () => {
   const [languages, setLanguages] = useState([]);
@@ -22,26 +24,39 @@ const Code = () => {
   const [terminalOutput, setTerminalOutput] = useState("");
   const menuRef = useRef(null);
 
-  const roomKey =
-    "140ded1561da5d7f1d51177e374a72fa78162234ade325710c614259a6921bae";
-  const userId = "67f382143202a37cee996e5e";
+  const user = useSelector((state) => state.user.user);
+  const param = useParams();
+  const roomKey = param.roomId;
+  const userId = user._id;
 
-  const userId2 = "67fcb7e3f4227ef84cfc369d"
 
+  // Connect once when component mounts
   useEffect(() => {
     socket.connect();
 
-    socket.on("code-content", ({userId2, code}) => {
-      if(userId2 != userId)
-      setCode(code);
-    })
-
-    socket.emit("code-content", {
-      roomKey,
-      userId,
-      code,
+    socket.on("code-content", ({ userId, code}) => {
+      if (userId != user._id) setCode(code);
     });
-  }, []);
+
+    // Clean up on unmount
+    return () => {
+      socket.disconnect();
+      socket.off("code-content");
+    };
+  }, [user._id]); // Only depends on user._id which likely doesn't change often
+
+  // Emit code changes with debouncing
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      socket.emit("code-content", {
+        roomKey,
+        userId,
+        code,
+      });
+    }, 2000); // Reduced from 3000ms for better responsiveness
+
+    return () => clearTimeout(timer);
+  }, [code, roomKey, userId]);
 
   const themes = [
     { id: "vs", name: "Light" },
@@ -129,6 +144,19 @@ const Code = () => {
     // Add your view AI code logic here
   };
 
+  // useEffect(() => {
+  //   socket.on("terminal-output", ({ terminalOutput }) => {
+  //     if (userId !== user._id) {
+  //       setTerminalOutput(terminalOutput);
+  //     }
+  //     console.log(terminalOutput);
+  //   });
+
+  //   return () => {
+  //     socket.off("terminal-output"); // cleanup
+  //   };
+  // }, []);
+
   const runCode = async () => {
     console.log("Running code:", code);
     setIsMenuOpen(false);
@@ -144,11 +172,20 @@ const Code = () => {
 
       setTimeout(async () => {
         try {
-          const responseResult = await axios.get(
+          const result = await axios.get(
             `${BASE_URL}/compiler/getanswers/${token}`
           );
-          setTerminalOutput(responseResult.data.output);
-          console.log(responseResult.data.output);
+          const output = result.data.output;
+          setTerminalOutput(output);
+
+          socket.connect();
+          socket.emit("terminal-output", {
+            userId,
+            terminalOutput: output, // Use output instead of terminalOutput
+            roomKey,
+          });
+
+          console.log("done");
         } catch (error) {
           console.error(error);
         }

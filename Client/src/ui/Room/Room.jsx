@@ -5,7 +5,6 @@ import socket from "../../utils/socket";
 import axios from "axios";
 import { BASE_URL } from "../../config/baseurl";
 import { Link, useNavigate } from "react-router";
-import { useSelector } from "react-redux";
 
 const Room = () => {
   // Mock data for rooms
@@ -16,8 +15,7 @@ const Room = () => {
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState("");
   const [title, setTitle] = useState("");
-  const store = useSelector((store) => store.Users);
-  // console.log(store);
+  
 
   useEffect(() => {
     socket.connect(); // or connect only after auth
