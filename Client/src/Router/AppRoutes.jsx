@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Outlet,
+} from "react-router-dom";
 import Signup from "../ui/Auth/Signup";
 import Login from "../ui/Auth/Login";
 import Authentication from "./Authentication";
@@ -45,21 +50,48 @@ const AppRoutes = () => {
           />
           <Route path="/tags-selection" element={<TagSelectionPage />} />
           <Route path="/questions" element={<QuestionFeed />} />
-          <Route 
-            path="/ask-question" 
+          <Route
+            path="/ask-question"
             element={
               <Authentication>
                 <CreateQuestion />
               </Authentication>
-            } 
+            }
           />
-          <Route path="/view-question/:id" element={<Authentication><ViewQuestion /></Authentication>} />
-          <Route path="/live-rooms" element={<Room />} />
+          <Route
+            path="/view-question/:id"
+            element={
+              <Authentication>
+                <ViewQuestion />
+              </Authentication>
+            }
+          />
+          <Route
+            path="/live-rooms"
+            element={
+              <Authentication>
+                <Room />
+              </Authentication>
+            }
+          />
 
-          <Route path="/create-room" element={<CreateRoom />} />
-          <Route path="/editor" element={<CodeEditor />} />
+          <Route
+            path="/create-room"
+            element={
+              <Authentication>
+                <CreateRoom />
+              </Authentication>
+            }
+          />
+          <Route
+            path="/editor/:roomId"
+            element={
+              <Authentication>
+                <CodeEditor />
+              </Authentication>
+            }
+          />
 
-          
           <Route path="*" element={<QuestionFeed />} />
         </Route>
       </Routes>

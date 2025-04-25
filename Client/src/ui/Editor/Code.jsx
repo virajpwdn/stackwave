@@ -10,6 +10,7 @@ import {
   RefreshCw,
   Eye,
 } from "lucide-react";
+import socket from "../../utils/socket";
 
 const Code = () => {
   const [languages, setLanguages] = useState([]);
@@ -20,6 +21,27 @@ const Code = () => {
   const [showTerminal, setShowTerminal] = useState(false);
   const [terminalOutput, setTerminalOutput] = useState("");
   const menuRef = useRef(null);
+
+  const roomKey =
+    "140ded1561da5d7f1d51177e374a72fa78162234ade325710c614259a6921bae";
+  const userId = "67f382143202a37cee996e5e";
+
+  const userId2 = "67fcb7e3f4227ef84cfc369d"
+
+  useEffect(() => {
+    socket.connect();
+
+    socket.on("code-content", ({userId2, code}) => {
+      if(userId2 != userId)
+      setCode(code);
+    })
+
+    socket.emit("code-content", {
+      roomKey,
+      userId,
+      code,
+    });
+  }, []);
 
   const themes = [
     { id: "vs", name: "Light" },
@@ -76,6 +98,7 @@ const Code = () => {
   };
 
   const handleEditorChange = (value) => {
+    console.log(value);
     setCode(value);
   };
 
@@ -119,17 +142,17 @@ const Code = () => {
       const token = response.data.data.token;
       console.log(token);
 
-      setTimeout(async ()=>{
+      setTimeout(async () => {
         try {
           const responseResult = await axios.get(
             `${BASE_URL}/compiler/getanswers/${token}`
           );
-          setTerminalOutput(responseResult.data.output)
+          setTerminalOutput(responseResult.data.output);
           console.log(responseResult.data.output);
         } catch (error) {
           console.error(error);
         }
-      }, 3000)
+      }, 3000);
     } catch (error) {
       console.error(error);
     }

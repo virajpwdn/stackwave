@@ -4,7 +4,7 @@ import Sidebar from "../../components/Sidebar";
 import socket from "../../utils/socket";
 import axios from "axios";
 import { BASE_URL } from "../../config/baseurl";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 
 const Room = () => {
@@ -16,7 +16,7 @@ const Room = () => {
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState("");
   const [title, setTitle] = useState("");
-  const store = useSelector((store) => store.Users)
+  const store = useSelector((store) => store.Users);
   // console.log(store);
 
   useEffect(() => {
@@ -233,10 +233,12 @@ const Room = () => {
                   </div>
 
                   {/* Join button */}
-                  <button className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition-colors flex items-center justify-center gap-2">
-                    <Video size={16} />
-                    Join Room
-                  </button>
+                  <Link to={"/editor/" + room.roomId}>
+                    <button className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition-colors flex items-center justify-center gap-2">
+                      <Video size={16} />
+                      Join Room
+                    </button>
+                  </Link>
                 </div>
               </div>
             ))}

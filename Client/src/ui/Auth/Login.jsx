@@ -4,6 +4,7 @@ import axios from "axios";
 import { BASE_URL } from "../../config/baseurl";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/user.slice";
+import { useNavigate } from "react-router";
 
 const Login = () => {
   const formRef = useRef(null);
@@ -11,6 +12,7 @@ const Login = () => {
 
   const [email, setEmail] = useState("user12@gmail.com");
   const [password, setPassword] = useState("User@123");
+  const naviagte = useNavigate();
 
   useEffect(() => {
     gsap.fromTo(
@@ -30,7 +32,7 @@ const Login = () => {
       );
       console.log(res.data);
       dispatch(setUser(res.data.data));
-      // Redirect or set auth context here
+      naviagte("/questions")
     } catch (err) {
       console.error(err);
     }
