@@ -5,6 +5,7 @@ import socket from "../../utils/socket";
 import axios from "axios";
 import { BASE_URL } from "../../config/baseurl";
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
 
 const Room = () => {
   // Mock data for rooms
@@ -15,6 +16,8 @@ const Room = () => {
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState("");
   const [title, setTitle] = useState("");
+  const store = useSelector((store) => store.Users)
+  // console.log(store);
 
   useEffect(() => {
     socket.connect(); // or connect only after auth
@@ -37,7 +40,7 @@ const Room = () => {
     getRoom();
   }, []);
 
-  const userId = "4Mi1zJErcI3fnv1SAAAB";
+  const userId = "6802426423f623fad9dd9728";
 
   const roomCreationHandler = async (e) => {
     console.log("Handler triggered", e);
@@ -63,6 +66,7 @@ const Room = () => {
       console.log("Room creation event emitted");
 
       setShowModal(false);
+
       setTitle("");
       setDescription("");
       setTags([]);
