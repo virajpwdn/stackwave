@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import socket from "../../utils/socket";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 const Code = () => {
   const [languages, setLanguages] = useState([]);
@@ -25,6 +25,7 @@ const Code = () => {
   const menuRef = useRef(null);
 
   const user = useSelector((state) => state.user.user);
+  const navigate = useNavigate();
   const param = useParams();
   const roomKey = param.roomId;
   const userId = user._id;
@@ -134,8 +135,8 @@ const Code = () => {
 
   const aiRefactorization = () => {
     console.log("AI Refactorization requested");
-    setIsMenuOpen(false); // Close menu after action
-    // Add your AI refactorization logic here
+    setIsMenuOpen(false);
+    navigate("/refactor-ai", {state: {code: code}})
   };
 
   const viewAICode = () => {
@@ -160,6 +161,7 @@ const Code = () => {
   const runCode = async () => {
     console.log("Running code:", code);
     setIsMenuOpen(false);
+    setShowTerminal(true);
 
     try {
       const response = await axios.post(
@@ -301,10 +303,11 @@ const Code = () => {
             onChange={handleEditorChange}
             theme={selectedTheme}
             options={{
-              minimap: { enabled: true },
+              minimap: { enabled: false },
               scrollBeyondLastLine: false,
               fontSize: 14,
               automaticLayout: true,
+              wordWrap: "on",
             }}
           />
         </div>

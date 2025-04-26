@@ -17,6 +17,7 @@ import Navbar from "../components/Navbar";
 import Room from "../ui/Room/Room";
 import CreateRoom from "../ui/Room/CreateRoom";
 import CodeEditor from "../ui/Editor/CodeEditor";
+import RefactorAI from "../ui/AI/RefactorAI";
 
 // Layout component that includes Navbar and renders children through Outlet
 const Layout = () => {
@@ -91,6 +92,8 @@ const AppRoutes = () => {
               </Authentication>
             }
           />
+
+          <Route path="/refactor-ai" element={<RefactorAI />} />
 
           <Route path="*" element={<QuestionFeed />} />
         </Route>
