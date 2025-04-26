@@ -1,12 +1,11 @@
 const { Router } = require("express");
 const aiRouter = Router();
-const {generateContent} = require("../utils/ai");
+const controller = require("../controller/ai.controller");
+const authMiddleware = require("../middleware/auth.middleware");
 
-aiRouter.post("/generate", async (req, res) => {
-    const {prompt} = req.body;
-    const response = await generateContent(prompt);
-
-    res.send(response);
-});
+aiRouter.post("/generate", authMiddleware, controller.refactorCodeAI);
 
 module.exports = aiRouter;
+
+
+

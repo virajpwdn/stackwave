@@ -36,13 +36,15 @@ module.exports.createSubmissionController = asyncHandler(async (req, res) => {
       stdin: Buffer.from(stdin).toString("base64"),
     },
   };
-
   try {
     const response = await axios.request(options);
+    console.log(response);
+    
     res
       .status(200)
       .json(new AppResonse(200, response.data, "code compilation successfull")); // Contains token
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 });
