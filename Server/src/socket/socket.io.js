@@ -107,7 +107,7 @@ function initSocket(server) {
       console.log(`${socket.user.firstName} has joined room ${roomId}`);
     });
 
-    socket.on("send-message", async ({ userId, roomKey, text }) => {
+    socket.on("send-message", async ({ userId, roomKey, text, profilePhoto }) => {
       try {
         if (!userId || !roomKey || !text) {
           console.error("All Fields are required");
@@ -147,7 +147,7 @@ function initSocket(server) {
 
     socket.on("join-room", async ({ userId, roomKey }) => {
       console.log("hey");
-      if(!roomKey) return sendSocketError(socket, "Room Key is required", 404);
+      if (!roomKey) return sendSocketError(socket, "Room Key is required", 404);
 
       const findRoom = await RoomModel.findOne({ roomId: roomKey });
       if (!findRoom) return sendSocketError(socket, "Room not found", 404);
@@ -159,9 +159,10 @@ function initSocket(server) {
       console.log(`User ${userId} joined room ${roomKey}`);
     });
 
-    socket.on("code-content", async ({ userId, roomKey, text }) => {
+    socket.on("code-content", async ({ userId, roomKey, code }) => {
       try {
-        if (!userId || !roomKey || !text) {
+        console.log(code);
+        if (!userId || !roomKey || !code) {
           console.error("All Fields are required");
           return sendSocketError(
             socket,
@@ -182,17 +183,30 @@ function initSocket(server) {
           return sendSocketError(socket, "Room Not Found", 400);
         }
 
-        const codeContent = await CCModel.create({
-          content: text,
-          senderId: userId,
-          roomId: roomKey,
-        });
+        // const codeContent = await CCModel.create({
+        //   content: code,
+        //   senderId: userId,
+        //   roomId: roomKey,
+        // });
         // console.log(text);
         socket.join(roomKey);
         io.to(roomKey).emit("code-content", {
           userId,
-          text,
+          code,
         });
+      } catch (error) {
+        console.error(`Something went wrong: ${error.message}`);
+      }
+    });
+
+    socket.on("terminal-output", ({ userId, terminalOutput, roomKey }) => {
+      try {
+        console.log(terminalOutput);
+        console.log(roomKey);
+
+        io.to(roomKey).emit("terminal-output", { terminalOutput });
+
+        io.emit();
       } catch (error) {
         console.error(`Something went wrong: ${error.message}`);
       }
