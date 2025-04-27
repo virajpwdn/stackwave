@@ -6,6 +6,3 @@ const authMiddleware = require("../middleware/auth.middleware");
 aiRouter.post("/generate", authMiddleware, controller.refactorCodeAI);
 
 module.exports = aiRouter;
-
-
-
