@@ -3,6 +3,8 @@ const AppError = require("../utils/ApiError");
 const AppResponse = require("../utils/ApiResponse");
 const QuestionModel = require("../models/question.model");
 const AnswerModel = require("../models/answer.model");
+const VoteModel = require("../models/vote.model");
+const { default: mongoose } = require("mongoose");
 
 module.exports.askQuestionController = asyncHandler(async (req, res) => {
   const { title, content, authorId, tags } = req.body;
@@ -101,7 +103,86 @@ module.exports.getAllQuestions = asyncHandler(async (req, res) => {
     .limit(limit)
     .sort({ createdAt: -1 });
 
-    if(allQuestion.length === 0) return res.status(200).json(new AppResponse(200, null, "NO More Question"));
+  if (allQuestion.length === 0)
+    return res.status(200).json(new AppResponse(200, null, "NO More Question"));
 
-    res.status(200).json(new AppResponse(200, allQuestion, "Fetching 10 Questions At a time"));
+  res
+    .status(200)
+    .json(new AppResponse(200, allQuestion, "Fetching 10 Questions At a time"));
+});
+
+module.exports.voteController = asyncHandler(async (req, res) => {
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+
+    const { type, targetId, targetType } = req.body;
+    if (!type || !targetId || !targetType)
+      throw new AppError(400, "All Fields are Required");
+
+    if (!mongoose.Types.ObjectId.isValid(targetId)) {
+      console.error("Invalid Mongoose Id");
+      throw new AppError(400, "Invalid Question Id");
+    }
+
+    if (type !== "upvote" && type !== "downvote") {
+      console.error("type is different, it should only be upvote or downvote");
+      throw new AppError(400, "Incorrect Type");
+    }
+
+    if (targetType !== "question" && targetType !== "answer") {
+      console.error(
+        "Invalid Target Type it should be either question or answer"
+      );
+      throw new AppError(
+        400,
+        "You can only upvote or downvote either on question or answers"
+      );
+    }
+
+    const user = req.user;
+
+    const isAlreadyVote = await VoteModel.findOneAndDelete({
+      authorId: user._id,
+      type: type,
+      targetType: targetType,
+    }, {session});
+
+    if (isAlreadyVote) {
+      await session.commitTransaction();
+      session.endSession();
+      return res.status(200).json(
+        new AppResponse(
+          200,
+          {
+            previousVote: {
+              id: isAlreadyVote._id,
+              vote: isAlreadyVote.type,
+              deletedAt: new Date(),
+            },
+          },
+          "Your Vote is updated"
+        )
+      );
+    }
+
+    const newVote = await VoteModel.create([{
+      authorId: user._id,
+      type: type,
+      targetType: targetType,
+      targetId: targetId,
+    }, {session}]);
+
+    await session.commitTransaction();
+    session.endSession();
+
+    res
+      .status(201)
+      .json(new AppResponse(201, {}, "Your Vote is updated, Thanks :)"));
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    console.error(error);
+    throw error;
+  }
 });
