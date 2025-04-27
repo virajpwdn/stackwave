@@ -140,17 +140,48 @@ module.exports.voteController = asyncHandler(async (req, res) => {
       );
     }
 
+    let find;
+
+    if (targetType === "question") {
+      find = await QuestionModel.findOne({ _id: targetId });
+      if (!find) {
+        console.error("Question does not exits in db");
+        throw new AppError(
+          400,
+          "Question does not exists! Try reloading the page"
+        );
+      }
+    } else {
+      find = await AnswerModel.findOne({ _id: targetId });
+      if (!find) {
+        console.error("Answer does not exits in db");
+        throw new AppError(
+          400,
+          "Answer does not exists! Try reloading the page"
+        );
+      }
+    }
+
     const user = req.user;
 
-    const isAlreadyVote = await VoteModel.findOneAndDelete({
-      authorId: user._id,
-      type: type,
-      targetType: targetType,
-    }, {session});
+    const isAlreadyVote = await VoteModel.findOneAndDelete(
+      {
+        authorId: user._id,
+        type: type,
+        targetType: targetType,
+      },
+      { session }
+    );
 
     if (isAlreadyVote) {
       await session.commitTransaction();
       session.endSession();
+      if(type === "upvote"){
+        find.upVote -= 1;
+      }else {
+        find.downVote -= 1;
+      }
+      await find.save();
       return res.status(200).json(
         new AppResponse(
           200,
@@ -166,12 +197,24 @@ module.exports.voteController = asyncHandler(async (req, res) => {
       );
     }
 
-    const newVote = await VoteModel.create([{
-      authorId: user._id,
-      type: type,
-      targetType: targetType,
-      targetId: targetId,
-    }, {session}]);
+    const newVote = await VoteModel.create(
+      [
+        {
+          authorId: user._id,
+          type: type,
+          targetType: targetType,
+          targetId: targetId,
+        },
+      ],
+      { session }
+    );
+
+    if(type === "upvote"){
+      find.upVote += 1;
+    }else {
+      find.downVote += 1;
+    }
+    await find.save();
 
     await session.commitTransaction();
     session.endSession();

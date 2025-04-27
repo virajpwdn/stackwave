@@ -22,7 +22,7 @@ questionRouter.get(
 
 questionRouter.get("/all-questions", controller.getAllQuestions);
 
-questionRouter.post("/vote/:type", authMiddleware, controller.voteController)
+questionRouter.post("/vote", authMiddleware, controller.voteController)
 
 
 module.exports = questionRouter;
