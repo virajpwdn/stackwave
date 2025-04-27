@@ -105,11 +105,11 @@ const TagSelectionPage = () => {
     : tagsData;
 
   return (
-    <div className="min-h-screen bg-white text-black flex flex-col items-center py-10 px-4">
+    <div className="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white flex flex-col items-center py-10 px-4 transition-colors duration-200">
       <div className="w-full max-w-4xl">
         <div className="text-center mb-10">
           <h1 className="text-3xl font-bold mb-3">Personalize your feed</h1>
-          <p className="text-gray-600 max-w-xl mx-auto">
+          <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
             Select at least 3 topics you're interested in to help us customize your feed.
             You can always change these later.
           </p>
@@ -122,19 +122,19 @@ const TagSelectionPage = () => {
             placeholder="Search for topics..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
           />
         </div>
 
         {/* Selected tags count */}
         <div className="mb-6 flex justify-between items-center">
-          <span className="text-gray-600">
+          <span className="text-gray-600 dark:text-gray-400">
             {selectedSubcategories.length} topics selected
           </span>
           {selectedSubcategories.length > 0 && (
             <button
               onClick={() => setSelectedSubcategories([])}
-              className="text-blue-600 hover:text-blue-800"
+              className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
             >
               Clear all
             </button>
@@ -154,7 +154,7 @@ const TagSelectionPage = () => {
                     className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                       isSubcategorySelected(subcategory)
                         ? "bg-blue-600 text-white hover:bg-blue-700"
-                        : "bg-gray-100 text-gray-800 hover:bg-gray-200 border border-gray-200"
+                        : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600"
                     }`}
                   >
                     {subcategory}
@@ -172,15 +172,15 @@ const TagSelectionPage = () => {
             disabled={selectedSubcategories.length < 3}
             className={`px-8 py-3 rounded-lg font-medium text-white transition-colors ${
               selectedSubcategories.length < 3
-                ? "bg-blue-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
+                ? "bg-blue-400 dark:bg-blue-500/50 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
             }`}
           >
             Save preferences
           </button>
           <button
             onClick={handleSkip}
-            className="px-8 py-3 rounded-lg font-medium text-gray-700 border border-gray-300 hover:bg-gray-100 transition-colors"
+            className="px-8 py-3 rounded-lg font-medium text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
           >
             Skip for now
           </button>

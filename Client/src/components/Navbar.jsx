@@ -1,12 +1,13 @@
 
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, Moon, Sun, Search, Video } from "lucide-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   // Toggle mobile menu
   const toggleMenu = () => {
@@ -91,7 +92,7 @@ const Navbar = () => {
             </button>
 
             {/* Create Live Room button - hidden on mobile */}
-            <button className="hidden md:flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors ml-4">
+            <button onClick={()=>navigate('/live-rooms')} className="hidden md:flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors ml-4">
               <Video size={18} />
               Create Live Room
             </button>
