@@ -232,9 +232,7 @@ module.exports.voteController = asyncHandler(async (req, res) => {
 });
 
 module.exports.commentController = asyncHandler(async (req, res) => {
-  // const session = mongoose.startSession();
   try {
-    // session.
     const { targetId, targetType, content } = req.body;
     if (!targetId || !targetType || !content) {
       console.error("All Fields are required");
@@ -278,6 +276,7 @@ module.exports.commentController = asyncHandler(async (req, res) => {
       }
     }
 
+    //! Later add parent comment validations and features
     // const isCommentExist = await CommentModel.findOne({authorId: user._id, targetId})
 
     const user = req.user;
