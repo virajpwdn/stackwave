@@ -33,12 +33,26 @@ const ViewQuestion = () => {
 
   const user = useSelector((state) => state.user.user);
 
+  const upvoteHandler = async (type, targetId, targetType) => {
+    try {
+      const response = await axios.post(
+        BASE_URL + "/questions/vote",
+        { type, targetId, targetType },
+        { withCredentials: true }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     const fetchQuestionDetails = async () => {
       try {
         setLoading(true);
         const res = await axios.get(
-          `${BASE_URL}/questions/view/question/${id}`,{withCredentials:true}
+          `${BASE_URL}/questions/view/question/${id}`,
+          { withCredentials: true }
         );
         setQuestion(res.data.data);
         setAnswers(res.data.data.answers || []);
@@ -70,7 +84,6 @@ const ViewQuestion = () => {
       fetchQuestionDetails();
     }
   }, [id]);
-
 
   useEffect(() => {
     if (!loading && question && contentRef.current) {
@@ -308,7 +321,12 @@ const ViewQuestion = () => {
                 </div>
 
                 <div className="flex items-center gap-4 mb-6">
-                  <button className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                  <button
+                    onClick={() => {
+                      upvoteHandler("upvote", question._id, "question");
+                    }}
+                    className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  >
                     <ThumbsUp className="w-5 h-5" />
                     <span>{question.upVote || 0}</span>
                   </button>
@@ -386,11 +404,11 @@ const ViewQuestion = () => {
                       <div className="flex items-center gap-4 mt-4">
                         <button className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                           <ThumbsUp className="w-4 h-4" />
-                          <span>{answer.upvotes || 0}</span>
+                          <span>{answer.upVote || 0}</span>
                         </button>
                         <button className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors">
                           <ThumbsDown className="w-4 h-4" />
-                          <span>{answer.downvotes || 0}</span>
+                          <span>{answer.downVote || 0}</span>
                         </button>
                         <button className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
                           <MessageSquare className="w-4 h-4" />
