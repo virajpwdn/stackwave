@@ -24,7 +24,6 @@ questionRouter.get("/all-questions", controller.getAllQuestions);
 
 questionRouter.post("/vote", authMiddleware, controller.voteController);
 
-questionRouter.post("/comment", authMiddleware, controller.commentController)
-
+questionRouter.post("/comment", authMiddleware, controller.commentController);
 
 module.exports = questionRouter;

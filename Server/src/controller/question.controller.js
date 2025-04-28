@@ -118,6 +118,7 @@ module.exports.voteController = asyncHandler(async (req, res) => {
     session.startTransaction();
 
     const { type, targetId, targetType } = req.body;
+    console.log(`${type} -> ${targetId} -> ${targetType}`);
     if (!type || !targetId || !targetType)
       throw new AppError(400, "All Fields are Required");
 
@@ -174,7 +175,7 @@ module.exports.voteController = asyncHandler(async (req, res) => {
       { session }
     );
 
-    if (isAlreadyVote) {
+    if (isAlreadyVote !== null) {
       await session.commitTransaction();
       session.endSession();
       if (type === "upvote") {
