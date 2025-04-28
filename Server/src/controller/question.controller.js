@@ -229,3 +229,54 @@ module.exports.voteController = asyncHandler(async (req, res) => {
     throw error;
   }
 });
+
+
+module.exports.commentController = asyncHandler(async (req,res) =>{
+  // const session = mongoose.startSession();
+  try {
+    // session.
+    const {targetId, targetType, content} = req.body;
+    if(!targetId || targetType || content) {
+      console.error("All Fields are required");
+      throw new AppError(400, "All fields are required");
+    }
+
+    if(targetType !== "question" && targetType !== "answer") {
+      console.error("Invalid Type! Type should be either question or answer")
+      throw new AppError(400, "Invalid Type! You can only comment on question or answer");
+    }
+
+    if(!mongoose.Types.ObjectId.isValid(targetId)) {
+      console.error("Target id is invalid! it should be either question or answer id");
+      throw new AppError(400, "Target Id is invalid! Try refreshing");
+    }
+
+    let find;
+
+    if (targetType === "question") {
+      find = await QuestionModel.findOne({ _id: targetId });
+      if (!find) {
+        console.error("Question does not exits in db");
+        throw new AppError(
+          400,
+          "Question does not exists! Try reloading the page"
+        );
+      }
+    } else {
+      find = await AnswerModel.findOne({ _id: targetId });
+      if (!find) {
+        console.error("Answer does not exits in db");
+        throw new AppError(
+          400,
+          "Answer does not exists! Try reloading the page"
+        );
+      }
+    }
+
+    res.status(201).json(new AppResponse(200, {}, "Your comment is posted"));
+
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+})
