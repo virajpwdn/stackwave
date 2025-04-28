@@ -310,11 +310,11 @@ const ViewQuestion = () => {
                 <div className="flex items-center gap-4 mb-6">
                   <button className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                     <ThumbsUp className="w-5 h-5" />
-                    <span>{question.upvotes || 0}</span>
+                    <span>{question.upVote || 0}</span>
                   </button>
                   <button className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors">
                     <ThumbsDown className="w-5 h-5" />
-                    <span>{question.downvotes || 0}</span>
+                    <span>{question.downVote || 0}</span>
                   </button>
                   <button className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
                     <MessageSquare className="w-5 h-5" />
