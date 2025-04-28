@@ -5,6 +5,7 @@ const QuestionModel = require("../models/question.model");
 const AnswerModel = require("../models/answer.model");
 const VoteModel = require("../models/vote.model");
 const { default: mongoose } = require("mongoose");
+const CommentModel = require("../models/comment.model");
 
 module.exports.askQuestionController = asyncHandler(async (req, res) => {
   const { title, content, authorId, tags } = req.body;
@@ -176,9 +177,9 @@ module.exports.voteController = asyncHandler(async (req, res) => {
     if (isAlreadyVote) {
       await session.commitTransaction();
       session.endSession();
-      if(type === "upvote"){
+      if (type === "upvote") {
         find.upVote -= 1;
-      }else {
+      } else {
         find.downVote -= 1;
       }
       await find.save();
@@ -209,9 +210,9 @@ module.exports.voteController = asyncHandler(async (req, res) => {
       { session }
     );
 
-    if(type === "upvote"){
+    if (type === "upvote") {
       find.upVote += 1;
-    }else {
+    } else {
       find.downVote += 1;
     }
     await find.save();
@@ -230,24 +231,28 @@ module.exports.voteController = asyncHandler(async (req, res) => {
   }
 });
 
-
-module.exports.commentController = asyncHandler(async (req,res) =>{
+module.exports.commentController = asyncHandler(async (req, res) => {
   // const session = mongoose.startSession();
   try {
     // session.
-    const {targetId, targetType, content} = req.body;
-    if(!targetId || targetType || content) {
+    const { targetId, targetType, content } = req.body;
+    if (!targetId || !targetType || !content) {
       console.error("All Fields are required");
       throw new AppError(400, "All fields are required");
     }
 
-    if(targetType !== "question" && targetType !== "answer") {
-      console.error("Invalid Type! Type should be either question or answer")
-      throw new AppError(400, "Invalid Type! You can only comment on question or answer");
+    if (targetType !== "question" && targetType !== "answer") {
+      console.error("Invalid Type! Type should be either question or answer");
+      throw new AppError(
+        400,
+        "Invalid Type! You can only comment on question or answer"
+      );
     }
 
-    if(!mongoose.Types.ObjectId.isValid(targetId)) {
-      console.error("Target id is invalid! it should be either question or answer id");
+    if (!mongoose.Types.ObjectId.isValid(targetId)) {
+      console.error(
+        "Target id is invalid! it should be either question or answer id"
+      );
       throw new AppError(400, "Target Id is invalid! Try refreshing");
     }
 
@@ -273,10 +278,20 @@ module.exports.commentController = asyncHandler(async (req,res) =>{
       }
     }
 
-    res.status(201).json(new AppResponse(200, {}, "Your comment is posted"));
+    // const isCommentExist = await CommentModel.findOne({authorId: user._id, targetId})
 
+    const user = req.user;
+
+    const newComment = await CommentModel.create({
+      authorId: user._id,
+      targetId: targetId,
+      targetType: targetType,
+      content: content
+    })
+
+    res.status(201).json(new AppResponse(201, {}, "Your comment is posted"));
   } catch (error) {
     console.error(error);
     throw error;
   }
-})
+});
