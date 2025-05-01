@@ -12,45 +12,50 @@ function hashRoomId(roomId) {
   return crypto.createHash("sha256").update(roomId).digest("hex");
 }
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://stackwave-frontend-ejbk.onrender.com"
+];
+
 function initSocket(server) {
   console.log("Initialized socket io");
   const io = new Server(server, {
     cors: {
-      origin: "http://localhost:5173",
+      origin: allowedOrigins,
       credentials: true,
     },
   });
 
-  io.use(async (socket, next) => {
-    try {
-      const rawCookie = socket.handshake.headers?.cookie;
-      const cookies = cookie.parse(rawCookie || "");
-      const token = cookies.token || socket.handshake.headers.token;
-      if (!token) {
-        console.error("Token is missing");
-        return next(new Error("Token not found"));
-      }
+  // io.use(async (socket, next) => {
+  //   try {
+  //     const rawCookie = socket.handshake.headers?.cookie;
+  //     const cookies = cookie.parse(rawCookie || "");
+  //     const token = cookies.token || socket.handshake.headers.token;
+  //     if (!token) {
+  //       console.error("Token is missing");
+  //       return next(new Error("Token not found"));
+  //     }
 
-      const decode = await UserModel.verifyToken(token);
-      if (!decode) {
-        console.error("Token not decoded");
-        return next(new Error("Login in again"));
-      }
+  //     const decode = await UserModel.verifyToken(token);
+  //     if (!decode) {
+  //       console.error("Token not decoded");
+  //       return next(new Error("Login in again"));
+  //     }
 
-      const user = await UserModel.findOne({ _id: decode._id });
-      if (!user) {
-        console.error("User not found");
-        return next(new Error("Login in again"));
-      }
+  //     const user = await UserModel.findOne({ _id: decode._id });
+  //     if (!user) {
+  //       console.error("User not found");
+  //       return next(new Error("Login in again"));
+  //     }
 
-      socket.user = user;
+  //     socket.user = user;
 
-      next();
-    } catch (error) {
-      console.error("middleware error in socket", error.message);
-      next(error);
-    }
-  });
+  //     next();
+  //   } catch (error) {
+  //     console.error("middleware error in socket", error.message);
+  //     next(error);
+  //   }
+  // });
 
   io.on("connection", async (socket) => {
     let roomId;
