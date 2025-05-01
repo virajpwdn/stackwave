@@ -15,9 +15,11 @@ const roomRoutes = require("../src/router/room.routes");
 const messageRoutes = require("../src/router/message.routes");
 
 const allowedOrigins = [
-    "http://localhost:5173",
-    "https://stackwave-frontend-ejbk.onrender.com"
-  ];
+  "http://localhost:5173",
+  "https://stackwave-frontend-ejbk.onrender.com",
+];
+
+app.set("trust proxy", 1);
 
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(cookieParser());
@@ -33,7 +35,6 @@ app.use("/api/v1/room", roomRoutes);
 app.use("/api/v1/message", messageRoutes);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
-
 
 app.use(errorMiddleware);
 
