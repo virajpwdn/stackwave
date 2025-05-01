@@ -39,7 +39,7 @@ module.exports.signupController = asyncHandler(async (req, res, next) => {
   res.cookie("token", token, {
     secure: false,
     httpOnly: true,
-    sameSite: 'Lax'
+    sameSite: "Lax",
   });
   res
     .status(201)
@@ -68,7 +68,11 @@ module.exports.loginController = asyncHandler(async (req, res) => {
   delete userObject.password;
   await isUserExists.save();
 
-  res.cookie("token", token);
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+  });
   console.log(token);
   // TODO -> In response only send selected data, later fix this
   res
@@ -84,23 +88,24 @@ module.exports.selectTagsController = asyncHandler(async (req, res) => {
   }
 
   const { selectedSubcategories } = req.body;
-  if (!selectedSubcategories) throw new AppError(400, "Select at least one tag");
+  if (!selectedSubcategories)
+    throw new AppError(400, "Select at least one tag");
   if (!Array.isArray(selectedSubcategories)) {
     console.error("tags should be an array");
     throw new AppError(400, "Not an array");
   }
 
-  const sanitizedtags = selectedSubcategories.map(tag => tag.trim().toLowerCase());
+  const sanitizedtags = selectedSubcategories.map((tag) =>
+    tag.trim().toLowerCase()
+  );
   req.user.tags.push(...sanitizedtags);
   req.user.save();
   res.status(200).json(new AppResponse(200, {}, "Your tags are saved"));
 });
 
-module.exports.verificationController = asyncHandler(async (req,res) => {
+module.exports.verificationController = asyncHandler(async (req, res) => {
   const user = req.user;
   return res.status(200).json(new AppResponse(200, user, "User is verified"));
-})
+});
 
-module.exports.guestDashboard = asyncHandler(async (req,res) =>{
-  
-})
+module.exports.guestDashboard = asyncHandler(async (req, res) => {});
