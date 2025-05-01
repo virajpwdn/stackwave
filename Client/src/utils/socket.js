@@ -7,7 +7,6 @@ const socketConnectionURI =
 
 const socket = io(socketConnectionURI, {
   withCredentials: true,
-  transports: ['websocket'],
 });
 
 export default socket;

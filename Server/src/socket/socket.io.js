@@ -24,7 +24,6 @@ function initSocket(server) {
       origin: allowedOrigins,
       credentials: true,
     },
-    transports: ['websocket']
   });
 
   io.use(async (socket, next) => {
