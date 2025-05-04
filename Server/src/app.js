@@ -19,6 +19,7 @@ const allowedOrigins = [
   "https://stackwave-frontend-ejbk.onrender.com",
 ];
 
+// Remove this later when deploying on ec2
 app.set("trust proxy", 1);
 
 app.use(cors({ origin: allowedOrigins, credentials: true }));
