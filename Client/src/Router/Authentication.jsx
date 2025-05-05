@@ -24,7 +24,6 @@ const Authentication = ({ children }) => {
         // Check for token in cookies
         const cookie = document.cookie?.split("; ");
         const tokenCookie = cookie?.find((row) => row.startsWith("token="));
-        
         if (!tokenCookie) {
           console.log("No token cookie found");
           return navigate("/login");
@@ -42,7 +41,6 @@ const Authentication = ({ children }) => {
         const verifyUser = await axios.get(BASE_URL + "/auth/verification", {
           withCredentials: true,
         });
-        
         // If verification successful but no user data, redirect to login
         if (!verifyUser.data || !verifyUser.data.success) {
           console.log("Verification failed", verifyUser.data);

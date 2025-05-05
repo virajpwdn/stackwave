@@ -16,11 +16,13 @@ const Chat = () => {
 
   useEffect(() => {
     const getMessages = async () => {
-      const response = await axios.get(BASE_URL + "/message/all-messages/" + roomId, {
-        withCredentials: true,
-      });
-      console.log(response.data.data);
-      setMessages(response.data.data)
+      const response = await axios.get(
+        BASE_URL + "/message/all-messages/" + roomId,
+        {
+          withCredentials: true,
+        }
+      );
+      setMessages(response.data.data);
     };
 
     getMessages();
@@ -37,19 +39,23 @@ const Chat = () => {
       socket.connect();
     }
 
-    socket.on("chat-message", ({ userId, text, senderName, roomKey }) => {
-      if (userId !== user._id) {
-        setMessages((prev) => [
-          ...prev,
-          {
-            // id: Date.now(),
-            // sender: "other",
-            text: text,
-            senderName,
-          },
-        ]);
+    socket.on(
+      "chat-message",
+      ({ userId, text, senderName, roomKey, avatar }) => {
+        if (userId !== user._id) {
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: Date.now(),
+              sender: senderName,
+              text: text,
+              senderName,
+              avatar: avatar,
+            },
+          ]);
+        }
       }
-    });
+    );
 
     return () => {
       socket.off("chat-message");
@@ -62,10 +68,10 @@ const Chat = () => {
 
     // Add message to local state
     const messageObj = {
-      //   id: Date.now(),
+      id: Date.now(),
       senderId: user._id,
       text: newMessage,
-      //   senderName: user.username || "You",
+      sender: user.firstName || "You",
     };
     setMessages((prev) => [...prev, messageObj]);
 
@@ -73,8 +79,8 @@ const Chat = () => {
     socket.emit("send-message", {
       userId: user._id,
       text: newMessage,
-      //   senderName: user.username || 'Anonymous',
-      // profilePhoto:
+      senderName: user.username || "Anonymous",
+      avatar: user.avatar,
       roomKey: roomId,
     });
 
@@ -96,9 +102,9 @@ const Chat = () => {
       {/* Messages container */}
       <div className="flex-1 p-4 overflow-y-auto">
         <div className="space-y-4">
-          {messages?.map((message) => (
+          {messages?.map((message, idx) => (
             <div
-              key={message._id}
+              key={idx}
               className={`flex ${
                 message.senderId === user._id ? "justify-end" : "justify-start"
               }`}
@@ -106,7 +112,7 @@ const Chat = () => {
               {message.senderId !== user._id && (
                 <div className="flex-shrink-0 h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-medium mr-2">
                   {/* {message.senderName.charAt(0).toUpperCase()} */}
-                  add later
+                  add later heyy
                 </div>
               )}
 
@@ -120,7 +126,6 @@ const Chat = () => {
                 {message.senderId !== user._id && (
                   <p className="text-xs font-medium mb-1 opacity-75">
                     {/* add sender name */}
-                    name
                   </p>
                 )}
                 <p className="break-words">{message.text}</p>
@@ -129,7 +134,8 @@ const Chat = () => {
               {message.senderId === user._id && (
                 <div className="flex-shrink-0 h-8 w-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-sm font-medium ml-2">
                   {/* {message.senderName.charAt(0).toUpperCase()} */}
-                  change this later 
+                  {/* change this later  */}
+                  {message.sender}
                 </div>
               )}
             </div>
