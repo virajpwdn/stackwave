@@ -22,6 +22,7 @@ const Chat = () => {
           withCredentials: true,
         }
       );
+      console.log(response.data.data);
       setMessages(response.data.data);
     };
 
@@ -72,6 +73,7 @@ const Chat = () => {
       senderId: user._id,
       text: newMessage,
       sender: user.firstName || "You",
+      avatar: user.avatar
     };
     setMessages((prev) => [...prev, messageObj]);
 
@@ -79,7 +81,7 @@ const Chat = () => {
     socket.emit("send-message", {
       userId: user._id,
       text: newMessage,
-      senderName: user.username || "Anonymous",
+      senderName: user.firstName || "Anonymous",
       avatar: user.avatar,
       roomKey: roomId,
     });
@@ -112,7 +114,11 @@ const Chat = () => {
               {message.senderId !== user._id && (
                 <div className="flex-shrink-0 h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-medium mr-2">
                   {/* {message.senderName.charAt(0).toUpperCase()} */}
-                  add later heyy
+                  <img
+                    className="rounded-full h-full w-full object-cover"
+                    src={message.avatar}
+                    alt={message.senderName}
+                  />
                 </div>
               )}
 
@@ -126,6 +132,7 @@ const Chat = () => {
                 {message.senderId !== user._id && (
                   <p className="text-xs font-medium mb-1 opacity-75">
                     {/* add sender name */}
+                    {message.senderName}
                   </p>
                 )}
                 <p className="break-words">{message.text}</p>
@@ -134,8 +141,11 @@ const Chat = () => {
               {message.senderId === user._id && (
                 <div className="flex-shrink-0 h-8 w-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-sm font-medium ml-2">
                   {/* {message.senderName.charAt(0).toUpperCase()} */}
-                  {/* change this later  */}
-                  {message.sender}
+                  <img
+                    className="rounded-full h-full w-full object-cover"
+                    src={message.avatar}
+                    alt={message.senderName}
+                  />
                 </div>
               )}
             </div>
