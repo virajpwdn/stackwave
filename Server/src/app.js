@@ -15,12 +15,13 @@ const roomRoutes = require("../src/router/room.routes");
 const messageRoutes = require("../src/router/message.routes");
 
 const allowedOrigins = [
+  "http://localhost:5173",
   "http://localhost:5174",
   "https://stackwave-frontend-ejbk.onrender.com",
 ];
 
 // Remove this later when deploying on ec2
-app.set("trust proxy", 1);
+// app.set("trust proxy", 1);
 
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(cookieParser());

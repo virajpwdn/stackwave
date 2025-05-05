@@ -14,6 +14,13 @@ const messageSchema = new mongoose.Schema(
       type: String,
       required: [true, "text is required while sending message"],
     },
+    avatar: {
+      type: String,
+      //! Add a custom validator here to check the URL is valid or not
+    },
+    senderName: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

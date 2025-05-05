@@ -14,7 +14,8 @@ function hashRoomId(roomId) {
 
 const allowedOrigins = [
   "http://localhost:5174",
-  "https://stackwave-frontend-ejbk.onrender.com"
+  "http://localhost:5173",
+  "https://stackwave-frontend-ejbk.onrender.com",
 ];
 
 function initSocket(server) {
@@ -24,7 +25,7 @@ function initSocket(server) {
       origin: allowedOrigins,
       credentials: true,
     },
-    transports: ['websocket']
+    // transports: ["websocket"],
   });
 
   io.use(async (socket, next) => {
@@ -36,7 +37,6 @@ function initSocket(server) {
         console.error("Token is missing");
         return next(new Error("Token not found"));
       }
-
       const decode = await UserModel.verifyToken(token);
       if (!decode) {
         console.error("Token not decoded");
@@ -113,47 +113,53 @@ function initSocket(server) {
       console.log(`${socket.user.firstName} has joined room ${roomId}`);
     });
 
-    socket.on("send-message", async ({ userId, roomKey, text, profilePhoto }) => {
-      try {
-        if (!userId || !roomKey || !text) {
-          console.error("All Fields are required");
-          return sendSocketError(
-            socket,
-            "Please retry sending message again",
-            400
-          );
+    socket.on(
+      "send-message",
+      async ({ userId, roomKey, text, avatar, senderName }) => {
+        try {
+          if (!userId || !roomKey || !text) {
+            console.error("All Fields are required");
+            return sendSocketError(
+              socket,
+              "Please retry sending message again",
+              400
+            );
+          }
+
+          const isValidMongoId = mongoose.Types.ObjectId.isValid(userId);
+          if (!isValidMongoId) {
+            console.error("Not a valid Mongo ID");
+            return sendSocketError(socket, "Please Login again", 400);
+          }
+
+          const isRoomId = await RoomModel.findOne({ roomId: roomKey });
+          if (!isRoomId) {
+            console.error("Room Id Not Found in documents");
+            return sendSocketError(socket, "Room Not Found", 400);
+          }
+          const message = await MessageModel.create({
+            senderId: userId,
+            roomId: roomKey,
+            text: text,
+            senderName,
+            avatar,
+          });
+
+          io.to(roomKey).emit("chat-message", {
+            userId,
+            text,
+            senderName,
+            avatar,
+          });
+          
+        } catch (error) {
+          console.error(`Something went wrong: ${error.message}`);
         }
-
-        const isValidMongoId = mongoose.Types.ObjectId.isValid(userId);
-        if (!isValidMongoId) {
-          console.error("Not a valid Mongo ID");
-          return sendSocketError(socket, "Please Login again", 400);
-        }
-
-        const isRoomId = await RoomModel.findOne({ roomId: roomKey });
-        if (!isRoomId) {
-          console.error("Room Id Not Found in documents");
-          return sendSocketError(socket, "Room Not Found", 400);
-        }
-
-        const message = await MessageModel.create({
-          senderId: userId,
-          roomId: roomKey,
-          text: text,
-        });
-
-        io.to(roomKey).emit("chat-message", {
-          userId,
-          text,
-          senderId
-        });
-      } catch (error) {
-        console.error(`Something went wrong: ${error.message}`);
       }
-    });
+    );
 
     socket.on("join-room", async ({ userId, roomKey }) => {
-      console.log("hey");
+      console.log("Room Joined");
       if (!roomKey) return sendSocketError(socket, "Room Key is required", 404);
 
       const findRoom = await RoomModel.findOne({ roomId: roomKey });

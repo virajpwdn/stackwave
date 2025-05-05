@@ -15,7 +15,6 @@ module.exports.getAllMessagesOfARoom = asyncHandler(async (req, res) => {
     throw new AppError(400, "Invalid Room, try rejoining again");
   }
 
-  console.log(messages);
   res
     .status(200)
     .json(new AppResponse(200, messages, "All the messages of this room"));
