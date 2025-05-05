@@ -15,7 +15,7 @@ const roomRoutes = require("../src/router/room.routes");
 const messageRoutes = require("../src/router/message.routes");
 
 const allowedOrigins = [
-  "http://localhost:5173",
+  "http://localhost:5174",
   "https://stackwave-frontend-ejbk.onrender.com",
 ];
 

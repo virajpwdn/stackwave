@@ -38,7 +38,6 @@ module.exports.signupController = asyncHandler(async (req, res, next) => {
   //!  ON PRODUCTION CHANGE SECURE: TRUE & SAMESITE: NONE
   res.cookie("token", token, {
     secure: false,
-    httpOnly: true,
     sameSite: "Lax",
   });
   res
@@ -69,7 +68,6 @@ module.exports.loginController = asyncHandler(async (req, res) => {
   await isUserExists.save();
 
   res.cookie("token", token, {
-    httpOnly: true,
     secure: true,
     sameSite: "None",          
     maxAge: 24 * 60 * 60 * 1000

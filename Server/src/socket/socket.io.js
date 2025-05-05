@@ -13,7 +13,7 @@ function hashRoomId(roomId) {
 }
 
 const allowedOrigins = [
-  "http://localhost:5173",
+  "http://localhost:5174",
   "https://stackwave-frontend-ejbk.onrender.com"
 ];
 
@@ -145,6 +145,7 @@ function initSocket(server) {
         io.to(roomKey).emit("chat-message", {
           userId,
           text,
+          senderId
         });
       } catch (error) {
         console.error(`Something went wrong: ${error.message}`);
