@@ -3,7 +3,7 @@ const questionRouter = Router();
 const controller = require("../controller/question.controller");
 const authMiddleware = require("../middleware/auth.middleware");
 
-questionRouter.post("/create-question", authMiddleware, controller.askQuestionController);
+questionRouter.post("/create-question", controller.askQuestionController);
 questionRouter.get(
   "/view/question/:questionId",
   controller.viewQuestionController
