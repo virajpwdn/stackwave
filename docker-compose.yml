@@ -1,0 +1,29 @@
+name: stackwave
+
+services:
+  client:
+    build:
+      context: ./Client
+      dockerfile: Dockerfile
+    restart: always
+    # This port is optional and use it only for debugging
+    ports:
+      - "80:80"
+    networks:
+      - app_net
+
+  server:
+    build:
+      context: ./Server
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - ./server/.env
+    depends_on:
+      - client
+    networks:
+      - app_net
+
+networks:
+  app_net:
+    driver: bridge
