@@ -3,6 +3,7 @@ const UserModel = require("../models/user.model");
 const AppError = require("../utils/ApiError");
 const AppResponse = require("../utils/ApiResponse");
 const asyncHandler = require("../middleware/asyncHandler");
+const redis = require("../utils/redis.service");
 // const authValidations = require("../validations/auth.validations");
 
 module.exports.signupController = asyncHandler(async (req, res, next) => {
@@ -69,10 +70,10 @@ module.exports.loginController = asyncHandler(async (req, res) => {
 
   res.cookie("token", token, {
     secure: true,
-    sameSite: "None",          
-    maxAge: 24 * 60 * 60 * 1000
+    sameSite: "None",
+    maxAge: 24 * 60 * 60 * 1000,
   });
-  
+
   console.log(token);
   // TODO -> In response only send selected data, later fix this
   res
@@ -109,3 +110,18 @@ module.exports.verificationController = asyncHandler(async (req, res) => {
 });
 
 module.exports.guestDashboard = asyncHandler(async (req, res) => {});
+
+module.exports.logoutController = asyncHandler(async (req, res) => {
+  try {
+    const timeRemainingForExp = req.tokenData.exp * 1000 - Date.now();
+    const blacklist = await redis.set(
+      `blacklist:${req.tokenData.token}`,
+      true,
+      "EX",
+      Math.floor(timeRemainingForExp / 1000)
+    );
+    res.status(200).json(req.tokenData);
+  } catch (error) {
+    console.error(error);
+  }
+});
