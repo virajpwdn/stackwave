@@ -13,8 +13,9 @@ function hashRoomId(roomId) {
 }
 
 const allowedOrigins = [
-  "http://localhost:5174",
+  "http://localhost",
   "http://localhost:5173",
+  "http://localhost:5174",
   "https://stackwave-frontend-ejbk.onrender.com",
 ];
 
@@ -25,7 +26,7 @@ function initSocket(server) {
       origin: allowedOrigins,
       credentials: true,
     },
-    // transports: ["websocket"],
+    transports: ["websocket", "polling"],
   });
 
   io.use(async (socket, next) => {

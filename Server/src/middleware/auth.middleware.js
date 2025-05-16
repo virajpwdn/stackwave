@@ -19,7 +19,7 @@ const authMiddleware = asyncFunction(async (req, res, next) => {
     console.error("Token is blacklisted");
     throw new AppError(400, "unAuthorized");
   }
-
+ 
   let decode;
   try {
     decode = UserModel.verifyToken(token);
@@ -29,18 +29,21 @@ const authMiddleware = asyncFunction(async (req, res, next) => {
   }
 
   let user = await redis.get(`user:${decode._id}`);
+  user = user ? JSON.parse(user) : null;
 
   if (!user) {
-    user = await UserModel.findOne({ _id: decode._id });
+    user = await UserModel.findOne({ _id: decode._id }).lean();
     if (user) {
-      delete user._doc.password;
+      delete user.password;
       await redis.set(`user:${decode._id}`, JSON.stringify(user));
     } else {
       console.error("user not found in middleware");
       throw new AppError(400, "User not found");
     }
   }
-  delete user.password;
+
+
+  // delete user._doc.password;
   req.user = user;
   req.tokenData = { token, ...decode };
   next();
