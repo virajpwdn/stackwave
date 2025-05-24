@@ -18,12 +18,14 @@ import Room from "../ui/Room/Room";
 import CreateRoom from "../ui/Room/CreateRoom";
 import CodeEditor from "../ui/Editor/CodeEditor";
 import RefactorAI from "../ui/AI/RefactorAI";
+import Hero from "../ui/HeroPage/Hero";
 
 // Layout component that includes Navbar and renders children through Outlet
 const Layout = () => {
+  const currUrl = window.location.pathname;
   return (
     <>
-      <Navbar />
+      {currUrl !== "/hero-page" && <Navbar />}
       <main className="w-full">
         <Outlet />
       </main>
@@ -38,7 +40,7 @@ const AppRoutes = () => {
         {/* Root route uses Layout component */}
         <Route element={<Layout />}>
           {/* All these routes will be rendered inside the Layout */}
-          <Route path="/" element={<QuestionFeed />} />
+          <Route path="/" element={<Hero />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route
@@ -94,6 +96,7 @@ const AppRoutes = () => {
           />
 
           <Route path="/refactor-ai" element={<RefactorAI />} />
+          <Route path="/hero-page" element={<Hero />} />
 
           <Route path="*" element={<QuestionFeed />} />
         </Route>

@@ -28,6 +28,7 @@ const ViewQuestion = () => {
   const [previewMode, setPreviewMode] = useState(false);
   const [activeCommentId, setActiveCommentId] = useState(null);
   const [commentContent, setCommentContent] = useState("");
+  const [upvote, setUpvote] = useState(0);
 
   const contentRef = useRef(null);
   const answerFormRef = useRef(null);
@@ -50,7 +51,7 @@ const ViewQuestion = () => {
 
   const handleSubmitComment = async (targetId, targetType) => {
     if (!commentContent.trim()) return;
-    
+
     try {
       const res = await axios.post(
         `${BASE_URL}/questions/comment`,
@@ -58,25 +59,33 @@ const ViewQuestion = () => {
           content: commentContent,
           authorId: user._id,
           targetId,
-          targetType
+          targetType,
         },
         { withCredentials: true }
       );
+      //! Add tostify for notifications, "Your comment is posted";
       console.log(res.data);
       // Update UI based on target type
       if (targetType === "question") {
         setQuestion({
           ...question,
-          comments: [...(question.comments || []), res.data.data]
-        });
+          comments: [...(question.comments || []), res.data.data],
+        }
+      );
+      console.log("setQuestion" , question);
       } else if (targetType === "answer") {
-        setAnswers(answers.map(answer => 
-          answer._id === targetId 
-            ? { ...answer, comments: [...(answer.comments || []), res.data.data] }
-            : answer
-        ));
+        setAnswers(
+          answers.map((answer) =>
+            answer._id === targetId
+              ? {
+                  ...answer,
+                  comments: [...(answer.comments || []), res.data.data],
+                }
+              : answer
+          )
+        );
       }
-      
+
       // Reset comment state
       setCommentContent("");
       setActiveCommentId(null);
@@ -112,7 +121,7 @@ const ViewQuestion = () => {
         setAnswers([...answers, res.data.data]);
         console.log(answers);
       } catch (error) {
-        console.error("Failed to fetch question:", err);
+        console.error("Failed to fetch question:", error);
         setError("Failed to load question details. Please try again later.");
       }
     };
@@ -173,6 +182,7 @@ const ViewQuestion = () => {
   }, [loading, question, answers]);
 
   // Function to insert markdown syntax
+
   const insertMarkdown = (syntax) => {
     const textarea = document.getElementById("answer-content");
     const start = textarea.selectionStart;
@@ -327,6 +337,7 @@ const ViewQuestion = () => {
                   <ReactMarkdown
                     components={{
                       code({ node, inline, className, children, ...props }) {
+                        console.log(props);
                         return (
                           <code
                             className={`${className || ""} ${
@@ -373,8 +384,12 @@ const ViewQuestion = () => {
                     <ThumbsDown className="w-5 h-5" />
                     <span>{question.downVote || 0}</span>
                   </button>
-                  <button 
-                    onClick={() => setActiveCommentId(activeCommentId === "question" ? null : "question")}
+                  <button
+                    onClick={() =>
+                      setActiveCommentId(
+                        activeCommentId === "question" ? null : "question"
+                      )
+                    }
                     className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
                   >
                     <MessageSquare className="w-5 h-5" />
@@ -393,7 +408,10 @@ const ViewQuestion = () => {
                 <div className="mt-4 w-full">
                   <div className="flex flex-col space-y-3">
                     {question.comments?.map((comment, index) => (
-                      <div key={index} className="bg-gray-50 dark:bg-gray-800/50 p-3 rounded-lg text-sm">
+                      <div
+                        key={index}
+                        className="bg-gray-50 dark:bg-gray-800/50 p-3 rounded-lg text-sm"
+                      >
                         <div className="flex justify-between">
                           <span className="font-medium text-blue-600 dark:text-blue-400">
                             {comment.author?.username || "Anonymous"}
@@ -402,7 +420,9 @@ const ViewQuestion = () => {
                             {new Date(comment.createdAt).toLocaleString()}
                           </span>
                         </div>
-                        <p className="mt-1 text-gray-700 dark:text-gray-300">{comment.content}</p>
+                        <p className="mt-1 text-gray-700 dark:text-gray-300">
+                          {comment.content}
+                        </p>
                       </div>
                     ))}
                     <div className="flex mt-2">
@@ -414,7 +434,9 @@ const ViewQuestion = () => {
                         className="flex-grow px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-l-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500"
                       />
                       <button
-                        onClick={() => handleSubmitComment(question._id, "question")}
+                        onClick={() =>
+                          handleSubmitComment(question._id, "question")
+                        }
                         className="px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-r-lg transition-colors"
                       >
                         Send
@@ -487,8 +509,12 @@ const ViewQuestion = () => {
                           <ThumbsDown className="w-4 h-4" />
                           <span>{answer.downVote || 0}</span>
                         </button>
-                        <button 
-                          onClick={() => setActiveCommentId(activeCommentId === answer._id ? null : answer._id)}
+                        <button
+                          onClick={() =>
+                            setActiveCommentId(
+                              activeCommentId === answer._id ? null : answer._id
+                            )
+                          }
                           className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
                         >
                           <MessageSquare className="w-4 h-4" />
@@ -500,28 +526,39 @@ const ViewQuestion = () => {
                         <div className="mt-4 w-full">
                           <div className="flex flex-col space-y-3">
                             {answer.comments?.map((comment, index) => (
-                              <div key={index} className="bg-gray-50 dark:bg-gray-800/50 p-3 rounded-lg text-sm">
+                              <div
+                                key={index}
+                                className="bg-gray-50 dark:bg-gray-800/50 p-3 rounded-lg text-sm"
+                              >
                                 <div className="flex justify-between">
                                   <span className="font-medium text-blue-600 dark:text-blue-400">
                                     {comment.author?.username || "Anonymous"}
                                   </span>
                                   <span className="text-xs text-gray-500 dark:text-gray-400">
-                                    {new Date(comment.createdAt).toLocaleString()}
+                                    {new Date(
+                                      comment.createdAt
+                                    ).toLocaleString()}
                                   </span>
                                 </div>
-                                <p className="mt-1 text-gray-700 dark:text-gray-300">{comment.content}</p>
+                                <p className="mt-1 text-gray-700 dark:text-gray-300">
+                                  {comment.content}
+                                </p>
                               </div>
                             ))}
                             <div className="flex mt-2">
                               <input
                                 type="text"
                                 value={commentContent}
-                                onChange={(e) => setCommentContent(e.target.value)}
+                                onChange={(e) =>
+                                  setCommentContent(e.target.value)
+                                }
                                 placeholder="Add a comment..."
                                 className="flex-grow px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-l-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500"
                               />
                               <button
-                                onClick={() => handleSubmitComment(answer._id, "answer")}
+                                onClick={() =>
+                                  handleSubmitComment(answer._id, "answer")
+                                }
                                 className="px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-r-lg transition-colors"
                               >
                                 Send
