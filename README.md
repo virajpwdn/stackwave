@@ -13,6 +13,12 @@ So I built StackWave — a platform where developers can:
 * Chat with other developers instantly
 * Get help from AI, which can refactor code and provide suggestions when no active members are available
 
+# Project Design
+- [🗂️ HLD / Prototype](https://drive.google.com/file/d/1aGn7diFZJ6hwei4AsoYB7XQngsem34IS/view?usp=sharing)
+- [🧠 Database Design](https://drive.google.com/file/d/1oyAGJYZaR1Xeakc1QlScRzWyCcjEP2n3/view?usp=sharing)
+- [📄 API Documentation](https://stackwave-vy6f.onrender.com/api-docs/) [Socket Events not included in docs]
+
+
 🚀 Features
 
 * 🧵 Real-Time Code Collabrations using Web Socket
