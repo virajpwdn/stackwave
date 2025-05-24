@@ -10,8 +10,8 @@ const Login = () => {
   const formRef = useRef(null);
   const dispatch = useDispatch();
 
-  const [email, setEmail] = useState("user12@gmail.com");
-  const [password, setPassword] = useState("User@123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const naviagte = useNavigate();
 
   useEffect(() => {
@@ -32,9 +32,12 @@ const Login = () => {
       );
       console.log(res.data);
       dispatch(setUser(res.data.data));
-      naviagte("/questions")
+      naviagte("/questions");
+      setEmail("");
+      setPassword("");
     } catch (err) {
-      console.error(err);
+      console.error(err.response.data.message);
+      alert(err.response.data.message)
     }
   };
 

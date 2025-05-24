@@ -14,6 +14,7 @@ const Signup = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState([]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,25 +41,26 @@ const Signup = () => {
         },
         { withCredentials: true }
       );
-      
+
       // Make sure the token is properly set in cookies
       if (response.data && response.data.data) {
         // Store user in Redux
         dispatch(setUser(response.data.data));
-        
+
         // Check if token is in the response and manually set it if needed
         if (response.data.token) {
           document.cookie = `token=${response.data.token}; path=/; max-age=86400`;
         }
-        
+
         // Navigate to tour page
         navigate("/tour");
       }
     } catch (error) {
       console.error("Signup error:", error);
+      setErrors(error?.response?.data?.message);
     }
   };
-
+  console.log(errors);
   return (
     <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-neutral-100 via-white to-neutral-200 dark:from-neutral-900 dark:via-neutral-950 dark:to-neutral-800 transition-colors font-[gilroy-medium]">
       <form
@@ -70,7 +72,10 @@ const Signup = () => {
           <span className="font-[gilroy-bold] text-transparent bg-gradient-to-br from-blue-700 via-blue-300 to-blue-500 bg-clip-text">
             StackWave
           </span>{" "}
-          | <span className="text-zinc-300 font-[gilroy-medium] text-lg">Signup</span>
+          |{" "}
+          <span className="text-zinc-300 font-[gilroy-medium] text-lg">
+            Signup
+          </span>
         </h2>
 
         {/* Name Fields */}
@@ -147,6 +152,12 @@ const Signup = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+        </div>
+
+        <div className={`${errors ? 'block' : 'hidden'}`}>
+          {errors.map((elem, idx) => (
+            <div key={idx} className="text-red-400">{elem.msg}</div>
+          ))}
         </div>
 
         {/* Submit Button */}
