@@ -1,13 +1,14 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X, Moon, Sun, Search, Video } from "lucide-react";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const store = useSelector((store) => store.user.user);
 
   // Toggle mobile menu
   const toggleMenu = () => {
@@ -18,23 +19,25 @@ const Navbar = () => {
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     if (isDarkMode) {
-      document.documentElement.classList.remove('dark');
-      localStorage.theme = 'light';
+      document.documentElement.classList.remove("dark");
+      localStorage.theme = "light";
     } else {
-      document.documentElement.classList.add('dark');
-      localStorage.theme = 'dark';
+      document.documentElement.classList.add("dark");
+      localStorage.theme = "dark";
     }
   };
 
   // Initialize theme from localStorage on component mount
   useEffect(() => {
-    if (localStorage.theme === 'dark' || 
-        (!('theme' in localStorage) && 
-         window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
       setIsDarkMode(true);
     } else {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove("dark");
       setIsDarkMode(false);
     }
   }, []);
@@ -45,14 +48,14 @@ const Navbar = () => {
     // Implement search functionality
     console.log("Searching for:", searchQuery);
   };
-
+  const redirectTo = store && store._id ? "/feed" : "/"; 
   return (
     <nav className="bg-white dark:bg-black text-black dark:text-white shadow-md w-full">
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0 flex items-center">
+            <Link to={redirectTo} className="flex-shrink-0 flex items-center">
               <h1 className="text-xl md:text-2xl font-bold text-blue-600 dark:text-blue-400">
                 STACKWAVE
               </h1>
@@ -92,7 +95,10 @@ const Navbar = () => {
             </button>
 
             {/* Create Live Room button - hidden on mobile */}
-            <button onClick={()=>navigate('/live-rooms')} className="hidden md:flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors ml-4">
+            <button
+              onClick={() => navigate("/live-rooms")}
+              className="hidden md:flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors ml-4"
+            >
               <Video size={18} />
               Create Live Room
             </button>
@@ -106,4 +112,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
