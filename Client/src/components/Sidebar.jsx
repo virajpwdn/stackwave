@@ -13,6 +13,7 @@ import {
   MessageSquareText,
   Menu,
   X,
+  Settings,
 } from "lucide-react";
 
 const Sidebar = () => {
@@ -85,7 +86,7 @@ const Sidebar = () => {
       >
         <div className="flex flex-col h-full">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold">Menu</h2>
+            {/* <h2 className="text-xl font-bold">Menu</h2> */}
             {/* Removed the extra close button that was here */}
           </div>
 
@@ -183,6 +184,18 @@ const Sidebar = () => {
                 className="text-gray-500 dark:text-gray-400"
               />
               <span>Downvotes</span>
+            </Link>
+
+            <Link
+              to="/settings"
+              className="flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors font-medium"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <Settings
+                size={20}
+                className="text-gray-500 dark:text-gray-400"
+              />
+              <span>Settings</span>
             </Link>
           </nav>
 
