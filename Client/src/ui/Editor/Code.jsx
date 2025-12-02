@@ -18,7 +18,7 @@ const Code = () => {
   const [languages, setLanguages] = useState([]);
   const [selectedLanguage, setSelectedLanguage] = useState(102); // Default to JavaScript
   const [code, setCode] = useState("// Write your code here");
-  const [editorLanguage, setEditorLanguage] = useState("javascript");
+  const [editorLanguage, setEditorLanguage] = useState("java");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showTerminal, setShowTerminal] = useState(false);
   const [terminalOutput, setTerminalOutput] = useState("");
@@ -30,12 +30,11 @@ const Code = () => {
   const roomKey = param.roomId;
   const userId = user._id;
 
-
   // Connect once when component mounts
   useEffect(() => {
     socket.connect();
 
-    socket.on("code-content", ({ userId, code}) => {
+    socket.on("code-content", ({ userId, code }) => {
       if (userId != user._id) setCode(code);
     });
 
@@ -136,7 +135,7 @@ const Code = () => {
   const aiRefactorization = () => {
     console.log("AI Refactorization requested");
     setIsMenuOpen(false);
-    navigate("/refactor-ai", {state: {code: code}})
+    navigate("/refactor-ai", { state: { code: code } });
   };
 
   const viewAICode = () => {
@@ -297,7 +296,7 @@ const Code = () => {
         >
           <Editor
             height="100%"
-            defaultLanguage="javascript"
+            defaultLanguage={editorLanguage}
             language={editorLanguage}
             value={code}
             onChange={handleEditorChange}
