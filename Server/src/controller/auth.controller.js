@@ -99,8 +99,13 @@ module.exports.selectTagsController = asyncHandler(async (req, res) => {
   const sanitizedtags = selectedSubcategories.map((tag) =>
     tag.trim().toLowerCase()
   );
-  req.user.tags.push(...sanitizedtags);
-  req.user.save();
+
+  const user = await UserModel.findById(req.user._id);
+
+  user.tags.push(...sanitizedtags);
+
+  await user.save();
+
   res.status(200).json(new AppResponse(200, {}, "Your tags are saved"));
 });
 
