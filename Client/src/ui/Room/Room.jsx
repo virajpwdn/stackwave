@@ -4,18 +4,18 @@ import Sidebar from "../../components/Sidebar";
 import socket from "../../utils/socket";
 import axios from "axios";
 import { BASE_URL } from "../../config/baseurl";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
+// import { Link, useNavigate } from "react-router";
 
 const Room = () => {
   // Mock data for rooms
   const [room, setRooms] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState([]);
   const [tagInput, setTagInput] = useState("");
   const [title, setTitle] = useState("");
-  
 
   useEffect(() => {
     socket.connect(); // or connect only after auth
@@ -231,7 +231,7 @@ const Room = () => {
                   </div>
 
                   {/* Join button */}
-                  <Link to={"/editor/" + room.roomId}>
+                  <Link to={"/editor/" + room?.roomId}>
                     <button className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition-colors flex items-center justify-center gap-2">
                       <Video size={16} />
                       Join Room
