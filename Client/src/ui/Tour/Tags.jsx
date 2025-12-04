@@ -83,7 +83,7 @@ const TagSelectionPage = () => {
       );
       
       if (response.data.success) {
-        navigate("/"); // Navigate to home page after successful submission
+        navigate("/feed"); // Navigate to home page after successful submission
       }
     } catch (error) {
       console.error("Error saving tags:", error);
@@ -91,7 +91,7 @@ const TagSelectionPage = () => {
   };
 
   const handleSkip = () => {
-    navigate("/");
+    navigate("/feed");
   };
 
   // Filter tags based on search term
