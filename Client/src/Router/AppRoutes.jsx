@@ -19,6 +19,7 @@ import CreateRoom from "../ui/Room/CreateRoom";
 import CodeEditor from "../ui/Editor/CodeEditor";
 import RefactorAI from "../ui/AI/RefactorAI";
 import Hero from "../ui/HeroPage/Hero";
+import GuestDashboard from "../ui/settings/Settings";
 
 // Layout component that includes Navbar and renders children through Outlet
 const Layout = () => {
@@ -97,6 +98,14 @@ const AppRoutes = () => {
 
           <Route path="/refactor-ai" element={<RefactorAI />} />
           <Route path="/hero-page" element={<Hero />} />
+          <Route
+            path="/settings"
+            element={
+              <Authentication>
+                <GuestDashboard />
+              </Authentication>
+            }
+          />
 
           <Route path="*" element={<QuestionFeed />} />
         </Route>

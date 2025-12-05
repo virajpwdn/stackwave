@@ -42,7 +42,7 @@ const Chat = () => {
 
     socket.on(
       "chat-message",
-      ({ userId, text, senderName, roomKey, avatar }) => {
+      ({ userId, text, senderName, avatar }) => {
         if (userId !== user._id) {
           setMessages((prev) => [
             ...prev,
