@@ -26,5 +26,10 @@ questionRouter.post("/vote", authMiddleware, controller.voteController);
 
 questionRouter.post("/comment", authMiddleware, controller.commentController)
 
+/**
+ * /user/questions/:userId -> Api returns all the questions which loggedIn user has asked
+ * @param userId -> Id of loggedIn user
+ */
+questionRouter.get("/user/questions/:userId", authMiddleware, controller.userQuestionController)
 
 module.exports = questionRouter;
