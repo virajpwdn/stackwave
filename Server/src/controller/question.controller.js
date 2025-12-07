@@ -29,6 +29,7 @@ module.exports.askQuestionController = asyncHandler(async (req, res) => {
 });
 
 module.exports.viewQuestionController = asyncHandler(async (req, res) => {
+  //! start working here...
   const { questionId } = req.params;
   console.log(questionId);
   if (!questionId) throw new AppError(400, "Question Id is missing");
@@ -113,12 +114,15 @@ module.exports.getAllQuestions = asyncHandler(async (req, res) => {
 });
 
 module.exports.voteController = asyncHandler(async (req, res) => {
+  /**
+   * This Controller handles both upvote and downvote
+   */
   const session = await mongoose.startSession();
   try {
     session.startTransaction();
 
     const { type, targetId, targetType } = req.body;
-    console.log(`${type} -> ${targetId} -> ${targetType}`);
+    // console.log(`${type} -> ${targetId} -> ${targetType}`);
     if (!type || !targetId || !targetType)
       throw new AppError(400, "All Fields are Required");
 
@@ -142,6 +146,7 @@ module.exports.voteController = asyncHandler(async (req, res) => {
       );
     }
 
+    // Find variable is used because upvotes and downvotes are for question aswell as for answer
     let find;
 
     if (targetType === "question") {
@@ -183,6 +188,9 @@ module.exports.voteController = asyncHandler(async (req, res) => {
       } else {
         find.downVote -= 1;
       }
+      /**
+       * Sending object votes to frontend
+       */
       await find.save();
       return res.status(200).json(
         new AppResponse(
@@ -192,6 +200,11 @@ module.exports.voteController = asyncHandler(async (req, res) => {
               id: isAlreadyVote._id,
               vote: isAlreadyVote.type,
               deletedAt: new Date(),
+            },
+            votes: {
+              upVoteCount: find.upVote,
+              downVoteCount: find.downVote,
+              totalQuestionView: find.views,
             },
           },
           "Your Vote is updated"
@@ -214,16 +227,27 @@ module.exports.voteController = asyncHandler(async (req, res) => {
     if (type === "upvote") {
       find.upVote += 1;
     } else {
-      find.downVote += 1;
+      find.downVote -= 1;
     }
+
     await find.save();
 
     await session.commitTransaction();
     session.endSession();
 
-    res
-      .status(201)
-      .json(new AppResponse(201, {}, "Your Vote is updated, Thanks :)"));
+    res.status(201).json(
+      new AppResponse(
+        201,
+        {
+          votes: {
+            upVoteCount: find.upVote,
+            downVoteCount: find.downVote,
+            totalQuestionView: find.views,
+          },
+        },
+        "Your Vote is updated, Thanks :)"
+      )
+    );
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
@@ -286,12 +310,36 @@ module.exports.commentController = asyncHandler(async (req, res) => {
       authorId: user._id,
       targetId: targetId,
       targetType: targetType,
-      content: content
-    })
+      content: content,
+    });
 
     res.status(201).json(new AppResponse(201, {}, "Your comment is posted"));
   } catch (error) {
     console.error(error);
     throw error;
   }
+});
+
+module.exports.userQuestionController = asyncHandler(async (req, res) => {
+  /**
+   * This controller returns all the questions which auth user/loggedIn user has raised on platform
+   */
+
+  const user = req.user;
+  const userQuestion = await QuestionModel.countDocuments({
+    authorId: user._id,
+  });
+
+  if (!userQuestion)
+    throw new AppError(400, "You haven't posted any question, yet");
+
+  res
+    .status(200)
+    .json(
+      new AppResponse(
+        200,
+        { totalQuestion: userQuestion },
+        "All Questions of auth user"
+      )
+    );
 });
