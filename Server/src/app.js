@@ -13,11 +13,13 @@ const aiRouter = require("../src/router/ai.routes");
 const compilerRoutes = require("../src/router/compiler.routes");
 const roomRoutes = require("../src/router/room.routes");
 const messageRoutes = require("../src/router/message.routes");
+const answerRouter = require("../src/router/answer.routes");
 
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
   "https://stackwave-frontend-ejbk.onrender.com",
+  "https://stackwave.virajpatwardhan.in"
 ];
 
 // Remove this later when deploying on ec2
@@ -35,6 +37,7 @@ app.use("/api/v1/ai", aiRouter);
 app.use("/api/v1/compiler", compilerRoutes);
 app.use("/api/v1/room", roomRoutes);
 app.use("/api/v1/message", messageRoutes);
+app.use("/api/v1/answer", answerRouter);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
