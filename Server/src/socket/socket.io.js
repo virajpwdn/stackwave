@@ -16,6 +16,7 @@ const allowedOrigins = [
   "http://localhost:5174",
   "http://localhost:5173",
   "https://stackwave-frontend-ejbk.onrender.com",
+  "https://stackwave.virajpatwardhan.in"
 ];
 
 function initSocket(server) {
