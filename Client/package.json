@@ -6,8 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "lint": "lint",
+    "format": "prettier --write  \"**/*.{ts,tsx,js,jsx,json,md,mdx,css}\"",
+    "format:check": "prettier --check  \"**/*.{ts,tsx,js,jsx,json,md,mdx,css}\"",
+    "lint-staged": "lint-staged",
+    "prepare": "husky",
+    "preview": "vite preview",
+    "check-types": "turbo run check-types"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.16.0",
@@ -16,10 +21,15 @@
     "@monaco-editor/react": "^4.7.0",
     "@reduxjs/toolkit": "^2.7.0",
     "@tailwindcss/typography": "^0.5.16",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "axios": "^1.8.4",
     "framer-motion": "^12.7.4",
     "gsap": "^3.12.7",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "lucide-react": "^0.501.0",
+    "prettier": "^3.8.1",
+    "prettier-plugin-tailwindcss": "^0.7.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",

@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Video, Users, Clock, Plus, Search, X } from "lucide-react";
-import Sidebar from "../../components/Sidebar";
-import socket from "../../utils/socket";
-import axios from "axios";
-import { BASE_URL } from "../../config/baseurl";
 import { Link } from "react-router";
+
+import axios from "axios";
+import { Clock, Plus, Search, Users, Video, X } from "lucide-react";
+
+import Sidebar from "../../components/Sidebar";
+import { BASE_URL } from "../../config/baseurl";
+import socket from "../../utils/socket";
+
 // import { Link, useNavigate } from "react-router";
 
 const Room = () => {
@@ -128,9 +131,9 @@ const Room = () => {
   };
 
   return (
-    <div className="min-h-screen flex bg-white dark:bg-[#0e0e0e] text-black dark:text-white transition-all">
+    <div className="flex min-h-screen bg-white text-black transition-all dark:bg-[#0e0e0e] dark:text-white">
       {/* Sidebar component - 25% width */}
-      <div className="w-1/4 hidden md:block">
+      <div className="hidden w-1/4 md:block">
         <Sidebar />
       </div>
 
@@ -140,16 +143,16 @@ const Room = () => {
       </div>
 
       {/* Main Content - 75% width */}
-      <main className="w-full md:w-3/4 px-4 py-8 sm:px-6 lg:px-8 transition-all">
-        <div className="max-w-5xl mx-auto">
+      <main className="w-full px-4 py-8 transition-all sm:px-6 md:w-3/4 lg:px-8">
+        <div className="mx-auto max-w-5xl">
           {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
+          <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl md:text-4xl">
               Live Rooms
             </h1>
             <button
               onClick={createRoomHandler}
-              className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-md hover:shadow-xl w-full sm:w-fit"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 font-medium text-white shadow-md transition-colors hover:bg-blue-700 hover:shadow-xl sm:w-fit"
             >
               <Plus size={18} />
               Create Room
@@ -162,28 +165,28 @@ const Room = () => {
               <input
                 type="text"
                 placeholder="Search rooms..."
-                className="w-full px-4 py-3 pl-10 rounded-xl bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                className="w-full rounded-xl border border-gray-300 bg-gray-100 px-4 py-3 pl-10 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800"
               />
               <Search
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400"
+                className="absolute left-3 top-1/2 -translate-y-1/2 transform text-gray-500 dark:text-gray-400"
                 size={18}
               />
             </div>
           </div>
 
           {/* Rooms grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {room.map((room) => (
               <div
                 key={room._id}
-                className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-all overflow-hidden"
+                className="overflow-hidden rounded-xl border border-gray-200 bg-gray-50 shadow-sm transition-all hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
               >
                 {/* Room header with live indicator */}
                 <div className="relative">
                   <div className="h-3 bg-gradient-to-r from-blue-500 to-blue-600"></div>
                   {room.isLive && (
-                    <span className="absolute top-3 right-3 bg-red-500 text-white text-xs font-medium px-2 py-0.5 rounded-full flex items-center">
-                      <span className="w-2 h-2 bg-white rounded-full mr-1 animate-pulse"></span>
+                    <span className="absolute right-3 top-3 flex items-center rounded-full bg-red-500 px-2 py-0.5 text-xs font-medium text-white">
+                      <span className="mr-1 h-2 w-2 animate-pulse rounded-full bg-white"></span>
                       LIVE
                     </span>
                   )}
@@ -191,11 +194,11 @@ const Room = () => {
 
                 {/* Room content */}
                 <div className="p-5">
-                  <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
                     {room.title}
                   </h3>
 
-                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                  <p className="mb-4 text-sm text-gray-600 dark:text-gray-300">
                     Hosted by{" "}
                     <span className="font-medium text-blue-600 dark:text-blue-400">
                       {room.host}
@@ -203,11 +206,11 @@ const Room = () => {
                   </p>
 
                   {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <div className="mb-4 flex flex-wrap gap-2">
                     {room.tags.map((tag, index) => (
                       <span
                         key={index}
-                        className="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded-full"
+                        className="rounded-full bg-gray-200 px-2 py-1 text-xs text-gray-700 dark:bg-gray-700 dark:text-gray-300"
                       >
                         {tag}
                       </span>
@@ -215,7 +218,7 @@ const Room = () => {
                   </div>
 
                   {/* Room stats */}
-                  <div className="flex justify-between items-center text-sm text-gray-600 dark:text-gray-400">
+                  <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
                     <div className="flex items-center gap-1">
                       <Users size={16} />
                       <span>{room.participants} participants</span>
@@ -232,7 +235,7 @@ const Room = () => {
 
                   {/* Join button */}
                   <Link to={"/editor/" + room?.roomId}>
-                    <button className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition-colors flex items-center justify-center gap-2">
+                    <button className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 py-2 font-medium text-white transition-colors hover:bg-blue-700">
                       <Video size={16} />
                       Join Room
                     </button>
@@ -244,15 +247,15 @@ const Room = () => {
 
           {/* Empty state (hidden when rooms exist) */}
           {room.length === 0 && (
-            <div className="text-center py-16 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-              <Video size={48} className="mx-auto text-gray-400 mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+            <div className="rounded-xl border border-gray-200 bg-gray-50 py-16 text-center dark:border-gray-700 dark:bg-gray-800">
+              <Video size={48} className="mx-auto mb-4 text-gray-400" />
+              <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-white">
                 No active rooms
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
+              <p className="mb-6 text-gray-600 dark:text-gray-400">
                 Be the first to create a live room and start the discussion!
               </p>
-              <button className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-md hover:shadow-xl">
+              <button className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 font-medium text-white shadow-md transition-colors hover:bg-blue-700 hover:shadow-xl">
                 <Plus size={18} />
                 Create Room
               </button>
@@ -263,16 +266,16 @@ const Room = () => {
 
       {/* Create Room Modal */}
       {showModal && (
-        <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl w-full max-w-md mx-auto overflow-hidden transition-all">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4 backdrop-blur-sm">
+          <div className="mx-auto w-full max-w-md overflow-hidden rounded-xl bg-white shadow-2xl transition-all dark:bg-gray-900">
             {/* Modal header */}
-            <div className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-800">
+            <div className="flex items-center justify-between border-b border-gray-200 p-4 dark:border-gray-800">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                 Create New Room
               </h3>
               <button
                 onClick={closeModal}
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="rounded-full p-1 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-200"
               >
                 <X size={20} />
               </button>
@@ -296,7 +299,7 @@ const Room = () => {
                     id="room-title"
                     type="text"
                     placeholder="Enter a descriptive title"
-                    className="w-full px-4 py-2.5 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                    className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-gray-900 placeholder-gray-500 transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                   />
@@ -311,7 +314,7 @@ const Room = () => {
                   </label>
                   <select
                     id="room-language"
-                    className="w-full px-4 py-2.5 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                    className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-gray-900 transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white"
                   >
                     <option value="">Select a language</option>
                     <option value="javascript">JavaScript</option>
@@ -332,12 +335,12 @@ const Room = () => {
                   >
                     Tags
                   </label>
-                  <div className="flex flex-wrap items-center gap-2 p-2 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all">
+                  <div className="flex flex-wrap items-center gap-2 rounded-lg border border-gray-300 bg-gray-50 p-2 transition-all focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500 dark:border-gray-700 dark:bg-gray-800">
                     <input
                       id="room-tags"
                       type="text"
                       placeholder="Add tags and press Enter"
-                      className="flex-1 min-w-[120px] bg-transparent border-none focus:ring-0 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 py-1"
+                      className="min-w-[120px] flex-1 border-none bg-transparent py-1 text-gray-900 placeholder-gray-500 focus:ring-0 dark:text-white dark:placeholder-gray-400"
                       value={tagInput}
                       onChange={handleTagInput}
                       onKeyDown={handleTagKeyDown}
@@ -346,20 +349,20 @@ const Room = () => {
                     {tags.map((tag, index) => (
                       <span
                         key={index}
-                        className="px-2.5 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded-full flex items-center"
+                        className="flex items-center rounded-full bg-blue-100 px-2.5 py-1 text-xs text-blue-800 dark:bg-blue-900 dark:text-blue-200"
                       >
                         {tag}
                         <button
                           type="button"
                           onClick={() => removeTag(index)}
-                          className="ml-1.5 text-blue-600 dark:text-blue-300 hover:text-blue-800 dark:hover:text-blue-100"
+                          className="ml-1.5 text-blue-600 hover:text-blue-800 dark:text-blue-300 dark:hover:text-blue-100"
                         >
                           ×
                         </button>
                       </span>
                     ))}
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
                     {tags.length >= 5
                       ? "Maximum of 5 tags reached"
                       : `Add up to ${
@@ -379,17 +382,17 @@ const Room = () => {
                     id="room-description"
                     rows="3"
                     placeholder="What will you discuss in this room?"
-                    className="w-full px-4 py-2.5 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                    className="w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2.5 text-gray-900 placeholder-gray-500 transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                   ></textarea>
                 </div>
 
-                <div className="flex items-center mt-4">
+                <div className="mt-4 flex items-center">
                   <input
                     id="room-private"
                     type="checkbox"
-                    className="w-4 h-4 text-blue-600 bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500"
+                    className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
                   />
                   <label
                     htmlFor="room-private"
@@ -402,17 +405,17 @@ const Room = () => {
             </div>
 
             {/* Modal footer */}
-            <div className="flex justify-end gap-3 p-4 border-t border-gray-200 dark:border-gray-800">
+            <div className="flex justify-end gap-3 border-t border-gray-200 p-4 dark:border-gray-800">
               <button
                 onClick={closeModal}
-                className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                className="rounded-lg px-4 py-2 text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
               >
                 Cancel
               </button>
               <button
                 onClick={roomCreationHandler} // Direct click handler as backup
                 type="button" // Changed from "submit" to ensure the click handler works
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                className="rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
               >
                 Create Room
               </button>

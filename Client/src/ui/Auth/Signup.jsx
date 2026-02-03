@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import axios from "axios";
-import { BASE_URL } from "../../config/baseurl";
 import { useDispatch } from "react-redux";
-import { setUser } from "../../store/user.slice";
 import { useNavigate } from "react-router-dom";
+
+import axios from "axios";
+import gsap from "gsap";
+
+import { BASE_URL } from "../../config/baseurl";
+import { setUser } from "../../store/user.slice";
 
 const Signup = () => {
   const formRef = useRef(null);
@@ -62,46 +64,46 @@ const Signup = () => {
   };
   console.log(errors);
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-neutral-100 via-white to-neutral-200 dark:from-neutral-900 dark:via-neutral-950 dark:to-neutral-800 transition-colors font-[gilroy-medium]">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-neutral-100 via-white to-neutral-200 px-4 font-[gilroy-medium] transition-colors dark:from-neutral-900 dark:via-neutral-950 dark:to-neutral-800 sm:px-6 lg:px-8">
       <form
         ref={formRef}
         onSubmit={signupSubmitHandler}
-        className="w-full max-w-lg bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-xl rounded-2xl p-8 space-y-6 transition-colors overflow-hidden"
+        className="w-full max-w-lg space-y-6 overflow-hidden rounded-2xl border border-neutral-200 bg-white p-8 shadow-xl transition-colors dark:border-neutral-800 dark:bg-neutral-900"
       >
-        <h2 className="max-sm:text-2xl sm:text-3xl font-bold text-center text-neutral-900 dark:text-white">
-          <span className="font-[gilroy-bold] text-transparent bg-gradient-to-br from-blue-700 via-blue-300 to-blue-500 bg-clip-text">
+        <h2 className="text-center font-bold text-neutral-900 dark:text-white max-sm:text-2xl sm:text-3xl">
+          <span className="bg-gradient-to-br from-blue-700 via-blue-300 to-blue-500 bg-clip-text font-[gilroy-bold] text-transparent">
             StackWave
           </span>{" "}
           |{" "}
-          <span className="text-zinc-300 font-[gilroy-medium] text-lg">
+          <span className="font-[gilroy-medium] text-lg text-zinc-300">
             Signup
           </span>
         </h2>
 
         {/* Name Fields */}
-        <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0">
-          <div className="flex flex-col flex-1">
-            <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+        <div className="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
+          <div className="flex flex-1 flex-col">
+            <label className="mb-1 text-sm font-medium text-neutral-700 dark:text-neutral-300">
               First Name
             </label>
             <input
               type="text"
               placeholder="John"
-              className="px-4 py-2 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder:text-neutral-500 dark:placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+              className="rounded-md border border-neutral-300 bg-neutral-100 px-4 py-2 text-neutral-900 transition placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-400"
               required
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
             />
           </div>
 
-          <div className="flex flex-col flex-1">
-            <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+          <div className="flex flex-1 flex-col">
+            <label className="mb-1 text-sm font-medium text-neutral-700 dark:text-neutral-300">
               Last Name
             </label>
             <input
               type="text"
               placeholder="Doe"
-              className="px-4 py-2 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder:text-neutral-500 dark:placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+              className="rounded-md border border-neutral-300 bg-neutral-100 px-4 py-2 text-neutral-900 transition placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-400"
               required
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
@@ -111,13 +113,13 @@ const Signup = () => {
 
         {/* Username */}
         <div className="flex flex-col">
-          <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+          <label className="mb-1 text-sm font-medium text-neutral-700 dark:text-neutral-300">
             Username
           </label>
           <input
             type="text"
             placeholder="john_doe12"
-            className="px-4 py-2 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder:text-neutral-500 dark:placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            className="rounded-md border border-neutral-300 bg-neutral-100 px-4 py-2 text-neutral-900 transition placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-400"
             required
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -126,13 +128,13 @@ const Signup = () => {
 
         {/* Email */}
         <div className="flex flex-col">
-          <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+          <label className="mb-1 text-sm font-medium text-neutral-700 dark:text-neutral-300">
             Email
           </label>
           <input
             type="email"
             placeholder="developer@gmail.com"
-            className="px-4 py-2 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder:text-neutral-500 dark:placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            className="rounded-md border border-neutral-300 bg-neutral-100 px-4 py-2 text-neutral-900 transition placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-400"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -141,29 +143,31 @@ const Signup = () => {
 
         {/* Password */}
         <div className="flex flex-col">
-          <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+          <label className="mb-1 text-sm font-medium text-neutral-700 dark:text-neutral-300">
             Password
           </label>
           <input
             type="password"
             placeholder="••••••••"
-            className="px-4 py-2 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder:text-neutral-500 dark:placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            className="rounded-md border border-neutral-300 bg-neutral-100 px-4 py-2 text-neutral-900 transition placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-400"
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
-        <div className={`${errors ? 'block' : 'hidden'}`}>
+        <div className={`${errors ? "block" : "hidden"}`}>
           {errors.map((elem, idx) => (
-            <div key={idx} className="text-red-400">{elem.msg}</div>
+            <div key={idx} className="text-red-400">
+              {elem.msg}
+            </div>
           ))}
         </div>
 
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md transition duration-200 shadow-sm"
+          className="w-full rounded-md bg-blue-600 py-2 font-semibold text-white shadow-sm transition duration-200 hover:bg-blue-700"
         >
           Sign Up
         </button>

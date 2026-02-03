@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-import axios from "axios";
-import { BASE_URL } from "../config/baseurl";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../store/user.slice";
+import { useNavigate } from "react-router";
 
+import axios from "axios";
+
+import { BASE_URL } from "../config/baseurl";
+import { setUser } from "../store/user.slice";
 
 const Authentication = ({ children }) => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const user = useSelector(state => state.user.user);
+  const user = useSelector((state) => state.user.user);
   const disptach = useDispatch();
-  
+
   useEffect(() => {
     const verify = async () => {
       try {
@@ -20,7 +21,7 @@ const Authentication = ({ children }) => {
           setIsAuthenticated(true);
           return;
         }
-        
+
         // Check for token in cookies
         const cookie = document.cookie?.split("; ");
         const tokenCookie = cookie?.find((row) => row.startsWith("token="));
@@ -28,15 +29,15 @@ const Authentication = ({ children }) => {
           console.log("No token cookie found");
           return navigate("/login");
         }
-        
+
         const token = tokenCookie.split("=")[1];
         if (!token) {
           console.log("Token is empty");
           return navigate("/login");
         }
-        
+
         console.log("Token found, verifying with backend");
-        
+
         // Verify token with backend
         const verifyUser = await axios.get(BASE_URL + "/auth/verification", {
           withCredentials: true,
@@ -46,7 +47,7 @@ const Authentication = ({ children }) => {
           console.log("Verification failed", verifyUser.data);
           return navigate("/login");
         }
-        
+
         // User is authenticated, continue
         disptach(setUser(verifyUser.data.data));
         console.log("User verified successfully");
@@ -57,15 +58,15 @@ const Authentication = ({ children }) => {
         navigate("/login");
       }
     };
-  
+
     verify();
   }, [navigate, user]); // Add user to dependency array
-  
+
   // Show loading or nothing while checking authentication
   if (!isAuthenticated) {
     return null; // Or a loading spinner
   }
-  
+
   return <>{children}</>;
 };
 
