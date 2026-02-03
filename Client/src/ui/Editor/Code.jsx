@@ -1,18 +1,20 @@
-import axios from "axios";
-import React, { useEffect, useState, useRef } from "react";
-import { BASE_URL } from "../../config/baseurl";
-import Editor from "@monaco-editor/react";
-import Terminal from "./Terminal";
-import {
-  ChevronDown,
-  Play,
-  Code as CodeIcon,
-  RefreshCw,
-  Eye,
-} from "lucide-react";
-import socket from "../../utils/socket";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
+
+import Editor from "@monaco-editor/react";
+import axios from "axios";
+import {
+  ChevronDown,
+  Code as CodeIcon,
+  Eye,
+  Play,
+  RefreshCw,
+} from "lucide-react";
+
+import { BASE_URL } from "../../config/baseurl";
+import socket from "../../utils/socket";
+import Terminal from "./Terminal";
 
 const Code = () => {
   const [languages, setLanguages] = useState([]);
@@ -197,17 +199,17 @@ const Code = () => {
   };
 
   return (
-    <div className="w-full mx-auto h-screen bg-white dark:bg-gray-900 overflow-hidden shadow-lg">
-      <div className="flex flex-col h-screen">
+    <div className="mx-auto h-screen w-full overflow-hidden bg-white shadow-lg dark:bg-gray-900">
+      <div className="flex h-screen flex-col">
         {/* Top div */}
-        <div className="w-full h-[8%] bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-          <div className="flex justify-between items-center p-4 h-full">
+        <div className="h-[8%] w-full border-b border-gray-200 bg-gray-100 dark:border-gray-700 dark:bg-gray-800">
+          <div className="flex h-full items-center justify-between p-4">
             {/* Left div - Language selector */}
             <div className="flex items-center space-x-3">
               <select
                 value={selectedLanguage}
                 onChange={handleLanguageChange}
-                className="px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
               >
                 {languages && languages.length > 0 ? (
                   languages.map((elem) => (
@@ -225,7 +227,7 @@ const Code = () => {
               <select
                 value={selectedTheme}
                 onChange={handleThemeChange}
-                className="px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200"
               >
                 {themes.map((theme) => (
                   <option key={theme.id} value={theme.id}>
@@ -239,7 +241,7 @@ const Code = () => {
             <div className="flex items-center space-x-3">
               <button
                 onClick={runCode}
-                className="flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-md transition-colors"
+                className="flex items-center rounded-md bg-green-600 px-4 py-2 font-medium text-white transition-colors hover:bg-green-700"
               >
                 <Play className="mr-2 h-4 w-4" /> Run Code
               </button>
@@ -247,36 +249,36 @@ const Code = () => {
               <div className="relative" ref={menuRef}>
                 <button
                   onClick={toggleMenu}
-                  className="flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors"
+                  className="flex items-center rounded-md bg-blue-600 px-4 py-2 font-medium text-white transition-colors hover:bg-blue-700"
                 >
                   Actions <ChevronDown className="ml-2 h-4 w-4" />
                 </button>
 
                 {isMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg z-20 border border-gray-200 dark:border-gray-700">
+                  <div className="absolute right-0 z-20 mt-2 w-48 rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
                     <div className="py-1">
                       <button
                         onClick={aiRefactorization}
-                        className="w-full text-left px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center"
+                        className="flex w-full items-center px-4 py-2 text-left text-gray-800 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
                       >
                         <RefreshCw className="mr-2 h-4 w-4" /> AI
                         Refactorization
                       </button>
                       <button
                         onClick={viewAICode}
-                        className="w-full text-left px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center"
+                        className="flex w-full items-center px-4 py-2 text-left text-gray-800 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
                       >
                         <Eye className="mr-2 h-4 w-4" /> View AI Code
                       </button>
                       <button
                         onClick={submitAnswer}
-                        className="w-full text-left px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center"
+                        className="flex w-full items-center px-4 py-2 text-left text-gray-800 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
                       >
                         <CodeIcon className="mr-2 h-4 w-4" /> Submit Answer
                       </button>
                       <button
                         onClick={toggleTerminal}
-                        className="w-full text-left px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center"
+                        className="flex w-full items-center px-4 py-2 text-left text-gray-800 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
                       >
                         <CodeIcon className="mr-2 h-4 w-4" /> Toggle Terminal
                       </button>

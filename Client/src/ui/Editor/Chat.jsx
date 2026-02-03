@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import socket from "../../utils/socket";
 import { useParams } from "react-router-dom";
-import { Send } from "lucide-react";
+
 import axios from "axios";
+import { Send } from "lucide-react";
+
 import { BASE_URL } from "../../config/baseurl";
+import socket from "../../utils/socket";
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -40,23 +42,20 @@ const Chat = () => {
       socket.connect();
     }
 
-    socket.on(
-      "chat-message",
-      ({ userId, text, senderName, avatar }) => {
-        if (userId !== user._id) {
-          setMessages((prev) => [
-            ...prev,
-            {
-              id: Date.now(),
-              sender: senderName,
-              text: text,
-              senderName,
-              avatar: avatar,
-            },
-          ]);
-        }
+    socket.on("chat-message", ({ userId, text, senderName, avatar }) => {
+      if (userId !== user._id) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: Date.now(),
+            sender: senderName,
+            text: text,
+            senderName,
+            avatar: avatar,
+          },
+        ]);
       }
-    );
+    });
 
     return () => {
       socket.off("chat-message");
@@ -73,7 +72,7 @@ const Chat = () => {
       senderId: user._id,
       text: newMessage,
       sender: user.firstName || "You",
-      avatar: user.avatar
+      avatar: user.avatar,
     };
     setMessages((prev) => [...prev, messageObj]);
 
@@ -90,9 +89,9 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-gray-50 dark:bg-gray-800 transition-colors duration-200">
+    <div className="flex h-full flex-col bg-gray-50 transition-colors duration-200 dark:bg-gray-800">
       {/* Chat header */}
-      <div className="p-3 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 transition-colors duration-200">
+      <div className="border-b border-gray-200 bg-white p-3 transition-colors duration-200 dark:border-gray-700 dark:bg-gray-900">
         <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
           Chat
         </h2>
@@ -102,7 +101,7 @@ const Chat = () => {
       </div>
 
       {/* Messages container */}
-      <div className="flex-1 p-4 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto p-4">
         <div className="space-y-4">
           {messages?.map((message, idx) => (
             <div
@@ -112,10 +111,10 @@ const Chat = () => {
               }`}
             >
               {message.senderId !== user._id && (
-                <div className="flex-shrink-0 h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-medium mr-2">
+                <div className="mr-2 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-500 text-sm font-medium text-white">
                   {/* {message.senderName.charAt(0).toUpperCase()} */}
                   <img
-                    className="rounded-full h-full w-full object-cover"
+                    className="h-full w-full rounded-full object-cover"
                     src={message.avatar}
                     alt={message.senderName}
                   />
@@ -123,14 +122,14 @@ const Chat = () => {
               )}
 
               <div
-                className={`max-w-[75%] px-4 py-2 rounded-lg ${
+                className={`max-w-[75%] rounded-lg px-4 py-2 ${
                   message.senderId === user._id
                     ? "bg-blue-600 text-white dark:bg-blue-700"
                     : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
                 } shadow-sm`}
               >
                 {message.senderId !== user._id && (
-                  <p className="text-xs font-medium mb-1 opacity-75">
+                  <p className="mb-1 text-xs font-medium opacity-75">
                     {/* add sender name */}
                     {message.senderName}
                   </p>
@@ -139,10 +138,10 @@ const Chat = () => {
               </div>
 
               {message.senderId === user._id && (
-                <div className="flex-shrink-0 h-8 w-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-sm font-medium ml-2">
+                <div className="ml-2 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-indigo-500 text-sm font-medium text-white">
                   {/* {message.senderName.charAt(0).toUpperCase()} */}
                   <img
-                    className="rounded-full h-full w-full object-cover"
+                    className="h-full w-full rounded-full object-cover"
                     src={message.avatar}
                     alt={message.senderName}
                   />
@@ -157,7 +156,7 @@ const Chat = () => {
       {/* Message input */}
       <form
         onSubmit={handleSendMessage}
-        className="p-3 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 transition-colors duration-200"
+        className="border-t border-gray-200 bg-white p-3 transition-colors duration-200 dark:border-gray-700 dark:bg-gray-900"
       >
         <div className="flex items-center gap-2">
           <input
@@ -165,11 +164,11 @@ const Chat = () => {
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Type a message..."
-            className="flex-1 p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 transition-colors duration-200"
+            className="flex-1 rounded-lg border border-gray-300 bg-white p-2 text-gray-900 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
           />
           <button
             type="submit"
-            className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
+            className="rounded-lg bg-blue-600 p-2 text-white transition-colors duration-200 hover:bg-blue-700"
             disabled={!newMessage.trim()}
           >
             <Send size={18} />

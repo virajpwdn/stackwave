@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { Menu, Tag, HelpCircle, Code, Bold, Italic, List } from "lucide-react";
-import Sidebar from "../../components/Sidebar";
 import ReactMarkdown from "react-markdown";
-import axios from "axios";
 import { useSelector } from "react-redux";
-import { BASE_URL } from '../../config/baseurl';
+
+import axios from "axios";
+import { gsap } from "gsap";
+import { Bold, Code, HelpCircle, Italic, List, Menu, Tag } from "lucide-react";
+
+import Sidebar from "../../components/Sidebar";
+import { BASE_URL } from "../../config/baseurl";
 
 const AskQuestion = () => {
   const [title, setTitle] = useState("");
@@ -17,7 +19,7 @@ const AskQuestion = () => {
   const formRef = useRef(null);
   const sidebarRef = useRef(null);
   const store = useSelector((state) => state.user.user);
-  
+
   const authorId = store._id;
 
   // Function to insert markdown syntax
@@ -72,7 +74,8 @@ const AskQuestion = () => {
     }
     console.log({ title, content, tags });
     axios
-      .post( BASE_URL + "/questions/create-question",
+      .post(
+        BASE_URL + "/questions/create-question",
         { title, content, tags, authorId },
         { withCredentials: true }
       )
@@ -130,9 +133,9 @@ const AskQuestion = () => {
   }, [isSidebarOpen]);
 
   return (
-    <div className="min-h-screen flex bg-white dark:bg-[#0e0e0e] text-black dark:text-white transition-all">
+    <div className="flex min-h-screen bg-white text-black transition-all dark:bg-[#0e0e0e] dark:text-white">
       {/* Sidebar component - 25% width */}
-      <div className="w-1/4 hidden md:block">
+      <div className="hidden w-1/4 md:block">
         <Sidebar />
       </div>
 
@@ -142,20 +145,20 @@ const AskQuestion = () => {
       </div>
 
       {/* Main Content - 75% width */}
-      <main className="w-full md:w-3/4 px-4 py-8 sm:px-6 lg:px-8 transition-all">
-        <div className="max-w-3xl mx-auto">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 md:mb-8">
+      <main className="w-full px-4 py-8 transition-all sm:px-6 md:w-3/4 lg:px-8">
+        <div className="mx-auto max-w-3xl">
+          <h1 className="mb-6 text-2xl font-bold sm:text-3xl md:mb-8 md:text-4xl">
             Ask a Question
           </h1>
 
-          <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800">
+          <div className="mb-6 rounded-xl border border-blue-100 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/20">
             <div className="flex items-start gap-3">
-              <HelpCircle className="w-5 h-5 text-blue-500 mt-0.5" />
+              <HelpCircle className="mt-0.5 h-5 w-5 text-blue-500" />
               <div>
                 <h3 className="font-medium text-blue-700 dark:text-blue-300">
                   Tips for a great question
                 </h3>
-                <ul className="mt-2 text-sm text-blue-600 dark:text-blue-400 space-y-1">
+                <ul className="mt-2 space-y-1 text-sm text-blue-600 dark:text-blue-400">
                   <li>• Be specific and provide details</li>
                   <li>• Explain what you've tried so far</li>
                   <li>• Include code examples if relevant</li>
@@ -166,7 +169,7 @@ const AskQuestion = () => {
 
           <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="title" className="block text-sm font-medium mb-2">
+              <label htmlFor="title" className="mb-2 block text-sm font-medium">
                 Question Title
               </label>
               <input
@@ -175,57 +178,57 @@ const AskQuestion = () => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="e.g. How to center a div in CSS?"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-xl bg-white dark:bg-[#1a1a1a] text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-black placeholder-gray-400 shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-700 dark:bg-[#1a1a1a] dark:text-white dark:placeholder-gray-500"
               />
             </div>
 
             <div>
               <label
                 htmlFor="content"
-                className="block text-sm font-medium mb-2"
+                className="mb-2 block text-sm font-medium"
               >
                 Description
               </label>
 
               {/* Markdown toolbar */}
-              <div className="flex items-center space-x-2 mb-2 p-2 bg-gray-50 dark:bg-gray-800 rounded-t-xl border border-gray-300 dark:border-gray-700">
+              <div className="mb-2 flex items-center space-x-2 rounded-t-xl border border-gray-300 bg-gray-50 p-2 dark:border-gray-700 dark:bg-gray-800">
                 <button
                   type="button"
                   onClick={() => insertMarkdown("bold")}
-                  className="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                  className="rounded p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700"
                   title="Bold"
                 >
-                  <Bold className="w-4 h-4" />
+                  <Bold className="h-4 w-4" />
                 </button>
                 <button
                   type="button"
                   onClick={() => insertMarkdown("italic")}
-                  className="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                  className="rounded p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700"
                   title="Italic"
                 >
-                  <Italic className="w-4 h-4" />
+                  <Italic className="h-4 w-4" />
                 </button>
                 <button
                   type="button"
                   onClick={() => insertMarkdown("code")}
-                  className="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                  className="rounded p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700"
                   title="Code Block"
                 >
-                  <Code className="w-4 h-4" />
+                  <Code className="h-4 w-4" />
                 </button>
                 <button
                   type="button"
                   onClick={() => insertMarkdown("list")}
-                  className="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                  className="rounded p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700"
                   title="List"
                 >
-                  <List className="w-4 h-4" />
+                  <List className="h-4 w-4" />
                 </button>
                 <div className="flex-1"></div>
                 <button
                   type="button"
                   onClick={() => setPreviewMode(!previewMode)}
-                  className="text-sm px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+                  className="rounded bg-gray-200 px-3 py-1 text-sm hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
                 >
                   {previewMode ? "Edit" : "Preview"}
                 </button>
@@ -233,7 +236,7 @@ const AskQuestion = () => {
 
               {/* Editor/Preview toggle */}
               {previewMode ? (
-                <div className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-b-xl bg-white dark:bg-[#1a1a1a] text-black dark:text-white min-h-[200px] prose dark:prose-invert max-w-none">
+                <div className="prose dark:prose-invert min-h-[200px] w-full max-w-none rounded-b-xl border border-gray-300 bg-white px-4 py-3 text-black dark:border-gray-700 dark:bg-[#1a1a1a] dark:text-white">
                   <ReactMarkdown>{content}</ReactMarkdown>
                 </div>
               ) : (
@@ -243,26 +246,26 @@ const AskQuestion = () => {
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                   placeholder="Include all the information someone would need to answer your question... (Markdown supported)"
-                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-b-xl bg-white dark:bg-[#1a1a1a] text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none font-mono"
+                  className="w-full resize-none rounded-b-xl border border-gray-300 bg-white px-4 py-3 font-mono text-black placeholder-gray-400 shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-700 dark:bg-[#1a1a1a] dark:text-white dark:placeholder-gray-500"
                 />
               )}
             </div>
 
             <div>
-              <label htmlFor="tags" className="block text-sm font-medium mb-2">
+              <label htmlFor="tags" className="mb-2 block text-sm font-medium">
                 Tags
               </label>
-              <div className="flex flex-wrap gap-2 mb-2">
+              <div className="mb-2 flex flex-wrap gap-2">
                 {tags.map((tag) => (
                   <span
                     key={tag}
-                    className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm flex items-center"
+                    className="flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800 dark:bg-blue-900 dark:text-blue-200"
                   >
                     {tag}
                     <button
                       type="button"
                       onClick={() => handleRemoveTag(tag)}
-                      className="ml-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200"
+                      className="ml-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200"
                     >
                       ×
                     </button>
@@ -279,14 +282,14 @@ const AskQuestion = () => {
                     e.key === "Enter" && (e.preventDefault(), handleAddTag())
                   }
                   placeholder="Add tags (e.g. javascript, react, css)"
-                  className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-l-xl bg-white dark:bg-[#1a1a1a] text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                  className="flex-1 rounded-l-xl border border-gray-300 bg-white px-4 py-3 text-black placeholder-gray-400 shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-700 dark:bg-[#1a1a1a] dark:text-white dark:placeholder-gray-500"
                 />
                 <button
                   type="button"
                   onClick={handleAddTag}
-                  className="px-4 py-3 bg-gray-100 dark:bg-gray-800 border border-l-0 border-gray-300 dark:border-gray-700 rounded-r-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-all"
+                  className="rounded-r-xl border border-l-0 border-gray-300 bg-gray-100 px-4 py-3 transition-all hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
                 >
-                  <Tag className="w-5 h-5" />
+                  <Tag className="h-5 w-5" />
                 </button>
               </div>
             </div>
@@ -294,7 +297,7 @@ const AskQuestion = () => {
             <div>
               <button
                 type="submit"
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl shadow-md hover:shadow-xl transition-all w-full sm:w-fit"
+                className="w-full rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white shadow-md transition-all hover:bg-blue-700 hover:shadow-xl sm:w-fit"
               >
                 Submit Question
               </button>

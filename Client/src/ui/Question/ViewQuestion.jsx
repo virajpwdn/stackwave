@@ -1,20 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
-import { gsap } from "gsap";
 import ReactMarkdown from "react-markdown";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+
+import axios from "axios";
+import { gsap } from "gsap";
 import {
-  ThumbsUp,
-  ThumbsDown,
-  MessageSquare,
-  Share2,
+  Bold,
   Bookmark,
   Code,
-  Bold,
   Italic,
   List,
+  MessageSquare,
+  Share2,
+  ThumbsDown,
+  ThumbsUp,
 } from "lucide-react";
+
 import Sidebar from "../../components/Sidebar";
 import { BASE_URL } from "../../config/baseurl";
 
@@ -253,15 +255,15 @@ const ViewQuestion = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex bg-white dark:bg-[#0e0e0e] text-black dark:text-white transition-all">
-        <div className="w-1/4 hidden md:block">
+      <div className="flex min-h-screen bg-white text-black transition-all dark:bg-[#0e0e0e] dark:text-white">
+        <div className="hidden w-1/4 md:block">
           <Sidebar />
         </div>
         <div className="md:hidden">
           <Sidebar />
         </div>
-        <main className="w-full md:w-3/4 flex justify-center items-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600 dark:border-blue-400"></div>
+        <main className="flex w-full items-center justify-center md:w-3/4">
+          <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-t-2 border-blue-600 dark:border-blue-400"></div>
         </main>
       </div>
     );
@@ -269,15 +271,15 @@ const ViewQuestion = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen flex bg-white dark:bg-[#0e0e0e] text-black dark:text-white transition-all">
-        <div className="w-1/4 hidden md:block">
+      <div className="flex min-h-screen bg-white text-black transition-all dark:bg-[#0e0e0e] dark:text-white">
+        <div className="hidden w-1/4 md:block">
           <Sidebar />
         </div>
         <div className="md:hidden">
           <Sidebar />
         </div>
-        <main className="w-full md:w-3/4 flex justify-center items-center">
-          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg">
+        <main className="flex w-full items-center justify-center md:w-3/4">
+          <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700 dark:border-red-800 dark:bg-red-900/20 dark:text-red-400">
             {error}
           </div>
         </main>
@@ -286,28 +288,28 @@ const ViewQuestion = () => {
   }
 
   return (
-    <div className="min-h-screen flex bg-white dark:bg-[#0e0e0e] text-black dark:text-white transition-all">
-      <div className="w-1/4 hidden md:block">
+    <div className="flex min-h-screen bg-white text-black transition-all dark:bg-[#0e0e0e] dark:text-white">
+      <div className="hidden w-1/4 md:block">
         <Sidebar />
       </div>
       <div className="md:hidden">
         <Sidebar />
       </div>
 
-      <main className="w-full md:w-3/4 px-4 py-8 sm:px-6 lg:px-8 transition-all">
-        <div className="max-w-3xl mx-auto">
+      <main className="w-full px-4 py-8 transition-all sm:px-6 md:w-3/4 lg:px-8">
+        <div className="mx-auto max-w-3xl">
           {question && (
             <>
               {/* Question section */}
               <div ref={contentRef} className="mb-10">
-                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 leading-tight">
+                <h1 className="mb-4 text-2xl font-bold leading-tight sm:text-3xl md:text-4xl">
                   {question.title}
                 </h1>
-                <div className="flex flex-wrap gap-2 mb-6">
+                <div className="mb-6 flex flex-wrap gap-2">
                   {question.tags?.map((tag, index) => (
                     <span
                       key={index}
-                      className="px-2 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 text-xs rounded-full"
+                      className="rounded-full bg-blue-50 px-2 py-1 text-xs text-blue-600 dark:bg-blue-900/30 dark:text-blue-300"
                     >
                       {tag}
                     </span>
@@ -322,7 +324,7 @@ const ViewQuestion = () => {
                             className={`${className || ""} ${
                               inline
                                 ? ""
-                                : "block p-2 bg-gray-100 dark:bg-gray-800 rounded"
+                                : "block rounded bg-gray-100 p-2 dark:bg-gray-800"
                             }`}
                             {...props}
                           >
@@ -335,7 +337,7 @@ const ViewQuestion = () => {
                     {question.content || ""}
                   </ReactMarkdown>
                 </div>
-                <div className="flex justify-between items-center text-sm text-gray-600 dark:text-gray-400 mb-6">
+                <div className="mb-6 flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
                   <div>
                     Asked by{" "}
                     <span className="font-medium text-blue-600 dark:text-blue-400">
@@ -347,23 +349,23 @@ const ViewQuestion = () => {
                     {new Date(question.createdAt).toLocaleTimeString()}
                   </div>
                 </div>
-                <div className="flex items-center gap-4 mb-6">
+                <div className="mb-6 flex items-center gap-4">
                   <button
                     onClick={() => {
                       upvoteHandler("upvote", question._id, "question");
                     }}
-                    className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                    className="flex items-center gap-1 text-gray-600 transition-colors hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
                   >
-                    <ThumbsUp className="w-5 h-5" />
+                    <ThumbsUp className="h-5 w-5" />
                     <span>{question.upVote || 0}</span>
                   </button>
                   <button
                     onClick={() => {
                       upvoteHandler("downvote", question._id, "question");
                     }}
-                    className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                    className="flex items-center gap-1 text-gray-600 transition-colors hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400"
                   >
-                    <ThumbsDown className="w-5 h-5" />
+                    <ThumbsDown className="h-5 w-5" />
                     <span>{question.downVote || 0}</span>
                   </button>
                   <button
@@ -372,27 +374,27 @@ const ViewQuestion = () => {
                         activeCommentId === "question" ? null : "question"
                       )
                     }
-                    className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                    className="flex items-center gap-1 text-gray-600 transition-colors hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-400"
                   >
-                    <MessageSquare className="w-5 h-5" />
+                    <MessageSquare className="h-5 w-5" />
                     <span>{question.comments?.length || 0}</span>
                   </button>
-                  <button className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors">
-                    <Share2 className="w-5 h-5" />
+                  <button className="flex items-center gap-1 text-gray-600 transition-colors hover:text-green-600 dark:text-gray-400 dark:hover:text-green-400">
+                    <Share2 className="h-5 w-5" />
                   </button>
-                  <button className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
-                    <Bookmark className="w-5 h-5" />
+                  <button className="flex items-center gap-1 text-gray-600 transition-colors hover:text-yellow-600 dark:text-gray-400 dark:hover:text-yellow-400">
+                    <Bookmark className="h-5 w-5" />
                   </button>
                 </div>
               </div>
 
               {activeCommentId === "question" && (
-                <div className="mt-4 w-full mb-10">
+                <div className="mb-10 mt-4 w-full">
                   <div className="flex flex-col space-y-3">
                     {question.comments?.map((comment, index) => (
                       <div
                         key={index}
-                        className="bg-gray-50 dark:bg-gray-800/50 p-3 rounded-lg text-sm"
+                        className="rounded-lg bg-gray-50 p-3 text-sm dark:bg-gray-800/50"
                       >
                         <div className="flex justify-between">
                           <span className="font-medium text-blue-600 dark:text-blue-400">
@@ -407,19 +409,19 @@ const ViewQuestion = () => {
                         </p>
                       </div>
                     ))}
-                    <div className="flex mt-2">
+                    <div className="mt-2 flex">
                       <input
                         type="text"
                         value={commentContent}
                         onChange={(e) => setCommentContent(e.target.value)}
                         placeholder="Add a comment..."
-                        className="flex-grow px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-l-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        className="flex-grow rounded-l-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                       />
                       <button
                         onClick={() =>
                           handleSubmitComment(question._id, "question")
                         }
-                        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-r-lg transition-colors"
+                        className="rounded-r-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700"
                       >
                         Send
                       </button>
@@ -430,7 +432,7 @@ const ViewQuestion = () => {
 
               {/* Answers section */}
               <div className="mb-10">
-                <h2 className="text-xl font-bold mb-6 border-b border-gray-200 dark:border-gray-700 pb-2">
+                <h2 className="mb-6 border-b border-gray-200 pb-2 text-xl font-bold dark:border-gray-700">
                   {answers.length} {answers.length === 1 ? "Answer" : "Answers"}
                 </h2>
                 <div ref={answersRef} className="space-y-6">
@@ -439,9 +441,9 @@ const ViewQuestion = () => {
                       <div
                         key={answer._id}
                         id={`answer-${answer._id}`}
-                        className="p-6 bg-white dark:bg-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm"
+                        className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800/30"
                       >
-                        <div className="prose dark:prose-invert max-w-none mb-4">
+                        <div className="prose dark:prose-invert mb-4 max-w-none">
                           <ReactMarkdown
                             components={{
                               code({ inline, className, children, ...props }) {
@@ -450,7 +452,7 @@ const ViewQuestion = () => {
                                     className={`${className || ""} ${
                                       inline
                                         ? ""
-                                        : "block p-2 bg-gray-100 dark:bg-gray-800 rounded"
+                                        : "block rounded bg-gray-100 p-2 dark:bg-gray-800"
                                     }`}
                                     {...props}
                                   >
@@ -464,7 +466,7 @@ const ViewQuestion = () => {
                           </ReactMarkdown>
                         </div>
 
-                        <div className="flex justify-between items-center text-sm text-gray-600 dark:text-gray-400">
+                        <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
                           <div>
                             Answered by{" "}
                             <span className="font-medium text-blue-600 dark:text-blue-400">
@@ -476,13 +478,13 @@ const ViewQuestion = () => {
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-4 mt-4">
-                          <button className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                            <ThumbsUp className="w-4 h-4" />
+                        <div className="mt-4 flex items-center gap-4">
+                          <button className="flex items-center gap-1 text-gray-600 transition-colors hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400">
+                            <ThumbsUp className="h-4 w-4" />
                             <span>{answer.upvoteCount || 0}</span>
                           </button>
-                          <button className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors">
-                            <ThumbsDown className="w-4 h-4" />
+                          <button className="flex items-center gap-1 text-gray-600 transition-colors hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400">
+                            <ThumbsDown className="h-4 w-4" />
                             <span>{answer.downVoteCount || 0}</span>
                           </button>
                           <button
@@ -493,9 +495,9 @@ const ViewQuestion = () => {
                                   : answer._id
                               )
                             }
-                            className="flex items-center gap-1 text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                            className="flex items-center gap-1 text-gray-600 transition-colors hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-400"
                           >
-                            <MessageSquare className="w-4 h-4" />
+                            <MessageSquare className="h-4 w-4" />
                             <span>{answer.comments?.length || 0}</span>
                           </button>
                         </div>
@@ -506,7 +508,7 @@ const ViewQuestion = () => {
                               {answer.comments?.map((comment, index) => (
                                 <div
                                   key={index}
-                                  className="bg-gray-50 dark:bg-gray-800/50 p-3 rounded-lg text-sm"
+                                  className="rounded-lg bg-gray-50 p-3 text-sm dark:bg-gray-800/50"
                                 >
                                   <div className="flex justify-between">
                                     <span className="font-medium text-blue-600 dark:text-blue-400">
@@ -523,7 +525,7 @@ const ViewQuestion = () => {
                                   </p>
                                 </div>
                               ))}
-                              <div className="flex mt-2">
+                              <div className="mt-2 flex">
                                 <input
                                   type="text"
                                   value={commentContent}
@@ -531,13 +533,13 @@ const ViewQuestion = () => {
                                     setCommentContent(e.target.value)
                                   }
                                   placeholder="Add a comment..."
-                                  className="flex-grow px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-l-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                  className="flex-grow rounded-l-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                                 />
                                 <button
                                   onClick={() =>
                                     handleSubmitComment(answer._id, "answer")
                                   }
-                                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-r-lg transition-colors"
+                                  className="rounded-r-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700"
                                 >
                                   Send
                                 </button>
@@ -553,53 +555,53 @@ const ViewQuestion = () => {
 
               {/* Answer form */}
               <div ref={answerFormRef} className="mb-10">
-                <h2 className="text-xl font-bold mb-6">Your Answer</h2>
+                <h2 className="mb-6 text-xl font-bold">Your Answer</h2>
                 <form onSubmit={handleSubmitAnswer} className="space-y-4">
-                  <div className="flex items-center space-x-2 mb-2 p-2 bg-gray-50 dark:bg-gray-800 rounded-t-xl border border-gray-300 dark:border-gray-700">
+                  <div className="mb-2 flex items-center space-x-2 rounded-t-xl border border-gray-300 bg-gray-50 p-2 dark:border-gray-700 dark:bg-gray-800">
                     <button
                       type="button"
                       onClick={() => insertMarkdown("bold")}
-                      className="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                      className="rounded p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700"
                       title="Bold"
                     >
-                      <Bold className="w-4 h-4" />
+                      <Bold className="h-4 w-4" />
                     </button>
                     <button
                       type="button"
                       onClick={() => insertMarkdown("italic")}
-                      className="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                      className="rounded p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700"
                       title="Italic"
                     >
-                      <Italic className="w-4 h-4" />
+                      <Italic className="h-4 w-4" />
                     </button>
                     <button
                       type="button"
                       onClick={() => insertMarkdown("code")}
-                      className="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                      className="rounded p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700"
                       title="Code Block"
                     >
-                      <Code className="w-4 h-4" />
+                      <Code className="h-4 w-4" />
                     </button>
                     <button
                       type="button"
                       onClick={() => insertMarkdown("list")}
-                      className="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                      className="rounded p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700"
                       title="List"
                     >
-                      <List className="w-4 h-4" />
+                      <List className="h-4 w-4" />
                     </button>
                     <div className="flex-1"></div>
                     <button
                       type="button"
                       onClick={() => setPreviewMode(!previewMode)}
-                      className="text-sm px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+                      className="rounded bg-gray-200 px-3 py-1 text-sm hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
                     >
                       {previewMode ? "Edit" : "Preview"}
                     </button>
                   </div>
 
                   {previewMode ? (
-                    <div className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-b-xl bg-white dark:bg-[#1a1a1a] text-black dark:text-white min-h-[200px] prose dark:prose-invert max-w-none">
+                    <div className="prose dark:prose-invert min-h-[200px] w-full max-w-none rounded-b-xl border border-gray-300 bg-white px-4 py-3 text-black dark:border-gray-700 dark:bg-[#1a1a1a] dark:text-white">
                       <ReactMarkdown
                         components={{
                           code({ inline, className, children, ...props }) {
@@ -608,7 +610,7 @@ const ViewQuestion = () => {
                                 className={`${className || ""} ${
                                   inline
                                     ? ""
-                                    : "block p-2 bg-gray-100 dark:bg-gray-800 rounded"
+                                    : "block rounded bg-gray-100 p-2 dark:bg-gray-800"
                                 }`}
                                 {...props}
                               >
@@ -628,12 +630,12 @@ const ViewQuestion = () => {
                       value={answerContent}
                       onChange={(e) => setAnswerContent(e.target.value)}
                       placeholder="Write your answer here... (Markdown supported)"
-                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-b-xl bg-white dark:bg-[#1a1a1a] text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none font-mono"
+                      className="w-full resize-none rounded-b-xl border border-gray-300 bg-white px-4 py-3 font-mono text-black placeholder-gray-400 shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-700 dark:bg-[#1a1a1a] dark:text-white dark:placeholder-gray-500"
                     />
                   )}
                   <button
                     type="submit"
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl shadow-md hover:shadow-xl transition-all w-full sm:w-fit"
+                    className="w-full rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white shadow-md transition-all hover:bg-blue-700 hover:shadow-xl sm:w-fit"
                   >
                     Post Your Answer
                   </button>

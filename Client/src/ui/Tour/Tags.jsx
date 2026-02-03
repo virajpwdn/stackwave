@@ -1,43 +1,70 @@
-import React, { useState, useEffect } from "react";
-import { gsap } from "gsap";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import axios from "axios";
+import { gsap } from "gsap";
+
 import { BASE_URL } from "../../config/baseurl";
 
 const tagsData = [
   {
     name: "Frontend",
     subcategories: [
-      "React", "Vue.js", "Angular", "HTML", "CSS", 
-      "JavaScript", "Tailwind CSS", "Next.js",
+      "React",
+      "Vue.js",
+      "Angular",
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "Tailwind CSS",
+      "Next.js",
     ],
   },
   {
     name: "Backend",
     subcategories: [
-      "Node.js", "Express.js", "Python", "Django", 
-      "Flask", "Ruby on Rails", "RESTful APIs", "GraphQL",
+      "Node.js",
+      "Express.js",
+      "Python",
+      "Django",
+      "Flask",
+      "Ruby on Rails",
+      "RESTful APIs",
+      "GraphQL",
     ],
   },
   {
     name: "Database",
     subcategories: [
-      "MongoDB", "PostgreSQL", "MySQL", 
-      "SQL Server", "Firebase", "NoSQL",
+      "MongoDB",
+      "PostgreSQL",
+      "MySQL",
+      "SQL Server",
+      "Firebase",
+      "NoSQL",
     ],
   },
   {
     name: "Mobile",
     subcategories: [
-      "React Native", "Flutter", "Android", 
-      "iOS", "Swift", "Kotlin",
+      "React Native",
+      "Flutter",
+      "Android",
+      "iOS",
+      "Swift",
+      "Kotlin",
     ],
   },
   {
     name: "DevOps",
     subcategories: [
-      "Docker", "Kubernetes", "AWS", 
-      "Azure", "CI/CD", "Jenkins", "Git",
+      "Docker",
+      "Kubernetes",
+      "AWS",
+      "Azure",
+      "CI/CD",
+      "Jenkins",
+      "Git",
     ],
   },
 ];
@@ -46,7 +73,7 @@ const TagSelectionPage = () => {
   const [selectedSubcategories, setSelectedSubcategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-  
+
   // Animation for initial load
   useEffect(() => {
     gsap.fromTo(
@@ -74,14 +101,14 @@ const TagSelectionPage = () => {
       alert("Please select at least 3 tags to continue");
       return;
     }
-    
+
     try {
       const response = await axios.post(
         `${BASE_URL}/auth/select-tags`,
         { selectedSubcategories },
         { withCredentials: true }
       );
-      
+
       if (response.data.success) {
         navigate("/feed"); // Navigate to home page after successful submission
       }
@@ -95,23 +122,25 @@ const TagSelectionPage = () => {
   };
 
   // Filter tags based on search term
-  const filteredTags = searchTerm 
-    ? tagsData.map(category => ({
-        ...category,
-        subcategories: category.subcategories.filter(tag => 
-          tag.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      })).filter(category => category.subcategories.length > 0)
+  const filteredTags = searchTerm
+    ? tagsData
+        .map((category) => ({
+          ...category,
+          subcategories: category.subcategories.filter((tag) =>
+            tag.toLowerCase().includes(searchTerm.toLowerCase())
+          ),
+        }))
+        .filter((category) => category.subcategories.length > 0)
     : tagsData;
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white flex flex-col items-center py-10 px-4 transition-colors duration-200">
+    <div className="flex min-h-screen flex-col items-center bg-white px-4 py-10 text-black transition-colors duration-200 dark:bg-gray-900 dark:text-white">
       <div className="w-full max-w-4xl">
-        <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold mb-3">Personalize your feed</h1>
-          <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
-            Select at least 3 topics you're interested in to help us customize your feed.
-            You can always change these later.
+        <div className="mb-10 text-center">
+          <h1 className="mb-3 text-3xl font-bold">Personalize your feed</h1>
+          <p className="mx-auto max-w-xl text-gray-600 dark:text-gray-400">
+            Select at least 3 topics you're interested in to help us customize
+            your feed. You can always change these later.
           </p>
         </div>
 
@@ -122,19 +151,19 @@ const TagSelectionPage = () => {
             placeholder="Search for topics..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+            className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
           />
         </div>
 
         {/* Selected tags count */}
-        <div className="mb-6 flex justify-between items-center">
+        <div className="mb-6 flex items-center justify-between">
           <span className="text-gray-600 dark:text-gray-400">
             {selectedSubcategories.length} topics selected
           </span>
           {selectedSubcategories.length > 0 && (
             <button
               onClick={() => setSelectedSubcategories([])}
-              className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+              className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
             >
               Clear all
             </button>
@@ -142,19 +171,19 @@ const TagSelectionPage = () => {
         </div>
 
         {/* Tags sections */}
-        <div className="space-y-8 mb-10">
+        <div className="mb-10 space-y-8">
           {filteredTags.map((category) => (
             <div key={category.name} className="tag-category">
-              <h2 className="text-xl font-semibold mb-4">{category.name}</h2>
+              <h2 className="mb-4 text-xl font-semibold">{category.name}</h2>
               <div className="flex flex-wrap gap-3">
                 {category.subcategories.map((subcategory) => (
                   <button
                     key={subcategory}
                     onClick={() => handleSubcategoryClick(subcategory)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                    className={`rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 ${
                       isSubcategorySelected(subcategory)
                         ? "bg-blue-600 text-white hover:bg-blue-700"
-                        : "bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600"
+                        : "border border-gray-200 bg-gray-100 text-gray-800 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
                     }`}
                   >
                     {subcategory}
@@ -166,13 +195,13 @@ const TagSelectionPage = () => {
         </div>
 
         {/* Action buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+        <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
           <button
             onClick={handleSubmit}
             disabled={selectedSubcategories.length < 3}
-            className={`px-8 py-3 rounded-lg font-medium text-white transition-colors ${
+            className={`rounded-lg px-8 py-3 font-medium text-white transition-colors ${
               selectedSubcategories.length < 3
-                ? "bg-blue-400 dark:bg-blue-500/50 cursor-not-allowed"
+                ? "cursor-not-allowed bg-blue-400 dark:bg-blue-500/50"
                 : "bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-500"
             }`}
           >
@@ -180,7 +209,7 @@ const TagSelectionPage = () => {
           </button>
           <button
             onClick={handleSkip}
-            className="px-8 py-3 rounded-lg font-medium text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            className="rounded-lg border border-gray-300 px-8 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
           >
             Skip for now
           </button>

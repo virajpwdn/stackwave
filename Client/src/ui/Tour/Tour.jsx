@@ -1,21 +1,22 @@
 import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import { useSelector } from "react-redux";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Tour = () => {
   const navigate = useNavigate();
-  const user = useSelector(state => state.user.user);
-  
+  const user = useSelector((state) => state.user.user);
+
   console.log("Tour component rendering, user:", user);
-  
+
   useEffect(() => {
     // Create a single animation timeline for better performance
     const fadeElements = gsap.utils.toArray(".fade-up");
-    
+
     fadeElements.forEach((el) => {
       gsap.fromTo(
         el,
@@ -32,10 +33,10 @@ const Tour = () => {
         }
       );
     });
-    
+
     return () => {
       // Clean up ScrollTrigger instances when component unmounts
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
 
@@ -50,53 +51,86 @@ const Tour = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white px-6 py-10 md:px-20 lg:px-32">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-blue-600 mb-6 fade-up">
-          👋 Welcome to StackWave, {user?.firstName || 'User'}!
+    <div className="min-h-screen bg-white px-6 py-10 text-black dark:bg-black dark:text-white md:px-20 lg:px-32">
+      <div className="mx-auto max-w-4xl">
+        <h1 className="fade-up mb-6 text-3xl font-bold text-blue-600">
+          👋 Welcome to StackWave, {user?.firstName || "User"}!
         </h1>
 
         <div className="space-y-6 text-base leading-relaxed text-gray-800 dark:text-gray-200">
           <p className="fade-up">
-            StackWave is a platform where you can <strong>ask and answer technical questions</strong>. It's a knowledge-sharing community designed to help developers grow.
+            StackWave is a platform where you can{" "}
+            <strong>ask and answer technical questions</strong>. It's a
+            knowledge-sharing community designed to help developers grow.
           </p>
 
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 fade-up">🏷️ Tags Section</h2>
+          <h2 className="fade-up text-xl font-semibold text-gray-900 dark:text-gray-100">
+            🏷️ Tags Section
+          </h2>
           <p className="fade-up">
-            Use tags to categorize your questions. This helps others discover and answer them more easily. Choose relevant tags to increase your chances of getting helpful answers.
+            Use tags to categorize your questions. This helps others discover
+            and answer them more easily. Choose relevant tags to increase your
+            chances of getting helpful answers.
           </p>
 
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 fade-up">💬 Asking Questions</h2>
+          <h2 className="fade-up text-xl font-semibold text-gray-900 dark:text-gray-100">
+            💬 Asking Questions
+          </h2>
           <p className="fade-up">
-            Be clear and concise. Provide enough context and code snippets if needed. The better your question, the quicker you'll get valuable responses.
+            Be clear and concise. Provide enough context and code snippets if
+            needed. The better your question, the quicker you'll get valuable
+            responses.
           </p>
 
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 fade-up">🎖️ Badge System</h2>
-          <ul className="list-disc ml-6 space-y-2 fade-up">
-            <li>You start with a <span className="text-yellow-700 dark:text-yellow-400 font-semibold">Bronze</span> badge.</li>
-            <li>Answer 10 questions to earn a <span className="text-gray-500 dark:text-gray-300 font-semibold">Silver</span> badge.</li>
-            <li>Answer 50 questions to unlock the prestigious <span className="text-yellow-500 dark:text-yellow-300 font-semibold">Gold</span> badge.</li>
+          <h2 className="fade-up text-xl font-semibold text-gray-900 dark:text-gray-100">
+            🎖️ Badge System
+          </h2>
+          <ul className="fade-up ml-6 list-disc space-y-2">
+            <li>
+              You start with a{" "}
+              <span className="font-semibold text-yellow-700 dark:text-yellow-400">
+                Bronze
+              </span>{" "}
+              badge.
+            </li>
+            <li>
+              Answer 10 questions to earn a{" "}
+              <span className="font-semibold text-gray-500 dark:text-gray-300">
+                Silver
+              </span>{" "}
+              badge.
+            </li>
+            <li>
+              Answer 50 questions to unlock the prestigious{" "}
+              <span className="font-semibold text-yellow-500 dark:text-yellow-300">
+                Gold
+              </span>{" "}
+              badge.
+            </li>
           </ul>
 
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 fade-up">🚫 Respect Guidelines</h2>
+          <h2 className="fade-up text-xl font-semibold text-gray-900 dark:text-gray-100">
+            🚫 Respect Guidelines
+          </h2>
           <p className="fade-up">
-            Be respectful to other users. Use of abusive or harmful language will result in a permanent ban from the platform.
+            Be respectful to other users. Use of abusive or harmful language
+            will result in a permanent ban from the platform.
           </p>
 
-          <div className="mt-10 p-6 border border-gray-300 dark:border-gray-700 rounded-xl shadow-sm bg-gray-50 dark:bg-gray-900 fade-up">
-            <p className="mb-4 text-gray-900 dark:text-white font-medium">
+          <div className="fade-up mt-10 rounded-xl border border-gray-300 bg-gray-50 p-6 shadow-sm dark:border-gray-700 dark:bg-gray-900">
+            <p className="mb-4 font-medium text-gray-900 dark:text-white">
               ✅ Accept the terms to continue using StackWave.
             </p>
-            <div className="flex gap-4 flex-col sm:flex-row">
+            <div className="flex flex-col gap-4 sm:flex-row">
               <button
                 onClick={handleAccept}
-                className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium"
+                className="rounded-xl bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700"
               >
                 Accept & Continue
               </button>
               <button
                 onClick={handleDecline}
-                className="px-6 py-3 border border-gray-400 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="rounded-xl border border-gray-400 px-6 py-3 text-gray-700 transition-colors hover:bg-gray-100 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
               >
                 Decline
               </button>

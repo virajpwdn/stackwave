@@ -1,25 +1,26 @@
 import React from "react";
 import {
+  Outlet,
+  Route,
   BrowserRouter as Router,
   Routes,
-  Route,
-  Outlet,
 } from "react-router-dom";
-import Signup from "../ui/Auth/Signup";
-import Login from "../ui/Auth/Login";
-import Authentication from "./Authentication";
-import Tour from "../ui/Tour/Tour";
-import TagSelectionPage from "../ui/Tour/Tags";
-import QuestionFeed from "../ui/Question/Questions";
-import CreateQuestion from "../ui/Question/CreateQuestion";
-import ViewQuestion from "../ui/Question/ViewQuestion";
+
 import Navbar from "../components/Navbar";
-import Room from "../ui/Room/Room";
-import CreateRoom from "../ui/Room/CreateRoom";
-import CodeEditor from "../ui/Editor/CodeEditor";
 import RefactorAI from "../ui/AI/RefactorAI";
+import Login from "../ui/Auth/Login";
+import Signup from "../ui/Auth/Signup";
+import CodeEditor from "../ui/Editor/CodeEditor";
 import Hero from "../ui/HeroPage/Hero";
+import CreateQuestion from "../ui/Question/CreateQuestion";
+import QuestionFeed from "../ui/Question/Questions";
+import ViewQuestion from "../ui/Question/ViewQuestion";
+import CreateRoom from "../ui/Room/CreateRoom";
+import Room from "../ui/Room/Room";
 import GuestDashboard from "../ui/settings/Settings";
+import TagSelectionPage from "../ui/Tour/Tags";
+import Tour from "../ui/Tour/Tour";
+import Authentication from "./Authentication";
 
 // Layout component that includes Navbar and renders children through Outlet
 const Layout = () => {
