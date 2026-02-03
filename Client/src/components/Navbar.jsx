@@ -12,9 +12,9 @@ const Navbar = () => {
   const store = useSelector((store) => store.user.user);
 
   // Toggle mobile menu
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  // const toggleMenu = () => {
+  //   setIsOpen(!isOpen);
+  // };
 
   // Toggle dark/light mode
   const toggleDarkMode = () => {
