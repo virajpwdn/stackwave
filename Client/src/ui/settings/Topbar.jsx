@@ -27,27 +27,27 @@ const Topbar = () => {
       createdAt: Date.now(),
       redirect: "/",
     },
-    {
-      question: "what is javascript",
-      createdAt: Date.now(),
-      redirect: "/",
-    },
-    {
-      question: "what is javascript",
-      createdAt: Date.now(),
-      redirect: "/",
-    },
-    {
-      question: "what is javascript",
-      createdAt: Date.now(),
-      redirect: "/",
-    },
+    // {
+    //   question: "what is javascript",
+    //   createdAt: Date.now(),
+    //   redirect: "/",
+    // },
+    // {
+    //   question: "what is javascript",
+    //   createdAt: Date.now(),
+    //   redirect: "/",
+    // },
+    // {
+    //   question: "what is javascript",
+    //   createdAt: Date.now(),
+    //   redirect: "/",
+    // },
   ];
   const [data] = useState(questionData);
   return (
-    <div className="">
+    <div>
       <h1 className="text-2xl font-bold">Recent Questions</h1>
-      <div className="">
+      <div>
         {data.map((item, idx) => {
           const data = new Date(item.createdAt);
           const options = { year: "numeric", month: "long" };

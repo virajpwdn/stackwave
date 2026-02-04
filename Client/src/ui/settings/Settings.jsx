@@ -6,12 +6,16 @@ import axios from "axios";
 import Sidebar from "../../components/Sidebar";
 import { BASE_URL } from "../../config/baseurl";
 import {
+  barChartBox1,
+  barChartBox2,
   chartBoxAnswers,
   chartBoxDownvote,
   chartBoxUpvote,
   chartBoxUser,
 } from "../../utils/data";
+import BarChartGraph from "./BarChart";
 import ChartBox from "./ChartBox";
+import PieChartGraph from "./PieChart";
 import Topbar from "./Topbar";
 
 export default function GuestDashboard() {
@@ -69,9 +73,7 @@ export default function GuestDashboard() {
   return (
     <div className="flex h-screen bg-gray-50 text-gray-900 dark:bg-[#0e0e0e] dark:text-white">
       {/* Sidebar */}
-      <div>
-        <Sidebar />
-      </div>
+      <div>{/* <Sidebar /> */}</div>
 
       {/* Main Content */}
       <div
@@ -87,7 +89,9 @@ export default function GuestDashboard() {
         <div className="div3 box">
           <ChartBox {...chartBoxAnswers} />
         </div>
-        <div className="div4 box col-span-1 row-span-3"></div>
+        <div className="div4 box col-span-1 row-span-3">
+          <PieChartGraph />
+        </div>
         <div className="div5 box">
           <ChartBox {...chartBoxUpvote} />
         </div>
@@ -95,8 +99,12 @@ export default function GuestDashboard() {
           <ChartBox {...chartBoxDownvote} />
         </div>
         <div className="div7 box col-span-2 row-span-2"></div>
-        <div className="div8 box">{/* <Topbar /> */}</div>
-        <div className="div9 box"></div>
+        <div className="div8 box">
+          <BarChartGraph {...barChartBox1} />
+        </div>
+        <div className="div9 box">
+          <BarChartGraph {...barChartBox2} />
+        </div>
       </div>
     </div>
   );
