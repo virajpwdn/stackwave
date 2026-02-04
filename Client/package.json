@@ -6,13 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "lint",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
     "format": "prettier --write  \"**/*.{ts,tsx,js,jsx,json,md,mdx,css}\"",
     "format:check": "prettier --check  \"**/*.{ts,tsx,js,jsx,json,md,mdx,css}\"",
     "lint-staged": "lint-staged",
-    "prepare": "husky",
     "preview": "vite preview",
-    "check-types": "turbo run check-types"
+    "check-types": "check-types",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.16.0",
@@ -28,7 +28,6 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "lucide-react": "^0.501.0",
-    "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -37,6 +36,7 @@
     "react-redux": "^9.2.0",
     "react-router": "^7.5.1",
     "react-router-dom": "^7.5.1",
+    "recharts": "^3.7.0",
     "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
@@ -50,6 +50,7 @@
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
     "postcss": "^8.5.3",
+    "prettier": "^3.8.1",
     "tailwindcss": "^3.4.17",
     "vite": "^6.3.1"
   }
