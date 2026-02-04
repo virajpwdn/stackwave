@@ -5,6 +5,12 @@ import axios from "axios";
 
 import Sidebar from "../../components/Sidebar";
 import { BASE_URL } from "../../config/baseurl";
+import {
+  chartBoxAnswers,
+  chartBoxDownvote,
+  chartBoxUpvote,
+  chartBoxUser,
+} from "../../utils/data";
 import ChartBox from "./ChartBox";
 import Topbar from "./Topbar";
 
@@ -76,12 +82,18 @@ export default function GuestDashboard() {
           <Topbar />
         </div>
         <div className="div2 box">
-          <ChartBox />
+          <ChartBox {...chartBoxUser} />
         </div>
-        <div className="div3 box"></div>
+        <div className="div3 box">
+          <ChartBox {...chartBoxAnswers} />
+        </div>
         <div className="div4 box col-span-1 row-span-3"></div>
-        <div className="div5 box"></div>
-        <div className="div6 box"></div>
+        <div className="div5 box">
+          <ChartBox {...chartBoxUpvote} />
+        </div>
+        <div className="div6 box">
+          <ChartBox {...chartBoxDownvote} />
+        </div>
         <div className="div7 box col-span-2 row-span-2"></div>
         <div className="div8 box">{/* <Topbar /> */}</div>
         <div className="div9 box"></div>
