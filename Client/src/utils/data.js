@@ -99,3 +99,13 @@ export const barChartBox2 = {
     { name: "Sat", total: "8000" },
   ],
 };
+
+export const areaGraphData = [
+  { name: "Sun", questions: "5", answers: "10", upvotes: "3" },
+  { name: "Mon", questions: "15", answers: "20", upvotes: "4" },
+  { name: "Tue", questions: "8", answers: "7", upvotes: "6" },
+  { name: "Wed", questions: "25", answers: "11", upvotes: "8" },
+  { name: "Thu", questions: "24", answers: "19", upvotes: "9" },
+  { name: "Fri", questions: "23", answers: "9", upvotes: "12" },
+  { name: "Sat", questions: "21", answers: "19", upvotes: "20" },
+];
