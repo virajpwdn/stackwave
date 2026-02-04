@@ -31,3 +31,7 @@
   font-family: gilroy-extrabold;
   src: url("./assets/fonts/Gilroy-ExtraBold.ttf");
 }
+
+.box {
+ @apply p-5 rounded-lg border border-solid border-slate-400; 
+}
