@@ -13,6 +13,7 @@ import {
   chartBoxUpvote,
   chartBoxUser,
 } from "../../utils/data";
+import AreaChartGraph from "./AreaChart";
 import BarChartGraph from "./BarChart";
 import ChartBox from "./ChartBox";
 import PieChartGraph from "./PieChart";
@@ -73,7 +74,9 @@ export default function GuestDashboard() {
   return (
     <div className="flex h-screen bg-gray-50 text-gray-900 dark:bg-[#0e0e0e] dark:text-white">
       {/* Sidebar */}
-      <div>{/* <Sidebar /> */}</div>
+      <div>
+        <Sidebar />
+      </div>
 
       {/* Main Content */}
       <div
@@ -98,7 +101,9 @@ export default function GuestDashboard() {
         <div className="div6 box">
           <ChartBox {...chartBoxDownvote} />
         </div>
-        <div className="div7 box col-span-2 row-span-2"></div>
+        <div className="div7 box col-span-2 row-span-2">
+          <AreaChartGraph />
+        </div>
         <div className="div8 box">
           <BarChartGraph {...barChartBox1} />
         </div>
