@@ -69,3 +69,33 @@ export const chartBoxDownvote = {
     { name: "Sat", downvote: 6 },
   ],
 };
+
+export const barChartBox1 = {
+  title: "Last Month",
+  color: "#FF8042",
+  dataKey: "total",
+  chartData: [
+    { name: "Sun", total: "400" },
+    { name: "Mon", total: "500" },
+    { name: "Tue", total: "100" },
+    { name: "Wed", total: "600" },
+    { name: "Thu", total: "200" },
+    { name: "Fri", total: "500" },
+    { name: "Sat", total: "800" },
+  ],
+};
+
+export const barChartBox2 = {
+  title: "This Month",
+  color: "#8884d8",
+  dataKey: "total",
+  chartData: [
+    { name: "Sun", total: "4000" },
+    { name: "Mon", total: "5000" },
+    { name: "Tue", total: "1000" },
+    { name: "Wed", total: "6000" },
+    { name: "Thu", total: "2000" },
+    { name: "Fri", total: "5000" },
+    { name: "Sat", total: "8000" },
+  ],
+};
