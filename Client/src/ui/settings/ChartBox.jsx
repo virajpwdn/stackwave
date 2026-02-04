@@ -1,6 +1,6 @@
 import { Line, LineChart, ResponsiveContainer, Tooltip } from "recharts";
 
-const ChartBox = () => {
+const ChartBox = (props) => {
   const data = [
     {
       name: "Page A",
@@ -54,10 +54,10 @@ const ChartBox = () => {
             alt=""
             className="h-10 w-10 rounded-full"
           />
-          <span>Total Questions</span>
+          <span>{props.title}</span>
         </div>
-        <h1 className="text-2xl font-bold">11.238</h1>
-        <p>View all</p>
+        <h1 className="text-2xl font-bold">{props.number}</h1>
+        <p style={{ color: props.color }}>View all</p>
       </div>
       <div className="chartInfo flex flex-[2] flex-col items-center justify-between">
         <div className="chart h-full w-full">
@@ -69,7 +69,7 @@ const ChartBox = () => {
               aspectRatio: 1.618,
             }}
             responsive
-            data={data}
+            data={props.chartData}
           >
             <Tooltip
               contentStyle={{ background: "transparent", border: "none" }}
@@ -78,8 +78,8 @@ const ChartBox = () => {
             />
             <Line
               type="monotone"
-              dataKey="pv"
-              stroke="#8884d8"
+              dataKey={props.dataKey}
+              stroke={props.color}
               strokeWidth={2}
               dot={false}
             />
@@ -87,7 +87,12 @@ const ChartBox = () => {
           </LineChart>
         </div>
         <div className="texts flex flex-col items-end">
-          <span className="percentage text-xl font-bold">45%</span>
+          <span
+            className="percentage text-xl font-bold"
+            style={{ color: props.number < 0 ? "tomato" : "limegreen" }}
+          >
+            {props.number}%
+          </span>
           <span className="duration">this month</span>
         </div>
       </div>
