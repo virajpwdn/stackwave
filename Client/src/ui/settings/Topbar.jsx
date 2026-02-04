@@ -48,12 +48,12 @@ const Topbar = () => {
     <div className="">
       <h1 className="text-2xl font-bold">Recent Questions</h1>
       <div className="">
-        {data.map((item) => {
+        {data.map((item, idx) => {
           const data = new Date(item.createdAt);
           const options = { year: "numeric", month: "long" };
           const formattedData = data.toLocaleDateString("en-US", options);
           return (
-            <div className="mt-2 flex items-center justify-between">
+            <div key={idx} className="mt-2 flex items-center justify-between">
               <div className="my-3 flex flex-col gap-1">
                 <h4 className="text-base font-medium leading-none">
                   {item.question}
@@ -69,7 +69,7 @@ const Topbar = () => {
           );
         })}
         <div className="flex items-center justify-center">
-          <button className="mt-5 rounded-md bg-accent px-4 py-2 font-semibold transition-colors duration-75 ease-in hover:border hover:bg-transparent">
+          <button className="mt-5 rounded-md border border-transparent bg-accent px-4 py-2 font-semibold text-white transition-colors duration-75 ease-in hover:border hover:bg-transparent hover:text-black">
             View All
           </button>
         </div>

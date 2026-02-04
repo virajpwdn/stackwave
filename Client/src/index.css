@@ -33,5 +33,5 @@
 }
 
 .box {
- @apply p-5 rounded-lg border border-solid border-slate-400; 
+  @apply rounded-lg border border-solid border-slate-400 p-5 dark:border-zinc-600;
 }

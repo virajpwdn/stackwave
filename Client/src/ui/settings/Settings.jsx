@@ -5,6 +5,7 @@ import axios from "axios";
 
 import Sidebar from "../../components/Sidebar";
 import { BASE_URL } from "../../config/baseurl";
+import ChartBox from "./ChartBox";
 import Topbar from "./Topbar";
 
 export default function GuestDashboard() {
@@ -68,21 +69,21 @@ export default function GuestDashboard() {
 
       {/* Main Content */}
       <div
-        className="grid grid-cols-4 gap-5 auto-rows-[minmax(180px, 1fr)] w-full p-5 h-full overflow-y-auto"
-        
+        className="grid h-full w-full grid-cols-4 gap-5 overflow-y-auto p-5"
+        style={{ gridAutoRows: "minmax(180px, 1fr)" }}
       >
         <div className="div1 box col-span-1 row-span-3">
           <Topbar />
         </div>
-        <div className="div2 box"></div>
+        <div className="div2 box">
+          <ChartBox />
+        </div>
         <div className="div3 box"></div>
         <div className="div4 box col-span-1 row-span-3"></div>
         <div className="div5 box"></div>
         <div className="div6 box"></div>
         <div className="div7 box col-span-2 row-span-2"></div>
-        <div className="div8 box ">
-          {/* <Topbar /> */}
-        </div>
+        <div className="div8 box">{/* <Topbar /> */}</div>
         <div className="div9 box"></div>
       </div>
     </div>
