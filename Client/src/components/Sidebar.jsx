@@ -71,7 +71,7 @@ const Sidebar = () => {
       {/* Sidebar for both mobile and desktop */}
       <aside
         ref={sidebarRef}
-        className={`fixed left-0 top-0 h-screen w-64 bg-gray-100 p-4 text-black transition-transform duration-300 ease-in-out dark:bg-black dark:text-white md:sticky ${
+        className={`fixed left-0 top-0 h-screen max-w-64 bg-gray-100 p-4 text-black transition-transform duration-300 ease-in-out dark:bg-black dark:text-white md:sticky ${
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         } z-40 overflow-y-auto shadow-lg md:z-auto md:translate-x-0 md:shadow-none`}
       >
@@ -89,7 +89,7 @@ const Sidebar = () => {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <Home size={20} className="text-blue-600 dark:text-blue-400" />
-              <span>Home</span>
+              <span className="sidebar-text">Home</span>
             </Link>
 
             <Link
@@ -101,7 +101,7 @@ const Sidebar = () => {
                 size={20}
                 className="text-blue-600 dark:text-blue-400"
               />
-              <span>Questions</span>
+              <span className="sidebar-text">Questions</span>
             </Link>
 
             <Link
@@ -110,7 +110,7 @@ const Sidebar = () => {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <Tag size={20} className="text-blue-600 dark:text-blue-400" />
-              <span>Tags</span>
+              <span className="sidebar-text">Tags</span>
             </Link>
 
             <Link
@@ -119,13 +119,13 @@ const Sidebar = () => {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <Video size={20} className="text-blue-600 dark:text-blue-400" />
-              <span>Live Rooms</span>
+              <span className="sidebar-text">Rooms</span>
             </Link>
 
             <hr className="my-4 border-gray-300 dark:border-gray-700" />
 
             {/* User activity section */}
-            <h3 className="mb-2 px-4 text-sm font-semibold text-gray-500 dark:text-gray-400">
+            <h3 className="sidebar-text mb-2 px-4 text-sm font-semibold text-gray-500 dark:text-gray-400">
               YOUR ACTIVITY
             </h3>
 
@@ -138,7 +138,7 @@ const Sidebar = () => {
                 size={20}
                 className="text-gray-500 dark:text-gray-400"
               />
-              <span>Answers</span>
+              <span className="sidebar-text">Answers</span>
             </Link>
 
             <Link
@@ -150,7 +150,7 @@ const Sidebar = () => {
                 size={20}
                 className="text-gray-500 dark:text-gray-400"
               />
-              <span>Questions</span>
+              <span className="sidebar-text">Questions</span>
             </Link>
 
             <Link
@@ -162,7 +162,7 @@ const Sidebar = () => {
                 size={20}
                 className="text-gray-500 dark:text-gray-400"
               />
-              <span>Upvotes</span>
+              <span className="sidebar-text">Upvotes</span>
             </Link>
 
             <Link
@@ -174,7 +174,7 @@ const Sidebar = () => {
                 size={20}
                 className="text-gray-500 dark:text-gray-400"
               />
-              <span>Downvotes</span>
+              <span className="sidebar-text">Downvotes</span>
             </Link>
 
             <Link
@@ -186,12 +186,12 @@ const Sidebar = () => {
                 size={20}
                 className="text-gray-500 dark:text-gray-400"
               />
-              <span>Settings</span>
+              <span className="sidebar-text">Settings</span>
             </Link>
           </nav>
 
           {/* Footer */}
-          <div className="mt-auto border-t border-gray-300 pt-4 dark:border-gray-700">
+          <div className="sidebar-text mt-auto border-t border-gray-300 pt-4 dark:border-gray-700">
             <p className="text-sm text-gray-600 dark:text-gray-400">
               © 2023 StackWave
             </p>
