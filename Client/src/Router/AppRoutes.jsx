@@ -8,19 +8,20 @@ import {
 
 import Navbar from "../components/Navbar";
 import DataTable from "../ui/admin/DataTable";
-import RefactorAI from "../ui/AI/RefactorAI";
-import Login from "../ui/Auth/Login";
-import Signup from "../ui/Auth/Signup";
-import CodeEditor from "../ui/Editor/CodeEditor";
-import Hero from "../ui/HeroPage/Hero";
-import CreateQuestion from "../ui/Question/CreateQuestion";
-import QuestionFeed from "../ui/Question/Questions";
-import ViewQuestion from "../ui/Question/ViewQuestion";
-import CreateRoom from "../ui/Room/CreateRoom";
-import Room from "../ui/Room/Room";
+import RefactorAI from "../ui/ai/RefactorAI";
+import Login from "../ui/auth/Login";
+import Signup from "../ui/auth/Signup";
+import CodeEditor from "../ui/editor/CodeEditor";
+import Hero from "../ui/heropage/Hero";
+import CreateQuestion from "../ui/question/CreateQuestion";
+import QuestionFeed from "../ui/question/Questions";
+import ViewQuestion from "../ui/question/ViewQuestion";
+import CreateRoom from "../ui/room/CreateRoom";
+import Room from "../ui/room/Room";
 import GuestDashboard from "../ui/settings/Settings";
-import TagSelectionPage from "../ui/Tour/Tags";
-import Tour from "../ui/Tour/Tour";
+import TagSelectionPage from "../ui/tour/Tags";
+import Tour from "../ui/tour/Tour";
+import User from "../ui/user/User";
 import Authentication from "./Authentication";
 
 // Layout component that includes Navbar and renders children through Outlet
@@ -109,7 +110,23 @@ const AppRoutes = () => {
             }
           />
 
-          <Route path="/admin" element={<DataTable />} />
+          <Route
+            path="/admin"
+            element={
+              <Authentication>
+                <DataTable />
+              </Authentication>
+            }
+          />
+
+          <Route
+            path="/user/:id"
+            element={
+              <Authentication>
+                <User />
+              </Authentication>
+            }
+          />
 
           <Route path="*" element={<QuestionFeed />} />
         </Route>
