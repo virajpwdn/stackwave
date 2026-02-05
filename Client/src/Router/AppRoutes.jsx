@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import Navbar from "../components/Navbar";
+import DataTable from "../ui/admin/DataTable";
 import RefactorAI from "../ui/AI/RefactorAI";
 import Login from "../ui/Auth/Login";
 import Signup from "../ui/Auth/Signup";
@@ -107,6 +108,8 @@ const AppRoutes = () => {
               </Authentication>
             }
           />
+
+          <Route path="/admin" element={<DataTable />} />
 
           <Route path="*" element={<QuestionFeed />} />
         </Route>

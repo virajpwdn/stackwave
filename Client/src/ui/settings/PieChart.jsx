@@ -37,15 +37,15 @@ const PieChartGraph = ({ isAnimationActive = true }) => {
           />
         </PieChart>
       </div>
-      <div className="options flex items-center justify-between gap-10 text-sm">
+      <div className="options flex items-center justify-between text-sm">
         {data.map((item) => (
           <div key={item.name}>
-            <div>
+            <div className="flex items-center justify-start gap-2">
               <div
-                className="dot h-2 w-2 rounded-[50%]"
+                className="dot h-1.5 w-1.5 rounded-[50%]"
                 style={{ backgroundColor: item.fill }}
               ></div>
-              <span>{item.name}</span>
+              <span className="text-xs">{item.name}</span>
             </div>
             <span>{item.value}</span>
           </div>
