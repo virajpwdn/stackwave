@@ -22,9 +22,11 @@ const Navbar = () => {
     if (isDarkMode) {
       document.documentElement.classList.remove("dark");
       localStorage.theme = "light";
+      window.dispatchEvent(new CustomEvent("themeChange", { detail: "light" }));
     } else {
       document.documentElement.classList.add("dark");
       localStorage.theme = "dark";
+      window.dispatchEvent(new CustomEvent("themeChange", { detail: "dark" }));
     }
   };
 

@@ -17,8 +17,10 @@
   "dependencies": {
     "@chakra-ui/react": "^3.16.0",
     "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@monaco-editor/react": "^4.7.0",
+    "@mui/material": "^7.3.7",
+    "@mui/x-data-grid": "^8.27.0",
     "@reduxjs/toolkit": "^2.7.0",
     "@tailwindcss/typography": "^0.5.16",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
