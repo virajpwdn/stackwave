@@ -1,11 +1,15 @@
+import { useState } from "react";
+
 import Paper from "@mui/material/Paper";
 import { DataGrid } from "@mui/x-data-grid";
 import { GridToolbar } from "@mui/x-data-grid/internals";
 import { Ban, BanIcon, SquareArrowOutUpRight } from "lucide-react";
 
+import TransitionsModal from "../../components/Modal";
 import { useTheme } from "../../lib/hooks/useTheme";
 
 const DataTable = () => {
+  const [showModal, setShowModal] = useState(false);
   const theme = useTheme();
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
@@ -75,9 +79,8 @@ const DataTable = () => {
       renderCell: () => {
         return (
           <div className="flex h-full items-center justify-start">
-            <button>
-              <BanIcon width={18} strokeWidth={1.5} />
-            </button>
+            {/* <BanIcon width={18} strokeWidth={1.5} /> */}
+            <TransitionsModal icon={BanIcon} width={18} strokeWidth={1.5} />
           </div>
         );
       },
@@ -97,6 +100,7 @@ const DataTable = () => {
 
   return (
     <div className="h-screen w-screen bg-white">
+      {showModal && <TransitionsModal />}
       <Paper sx={{ height: "100%", width: "100%" }}>
         <DataGrid
           rows={rows}
