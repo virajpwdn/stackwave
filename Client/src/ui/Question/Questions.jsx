@@ -93,7 +93,7 @@ const Questions = () => {
   return (
     <div className="flex min-h-screen bg-white text-black transition-all dark:bg-[#0e0e0e] dark:text-white">
       {/* Sidebar component - 25% width */}
-      <div className="hidden w-1/4 md:block">
+      <div className="hidden md:block">
         <Sidebar />
       </div>
 
@@ -106,7 +106,7 @@ const Questions = () => {
       {/* Removed sidebarRef and related animation code */}
 
       {/* Main Content - 75% width */}
-      <main className="w-full px-4 py-8 transition-all sm:px-6 md:w-3/4 lg:px-8">
+      <main className="w-full px-4 py-8 transition-all sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl">
           {/* Header */}
           <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
