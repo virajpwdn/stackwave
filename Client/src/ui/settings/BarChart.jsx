@@ -41,26 +41,28 @@ const BarChartGraph = (props) => {
   ];
   return (
     <div className="h-full w-full">
-      <h1 className="mb-5 text-lg font-semibold">Last Month</h1>
-      <BarChart
-        style={{
-          width: "100%",
-          height: "130px",
-          maxWidth: "300px",
-          maxHeight: "130px",
-          aspectRatio: 1.618,
-        }}
-        responsive
-        data={props.chartData}
-        height={150}
-      >
-        <Tooltip
-          contentStyle={{ background: "#2a3447", borderRadius: "5px" }}
-          labelStyle={{ display: "none" }}
-          cursor={{ fill: "none" }}
-        />
-        <Bar dataKey={props.dataKey} fill={props.color} />
-      </BarChart>
+      <h1 className="mb-2 text-lg font-semibold">Last Month</h1>
+      <div className="flex items-center justify-center">
+        <BarChart
+          style={{
+            width: "100%",
+            height: "30vh",
+            maxWidth: "300px",
+            maxHeight: "12vh",
+            aspectRatio: 1.618,
+          }}
+          responsive
+          data={props.chartData}
+          height={150}
+        >
+          <Tooltip
+            contentStyle={{ background: "#2a3447", borderRadius: "5px" }}
+            labelStyle={{ display: "none" }}
+            cursor={{ fill: "none" }}
+          />
+          <Bar dataKey={props.dataKey} fill={props.color} />
+        </BarChart>
+      </div>
     </div>
   );
 };

@@ -21,7 +21,7 @@ const ChartBox = (props) => {
             style={{
               width: "100%",
               maxWidth: "300px",
-              maxHeight: "400px",
+              maxHeight: "100px",
               aspectRatio: 1.618,
             }}
             responsive

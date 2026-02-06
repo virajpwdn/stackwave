@@ -79,10 +79,7 @@ export default function GuestDashboard() {
       </div>
 
       {/* Main Content */}
-      <div
-        className="grid h-full w-full grid-cols-4 gap-5 overflow-y-auto p-5"
-        style={{ gridAutoRows: "minmax(180px, 1fr)" }}
-      >
+      <div className="grid-responsive grid h-full w-full grid-cols-4 gap-5 overflow-y-auto p-5 max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1">
         <div className="div1 box col-span-1 row-span-3">
           <Topbar />
         </div>
@@ -101,7 +98,7 @@ export default function GuestDashboard() {
         <div className="div6 box">
           <ChartBox {...chartBoxDownvote} />
         </div>
-        <div className="div7 box col-span-2 row-span-2">
+        <div className="div7 box col-span-2 row-span-2 max-md:hidden">
           <AreaChartGraph />
         </div>
         <div className="div8 box">
