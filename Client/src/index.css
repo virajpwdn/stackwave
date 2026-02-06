@@ -39,3 +39,8 @@
 .sidebar-text {
   @apply max-xl:hidden;
 }
+
+.grid-responsive {
+  grid-auto-rows: minmax(180px, 1fr);
+  grid-auto-flow: dense;
+}

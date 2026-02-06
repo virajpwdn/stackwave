@@ -12,12 +12,12 @@ import { areaGraphData } from "../../utils/data";
 const AreaChartGraph = () => {
   const data = areaGraphData;
   return (
-    <div>
+    <div className="flex h-full items-center justify-center">
       <AreaChart
         style={{
           width: "100%",
           maxWidth: "700px",
-          maxHeight: "70vh",
+          maxHeight: "35vh",
           aspectRatio: 1.618,
         }}
         responsive
