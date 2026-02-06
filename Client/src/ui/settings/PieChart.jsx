@@ -15,7 +15,7 @@ const PieChartGraph = ({ isAnimationActive = true }) => {
           style={{
             width: "100%",
             maxWidth: "500px",
-            maxHeight: "80vh",
+            maxHeight: "30vh",
             aspectRatio: 1,
           }}
           responsive
