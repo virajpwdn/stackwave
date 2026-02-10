@@ -79,6 +79,7 @@ export default function GuestDashboard() {
       </div>
 
       {/* Main Content */}
+      {/* TODO: API to integrate */}
       <div className="grid-responsive grid h-full w-full grid-cols-4 gap-5 overflow-y-auto p-5 max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1">
         <div className="div1 box col-span-1 row-span-3">
           <Topbar />
