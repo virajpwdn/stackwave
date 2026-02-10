@@ -4,11 +4,12 @@ const AppError = require("../utils/ApiError");
 const AppResponse = require("../utils/ApiResponse");
 const { ChatOpenAI } = require("@langchain/openai");
 const config = require("../config/config");
-const {
-  CheerioWebBaseLoader,
-} = require("@langchain/community/document_loaders/web/cheerio");
 const cheerio = require("cheerio");
 const axios = require("axios");
+const { OpenAIEmbeddings } = require("@langchain/openai");
+const { QdrantVectorStore } = require("@langchain/qdrant");
+const pLimit = require("p-limit").default;
+const { RecursiveCharacterTextSplitter } = require("@langchain/textsplitters");
 
 const llm = new ChatOpenAI({
   model: "gpt-4.1-nano",
@@ -33,36 +34,115 @@ module.exports.refactorCodeAI = asyncHandler(async (req, res) => {
     .json(new AppResponse(200, response, "Response Generated Successfully"));
 });
 
-module.exports.indexingDocument = asyncHandler(async (req, res) => {
-  const url = [
-    "https://docs.chaicode.com/youtube/chai-aur-devops/setup-vpc/",
-    "https://docs.chaicode.com/youtube/chai-aur-devops/setup-nginx/",
-    
-  ];
+// module.exports.indexingDocument = asyncHandler(async (req, res) => {
+//   const url = [
+//     "https://docs.chaicode.com/youtube/chai-aur-devops/setup-vpc/",
+//     "https://docs.chaicode.com/youtube/chai-aur-devops/setup-nginx/",
+//   ];
 
-  const loader = new CheerioWebBaseLoader(url, {
-    selector: ".main-pane",
+//   const limit = pLimit;
+
+//   const loader = new CheerioWebBaseLoader(url, {
+//     selector: ".main-pane",
+//   });
+
+//   const docs = await loader.load();
+
+//   const response = await axios.get(url);
+//   const $ = cheerio.load(response.data);
+
+//   const mainPane = $(".main-pane").clone();
+//   mainPane.find("style, script, header, footer, nav").remove();
+
+//   const cleanContent = mainPane.text().replace(/\s+/g, " ").trim();
+
+//   docs[0].pageContent = cleanContent;
+
+//   console.log("Page URL:", docs[0].metadata.source);
+//   console.log("Clean Content:", docs[0].pageContent);
+
+//   res.status(200).json({
+//     success: true,
+//     url: docs[0].metadata.source,
+//     content: docs[0].pageContent,
+//     metadata: docs[0].metadata,
+//   });
+// });
+
+module.exports.indexingDocument = asyncHandler(async (req, res) => {
+  const { docUrl } = req.body;
+  const urls = docUrl;
+
+  const splitter = new RecursiveCharacterTextSplitter({
+    chunkSize: 250,
+    chunkOverlap: 50,
   });
 
-  const docs = await loader.load();
+  const limit = pLimit(5);
+  const embeddings = new OpenAIEmbeddings({
+    apiKey: config.OPENAI_API_KEY,
+    batchSize: 512,
+    model: "text-embedding-3-large",
+  });
+  const startTime = Date.now();
 
-  const response = await axios.get(url);
-  const $ = cheerio.load(response.data);
+  const vectorStore = await QdrantVectorStore.fromExistingCollection(
+    embeddings,
+    {
+      url: config.QDRANT_URL,
+      collectionName: "DevOps Docs",
+    },
+  );
 
-  const mainPane = $(".main-pane").clone();
-  mainPane.find("style, script, header, footer, nav").remove();
+  const results = await Promise.all(
+    urls.map((url, index) =>
+      limit(async () => {
+        console.log(`[${index + 1}/${urls.length}] Processing: ${url}`);
 
-  const cleanContent = mainPane.text().replace(/\s+/g, " ").trim();
+        const { data } = await axios.get(url);
+        const $ = cheerio.load(data);
 
-  docs[0].pageContent = cleanContent;
+        const mainPane = $(".main-pane").clone();
+        mainPane.find("style, script, header, footer, nav").remove();
 
-  console.log("Page URL:", docs[0].metadata.source);
-  console.log("Clean Content:", docs[0].pageContent);
+        const chunks = await splitter.splitText(
+          mainPane.text().replace(/\s+/g, " ").trim(),
+        );
+        console.log("TEXT_CHUNKS - ", chunks);
+
+        await vectorStore.addDocuments(
+          chunks.map((chunk, i) => ({
+            pageContent: chunk,
+            metadata: {
+              source: url,
+              title: $("title").text(),
+              chunkIndex: i,
+              totalChunks: chunks.length,
+            },
+          })),
+        );
+
+        return {
+          url,
+          content: mainPane.text().replace(/\s+/g, " ").trim(),
+          success: true,
+        };
+      }),
+    ),
+  );
+
+  const duration = (Date.now() - startTime) / 1000;
+
+  console.log(`✅ Completed ${urls.length} URLs in ${duration}s`);
+  console.log(`📊 Average: ${(duration / urls.length).toFixed(2)}s per URL`);
 
   res.status(200).json({
     success: true,
-    url: docs[0].metadata.source,
-    content: docs[0].pageContent,
-    metadata: docs[0].metadata,
+    stats: {
+      totalUrls: urls.length,
+      durationSeconds: duration,
+      averagePerUrl: duration / urls.length,
+    },
+    documents: results,
   });
 });

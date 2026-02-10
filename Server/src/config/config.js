@@ -14,6 +14,8 @@ const _config = {
   REDIS_PASSWORD: process.env.REDIS_PASSWORD,
 
   OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+
+  QDRANT_URL: process.env.QDRANT_URL,
 };
 
 const config = Object.freeze(_config);
