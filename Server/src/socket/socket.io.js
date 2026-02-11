@@ -174,8 +174,7 @@ function initSocket(server) {
     });
 
     socket.on("code-content", async ({ userId, roomKey, code }) => {
-      try {
-        console.log(code);
+      try {;
         if (!userId || !roomKey || !code) {
           console.error("All Fields are required");
           return sendSocketError(
@@ -215,8 +214,6 @@ function initSocket(server) {
 
     socket.on("terminal-output", ({ userId, terminalOutput, roomKey }) => {
       try {
-        console.log(terminalOutput);
-        console.log(roomKey);
 
         io.to(roomKey).emit("terminal-output", { terminalOutput });
 
