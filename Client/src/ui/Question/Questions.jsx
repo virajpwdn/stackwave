@@ -3,14 +3,17 @@ import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
 import { gsap } from "gsap";
+import { MessageCircleCodeIcon, XIcon } from "lucide-react";
 
 import Sidebar from "../../components/Sidebar";
 import { BASE_URL } from "../../config/baseurl";
+import DocChat from "./DocChat";
 
 const Questions = () => {
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [toggleChat, setToggleChat] = useState(false);
   const containerRef = useRef();
   const navigate = useNavigate();
 
@@ -52,8 +55,10 @@ const Questions = () => {
     }
   }, [questions]);
 
-  // Removed toggleSidebar function and isSidebarOpen state
-  // Removed useEffect for sidebar animation
+  const chatHandler = async (e) => {
+    e.stopPropagation();
+    setToggleChat((prev) => !prev);
+  };
 
   const renderQuestionCard = (question) => (
     <div
@@ -91,7 +96,21 @@ const Questions = () => {
   );
 
   return (
-    <div className="flex min-h-screen bg-white text-black transition-all dark:bg-[#0e0e0e] dark:text-white">
+    <div className="relative flex min-h-screen bg-white text-black transition-all dark:bg-[#0e0e0e] dark:text-white">
+      <div
+        onClick={(e) => chatHandler(e)}
+        className="fixed bottom-10 right-10 z-10 h-16 w-16 rounded-full bg-sky-500"
+      >
+        <div className="flex h-full w-full items-center justify-center leading-none">
+          {toggleChat ? (
+            <XIcon size={30} color="#fff" />
+          ) : (
+            <MessageCircleCodeIcon size={30} color="#fff" />
+          )}
+        </div>
+        {toggleChat && <DocChat />}
+      </div>
+
       {/* Sidebar component - 25% width */}
       <div className="hidden w-1/4 md:block">
         <Sidebar />
@@ -101,9 +120,6 @@ const Questions = () => {
       <div className="md:hidden">
         <Sidebar />
       </div>
-
-      {/* Removed mobile sidebar toggle button */}
-      {/* Removed sidebarRef and related animation code */}
 
       {/* Main Content - 75% width */}
       <main className="w-full px-4 py-8 transition-all sm:px-6 md:w-3/4 lg:px-8">
