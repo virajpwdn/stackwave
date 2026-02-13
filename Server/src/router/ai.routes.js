@@ -5,5 +5,6 @@ const authMiddleware = require("../middleware/auth.middleware");
 
 aiRouter.post("/generate", authMiddleware, controller.refactorCodeAI);
 aiRouter.post("/indexing", authMiddleware, controller.indexingDocument);
+aiRouter.post("/retrival", authMiddleware, controller.retrivalQuery)
 
 module.exports = aiRouter;
