@@ -20,6 +20,7 @@
     "@langchain/openai": "^1.2.6",
     "@langchain/qdrant": "^1.0.1",
     "@langchain/textsplitters": "^1.0.1",
+    "@qdrant/js-client-rest": "^1.16.2",
     "axios": "^1.13.5",
     "bcrypt": "^5.1.1",
     "bullmq": "^5.67.3",
