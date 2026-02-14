@@ -1,4 +1,6 @@
-const { llmModel } = require("../../../utils/openai.service");
+const { llmModel, vectorStore } = require("../../../utils/openai.service");
+const { contextDocuments } = require("../tools");
+const isCollection = require("../tools/check-collection");
 
 const checkCollection = async (state) => {
   try {
@@ -24,7 +26,7 @@ const checkCollection = async (state) => {
         content: SYSTEM_PROMPT,
       },
     ]);
-    return { documentType: response.content };
+    return { documentType: response.content.trim() };
   } catch (error) {
     console.log("Error in check collection node", error);
     return {
@@ -34,8 +36,64 @@ const checkCollection = async (state) => {
   }
 };
 
+const isCollectionExists = async (state) => {
+  try {
+    await isCollection(state);
+  } catch (error) {
+    console.log("error ", error);
+  }
+};
 
+const vectorDataFetch = async (state) => {
+  try {
+    const qdrantClient = await vectorStore(collectionName);
+    const results = await qdrantClient.similaritySearch(query, 15);
+
+    // data cleanup to create context for llm
+    const context = contextDocuments(results);
+
+    return {
+      vectorResponse: context,
+    };
+  } catch (error) {
+    console.log("error ", error);
+    return {
+      vectorResponse: "NA",
+    };
+  }
+};
+
+const llmRetrival = async (state) => {
+  try {
+    const llmClientAdvanceModel = llmModel("gpt-5.1");
+
+    const SYSTEM_INSTRUCTION = `You are a software engineer a CTO of a company with over 50 years of experience. You will get a query from user and you will get response from our vector database where we have relavent or similar information about the query 
+
+  while explaining to user keep the language very simple and give examples and analogies. Also in vector db response you will also get links to the articles which you can use, if a user wants to read more then they can do it via clicking on the link.
+  
+  Following is the query and response
+  ${query},
+  ${contextDocuments}
+  `;
+
+    const output = await llmClientAdvanceModel.invoke([
+      { role: "system", content: SYSTEM_INSTRUCTION },
+    ]);
+
+    return {
+      llmResponse: output.content.trim(),
+    };
+  } catch (error) {
+    console.log("error: ", error);
+    return {
+      llmResponse: "something went wrong! please try again",
+    };
+  }
+};
 
 module.exports = {
-    checkCollection
-}
+  checkCollection,
+  isCollectionExists,
+  vectorDataFetch,
+  llmRetrival,
+};
