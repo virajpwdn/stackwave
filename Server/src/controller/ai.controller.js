@@ -37,7 +37,17 @@ module.exports.retrivalQuery = asyncHandler(async (req, res) => {
 
   if (!query) throw new AppError(400, "user query is missing");
 
-
+  /**
+   * create state
+   * create graph
+   * 1. Determine the collection name 
+   * 2. To Check if the collection exist or not
+   * 3. if yes then fetch from vector db and update the state
+   * 4. if no then return we are updating the doc message
+   * 5. Data clean up (join the array to make single document)
+   * 6. LLM call with user prompt and clean up data
+   * 7. Send response to user from updated state
+   */
 
   // figure out collection name to search in vector db
   const SYSTEM_PROMPT = `You are a expert software engineer with 50 years of experience, you are CTO of fortune 500 companies. Your job is to check from query which you will get from user, you have to determine the query is in which domain. so that we can check in relavent collection in db.
