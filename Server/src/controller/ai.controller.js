@@ -40,8 +40,8 @@ module.exports.retrivalQuery = asyncHandler(async (req, res) => {
   /**
    * create state
    * create graph
-   * 1. Determine the collection name 
-   * 2. To Check if the collection exist or not
+   * 1. Determine the collection name - done
+   * 2. To Check if the collection exist or not  - done
    * 3. if yes then fetch from vector db and update the state
    * 4. if no then return we are updating the doc message
    * 5. Data clean up (join the array to make single document)
