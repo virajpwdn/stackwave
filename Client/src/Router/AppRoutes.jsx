@@ -8,7 +8,7 @@ import {
 
 import Navbar from "../components/Navbar";
 import DataTable from "../ui/admin/DataTable";
-import RefactorAI from "../ui/ai/RefactorAI";
+import RefactorAI from "../ui/ai/RefactorAI.jsx";
 import Login from "../ui/auth/Login";
 import Signup from "../ui/auth/Signup";
 import CodeEditor from "../ui/editor/CodeEditor";
