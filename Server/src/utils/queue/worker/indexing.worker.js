@@ -16,6 +16,7 @@ const worker = new Worker(
     console.log("Processing job:", job.id);
 
     const urls = job.data.urls;
+    const title = job.data.title;
 
     const splitter = new RecursiveCharacterTextSplitter({
       chunkSize: 250,
@@ -27,11 +28,12 @@ const worker = new Worker(
       batchSize: 512,
       model: "text-embedding-3-large",
     });
-
+    console.log("TITLE__", title)
     const vectorStore = await QdrantVectorStore.fromExistingCollection(
       embeddings,
-      { url: config.QDRANT_URL, collectionName: "DevOps Docs" },
+      { url: config.QDRANT_URL, collectionName: title },
     );
+    console.log("vector store name ", vectorStore)
 
     const limit = pLimit(5);
 
@@ -55,7 +57,7 @@ const worker = new Worker(
                 pageContent: chunk,
                 metadata: {
                   source: url,
-                  title: $("title").text(),
+                  title: title,
                   chunkIndex: i,
                   totalChunks: chunks.length,
                 },

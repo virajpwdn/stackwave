@@ -9,7 +9,7 @@ const StateAnnotation = Annotation.Root({
     reducer: (prev, next) => next,
     default: () => "",
   }),
-  isCollectionExists: Annotation({
+  isCollection: Annotation({
     reducer: (prev, next) => next,
     default: () => false,
   }),
@@ -23,5 +23,5 @@ const StateAnnotation = Annotation.Root({
   }),
 });
 
-const workflow = StateGraph(StateAnnotation);
+const workflow = new StateGraph(StateAnnotation);
 module.exports = { workflow };

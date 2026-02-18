@@ -6,7 +6,7 @@ const llmModel = (model) => {
   const llm = new ChatOpenAI({
     model: model,
     temperature: 0,
-    maxTokens: 2000,
+    // maxTokens: 2000,
     timeout: 60000,
     maxRetries: 2,
     apiKey: config.OPENAI_API_KEY,

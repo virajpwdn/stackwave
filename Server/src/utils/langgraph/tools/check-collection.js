@@ -1,3 +1,4 @@
+const { QdrantClient } = require("@qdrant/js-client-rest");
 const config = require("../../../config/config");
 
 const isCollection = async (state) => {
@@ -5,14 +6,14 @@ const isCollection = async (state) => {
   const collectionName = state.documentType;
 
   try {
-    await client.getCollection(collectionName);
+    const colName = await client.getCollection(collectionName);
     return {
-      isCollectionExists: true,
+      isCollection: true,
     };
   } catch (error) {
     console.log("Error in isCollection function", error);
     return {
-      isCollectionExists: false,
+      isCollection: false,
     };
   }
 };
