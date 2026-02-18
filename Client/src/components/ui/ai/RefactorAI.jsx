@@ -5,7 +5,7 @@ import Editor from "@monaco-editor/react";
 import axios from "axios";
 import { ArrowLeft, Code, Copy, Download } from "lucide-react";
 
-import { BASE_URL } from "../../config/baseurl";
+import { BASE_URL } from "../../../config/baseurl";
 
 const RefactorAI = () => {
   const location = useLocation();

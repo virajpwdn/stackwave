@@ -6,8 +6,8 @@ import axios from "axios";
 import { gsap } from "gsap";
 import { Bold, Code, HelpCircle, Italic, List, Menu, Tag } from "lucide-react";
 
-import Sidebar from "../../components/Sidebar";
-import { BASE_URL } from "../../config/baseurl";
+import Sidebar from "../../../components/Sidebar";
+import { BASE_URL } from "../../../config/baseurl";
 
 const AskQuestion = () => {
   const [title, setTitle] = useState("");

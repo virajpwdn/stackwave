@@ -7,21 +7,21 @@ import {
 } from "react-router-dom";
 
 import Navbar from "../components/Navbar";
-import DataTable from "../ui/admin/DataTable";
-import RefactorAI from "../ui/ai/RefactorAI";
-import Login from "../ui/auth/Login";
-import Signup from "../ui/auth/Signup";
-import CodeEditor from "../ui/editor/CodeEditor";
-import Hero from "../ui/heropage/Hero";
-import CreateQuestion from "../ui/question/CreateQuestion";
-import QuestionFeed from "../ui/question/Questions";
-import ViewQuestion from "../ui/question/ViewQuestion";
-import CreateRoom from "../ui/room/CreateRoom";
-import Room from "../ui/room/Room";
-import GuestDashboard from "../ui/settings/Settings";
-import TagSelectionPage from "../ui/tour/Tags";
-import Tour from "../ui/tour/Tour";
-import User from "../ui/user/User";
+import DataTable from "../components/ui/admin/DataTable";
+import RefactorAI from "../components/ui/ai/RefactorAI";
+import Login from "../components/ui/auth/Login";
+import Signup from "../components/ui/auth/Signup";
+import CodeEditor from "../components/ui/editor/CodeEditor";
+import Hero from "../components/ui/heropage/Hero";
+import CreateQuestion from "../components/ui/question/CreateQuestion";
+import QuestionFeed from "../components/ui/question/Questions";
+import ViewQuestion from "../components/ui/question/ViewQuestion";
+import CreateRoom from "../components/ui/room/CreateRoom";
+import Room from "../components/ui/room/Room";
+import GuestDashboard from "../components/ui/settings/Settings";
+import TagSelectionPage from "../components/ui/tour/Tags";
+import Tour from "../components/ui/tour/Tour";
+import User from "../components/ui/user/User";
 import Authentication from "./Authentication";
 
 // Layout component that includes Navbar and renders children through Outlet

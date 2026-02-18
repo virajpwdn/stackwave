@@ -5,8 +5,8 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import gsap from "gsap";
 
-import { BASE_URL } from "../../config/baseurl";
-import { setUser } from "../../store/user.slice";
+import { BASE_URL } from "../../../config/baseurl";
+import { setUser } from "../../../store/user.slice";
 
 const Login = () => {
   const formRef = useRef(null);

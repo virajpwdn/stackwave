@@ -5,8 +5,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import { GridToolbar } from "@mui/x-data-grid/internals";
 import { Ban, BanIcon, SquareArrowOutUpRight } from "lucide-react";
 
-import TransitionsModal from "../../components/Modal";
-import { useTheme } from "../../lib/hooks/useTheme";
+import TransitionsModal from "../../../components/Modal";
+import { useTheme } from "../../../lib/hooks/useTheme";
 
 const DataTable = () => {
   const [showModal, setShowModal] = useState(false);

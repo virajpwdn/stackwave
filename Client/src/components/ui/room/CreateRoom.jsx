@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { X } from "lucide-react";
 
-import Sidebar from "../../components/Sidebar";
+import Sidebar from "../../../components/Sidebar";
 
 const CreateRoom = () => {
   const [showModal, setShowModal] = useState(false);

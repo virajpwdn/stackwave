@@ -7,7 +7,7 @@ import {
   YAxis,
 } from "recharts";
 
-import { areaGraphData } from "../../utils/data";
+import { areaGraphData } from "../../../utils/data";
 
 const AreaChartGraph = () => {
   const data = areaGraphData;

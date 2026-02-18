@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { gsap } from "gsap";
 
-import { BASE_URL } from "../../config/baseurl";
+import { BASE_URL } from "../../../config/baseurl";
 
 const tagsData = [
   {

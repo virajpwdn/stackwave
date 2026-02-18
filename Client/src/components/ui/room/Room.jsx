@@ -4,9 +4,9 @@ import { Link } from "react-router";
 import axios from "axios";
 import { Clock, Plus, Search, Users, Video, X } from "lucide-react";
 
-import Sidebar from "../../components/Sidebar";
-import { BASE_URL } from "../../config/baseurl";
-import socket from "../../utils/socket";
+import Sidebar from "../../../components/Sidebar";
+import { BASE_URL } from "../../../config/baseurl";
+import socket from "../../../utils/socket";
 
 // import { Link, useNavigate } from "react-router";
 
@@ -147,7 +147,7 @@ const Room = () => {
         <div className="mx-auto max-w-5xl">
           {/* Header */}
           <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl md:text-4xl">
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl md:text-4xl dark:text-white">
               Live Rooms
             </h1>
             <button

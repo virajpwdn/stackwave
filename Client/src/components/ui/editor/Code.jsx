@@ -12,8 +12,8 @@ import {
   RefreshCw,
 } from "lucide-react";
 
-import { BASE_URL } from "../../config/baseurl";
-import socket from "../../utils/socket";
+import { BASE_URL } from "../../../config/baseurl";
+import socket from "../../../utils/socket";
 import Terminal from "./Terminal";
 
 const Code = () => {

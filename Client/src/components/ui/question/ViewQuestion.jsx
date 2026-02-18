@@ -17,8 +17,8 @@ import {
   ThumbsUp,
 } from "lucide-react";
 
-import Sidebar from "../../components/Sidebar";
-import { BASE_URL } from "../../config/baseurl";
+import Sidebar from "../../../components/Sidebar";
+import { BASE_URL } from "../../../config/baseurl";
 
 const ViewQuestion = () => {
   const { id } = useParams();

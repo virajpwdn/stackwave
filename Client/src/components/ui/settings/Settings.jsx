@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 
 import axios from "axios";
 
-import Sidebar from "../../components/Sidebar";
-import { BASE_URL } from "../../config/baseurl";
+import Sidebar from "../../../components/Sidebar";
+import { BASE_URL } from "../../../config/baseurl";
 import {
   barChartBox1,
   barChartBox2,
@@ -12,7 +12,7 @@ import {
   chartBoxDownvote,
   chartBoxUpvote,
   chartBoxUser,
-} from "../../utils/data";
+} from "../../../utils/data";
 import AreaChartGraph from "./AreaChart";
 import BarChartGraph from "./BarChart";
 import ChartBox from "./ChartBox";

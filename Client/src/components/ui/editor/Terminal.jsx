@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-import socket from "../../utils/socket";
+import socket from "../../../utils/socket";
 
 const Terminal = ({ output }) => {
   const [terminalOutput, setTerminalOutput] = useState(output);

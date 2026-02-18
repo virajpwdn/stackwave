@@ -5,8 +5,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Send } from "lucide-react";
 
-import { BASE_URL } from "../../config/baseurl";
-import socket from "../../utils/socket";
+import { BASE_URL } from "../../../config/baseurl";
+import socket from "../../../utils/socket";
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);

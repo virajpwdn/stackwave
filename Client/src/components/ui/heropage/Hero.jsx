@@ -2,10 +2,10 @@ import React from "react";
 import { Link, useNavigate } from "react-router";
 import { Navigate } from "react-router";
 
-import section4Img from "../../assets/images/aicoderefactor.png";
-import heroImage from "../../assets/images/herodeveloper.webp";
-import section3Img from "../../assets/images/livecodeeditor.png";
-import section2Img from "../../assets/images/stackwave questions.png";
+import section4Img from "../../../assets/images/aicoderefactor.png";
+import heroImage from "../../../assets/images/herodeveloper.webp";
+import section3Img from "../../../assets/images/livecodeeditor.png";
+import section2Img from "../../../assets/images/stackwave questions.png";
 
 const Hero = () => {
   const navigate = useNavigate();

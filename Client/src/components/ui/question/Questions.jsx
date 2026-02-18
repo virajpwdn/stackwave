@@ -5,8 +5,8 @@ import axios from "axios";
 import { gsap } from "gsap";
 import { MessageCircleCodeIcon, XIcon } from "lucide-react";
 
-import Sidebar from "../../components/Sidebar";
-import { BASE_URL } from "../../config/baseurl";
+import Sidebar from "../../../components/Sidebar";
+import { BASE_URL } from "../../../config/baseurl";
 import DocChat from "./DocChat";
 
 const Questions = () => {
@@ -126,12 +126,12 @@ const Questions = () => {
         <div className="mx-auto max-w-3xl">
           {/* Header */}
           <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl md:text-4xl">
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl md:text-4xl dark:text-white">
               Newest Questions
             </h1>
             <button
               onClick={createQuestionHandler}
-              className="w-full rounded-xl bg-blue-600 px-5 py-2 text-center font-semibold text-white shadow-md transition-all hover:bg-blue-700 hover:shadow-xl dark:bg-blue-700 dark:hover:bg-blue-600 sm:w-fit"
+              className="w-full rounded-xl bg-blue-600 px-5 py-2 text-center font-semibold text-white shadow-md transition-all hover:bg-blue-700 hover:shadow-xl sm:w-fit dark:bg-blue-700 dark:hover:bg-blue-600"
             >
               Ask Question
             </button>
