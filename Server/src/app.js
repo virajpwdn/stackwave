@@ -4,6 +4,7 @@ const swaggerUi = require("swagger-ui-express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const { expressMiddleware } = require("@as-integrations/express5");
 
 const swaggerFile = require("../swagger-output.json");
 const errorMiddleware = require("./middleware/error.middleware");
@@ -19,8 +20,10 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
   "https://stackwave-frontend-ejbk.onrender.com",
-  "https://stackwave.virajpatwardhan.in"
+  "https://stackwave.virajpatwardhan.in",
 ];
+
+
 
 // Remove this later when deploying on ec2
 // app.set("trust proxy", 1);
