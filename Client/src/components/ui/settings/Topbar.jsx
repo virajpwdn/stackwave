@@ -1,70 +1,33 @@
 import { useState } from "react";
+import { Link } from "react-router";
 
-const Topbar = () => {
-  const questionData = [
-    {
-      question: "what is node js",
-      createdAt: Date.now(),
-      redirect: "/",
-    },
-    {
-      question: "what is clustering",
-      createdAt: Date.now(),
-      redirect: "/",
-    },
-    {
-      question: "what is docker",
-      createdAt: Date.now(),
-      redirect: "/",
-    },
-    {
-      question: "what is kubernetes",
-      createdAt: Date.now(),
-      redirect: "/",
-    },
-    {
-      question: "what is Agentic AI",
-      createdAt: Date.now(),
-      redirect: "/",
-    },
-    // {
-    //   question: "what is javascript",
-    //   createdAt: Date.now(),
-    //   redirect: "/",
-    // },
-    // {
-    //   question: "what is javascript",
-    //   createdAt: Date.now(),
-    //   redirect: "/",
-    // },
-    // {
-    //   question: "what is javascript",
-    //   createdAt: Date.now(),
-    //   redirect: "/",
-    // },
-  ];
-  const [data] = useState(questionData);
+const Topbar = ({ questions }) => {
+  console.log("first", questions);
   return (
     <div>
       <h1 className="text-2xl font-bold">Recent Questions</h1>
       <div>
-        {data.map((item, idx) => {
-          const data = new Date(item.createdAt);
-          const options = { year: "numeric", month: "long" };
-          const formattedData = data.toLocaleDateString("en-US", options);
+        {questions?.map((item, idx) => {
+          const date = item.createdAt
+            ? new Date(parseInt(item.createdAt)).toLocaleDateString()
+            : "N/A";
+
           return (
             <div key={idx} className="mt-2 flex items-center justify-between">
               <div className="my-3 flex flex-col gap-1">
                 <h4 className="text-base font-medium leading-none">
-                  {item.question}
+                  {item.title}
                 </h4>
                 <p className="text-xs text-gray-600 dark:text-gray-300">
-                  {formattedData}
+                  {date}
                 </p>
               </div>
-              <p className="cursor-pointer border border-solid border-gray-300 px-3 py-1 text-xs font-semibold text-gray-600 transition-colors duration-75 ease-in hover:bg-accent hover:text-gray-200 dark:text-gray-300">
+              <Link
+                to={`/view-question/${item.id}`}
+                className="cursor-pointer border border-solid border-gray-300 px-3 py-1 text-xs font-semibold text-gray-600 transition-colors duration-75 ease-in hover:bg-accent hover:text-gray-200 dark:text-gray-300"
+              >
                 View
-              </p>
+              </Link>
             </div>
           );
         })}
