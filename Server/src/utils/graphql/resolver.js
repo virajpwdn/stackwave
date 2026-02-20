@@ -10,6 +10,7 @@ const getUserStats = async (parent, args, context) => {
     console.log(userId);
 
     const questions = await QuestionModel.find({ authorId: userId });
+    console.log("QUESTION - ", questions)
     const questionCount = questions.length;
 
     const answersCount = await AnswerModel.countDocuments({ authorId: userId });
@@ -18,6 +19,9 @@ const getUserStats = async (parent, args, context) => {
       { $match: { authorId: userId } },
       { $group: { _id: "$type", count: { $sum: 1 } } },
     ]);
+
+    // const upvotesCount = votes.find((v) => v._id === "upvote")?.count || 0;
+    // const downvotesCount = votes.find((v) => v._id === "downvote")?.count || 0;
 
     const roomsCount = await RoomModel.countDocuments({
       roomCreatedBy: userId,
@@ -28,6 +32,7 @@ const getUserStats = async (parent, args, context) => {
       questions,
       answersCount,
       roomsCount,
+      votes,
     };
   } catch (error) {
     console.log("error ", error);
