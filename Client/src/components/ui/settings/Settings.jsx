@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+import { gql } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import axios from "axios";
 
 import Sidebar from "../../../components/Sidebar";
@@ -19,58 +21,29 @@ import ChartBox from "./ChartBox";
 import PieChartGraph from "./PieChart";
 import Topbar from "./Topbar";
 
+const GET_USER_STATS = gql`
+  query GetUserStats {
+    getUserStats {
+      questionCount
+      questions {
+        title
+        id
+        createdAt
+      }
+      answersCount
+      upvotesCount
+      downvotesCount
+      roomsCount
+    }
+  }
+`;
+
 export default function GuestDashboard() {
   const store = useSelector((store) => store.user.user);
-  const [allQuestions, setAllQuestions] = useState(0);
-  const [allAnswer, setAllAnswer] = useState(0);
-  const [allRooms, setAllRooms] = useState(0);
 
-  const fullName = store.firstName + " " + store.lastName;
-  const avatar = store.avatar;
+  const { loading, error, data } = useQuery(GET_USER_STATS);
 
-  const getAllQuestions = async () => {
-    try {
-      const response = await axios.get(
-        BASE_URL + `/questions/user/questions/${store._id}`,
-        { withCredentials: true }
-      );
-
-      setAllQuestions(response.data.data.totalQuestion);
-    } catch (error) {
-      console.log("error ", error);
-    }
-  };
-
-  const getAllAnswer = async () => {
-    try {
-      const response = await axios.get(BASE_URL + `/answer/user/all/ans`, {
-        withCredentials: true,
-      });
-      setAllAnswer(response.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getAllLiveRooms = async () => {
-    try {
-      const response = await axios.get(BASE_URL + "/room/room-by-id", {
-        withCredentials: true,
-      });
-      setAllRooms(response.data.data);
-    } catch (error) {
-      console.log("error ", error);
-    }
-  };
-
-  useEffect(() => {
-    if (store) {
-      getAllQuestions();
-      getAllAnswer();
-      getAllLiveRooms();
-    }
-  }, [store]);
-
+  console.log("DATA - ", data?.getUserStats);
   return (
     <div className="flex h-screen bg-gray-50 text-gray-900 dark:bg-[#0e0e0e] dark:text-white">
       {/* Sidebar */}
@@ -82,7 +55,7 @@ export default function GuestDashboard() {
       {/* TODO: API to integrate */}
       <div className="grid-responsive grid h-full w-full grid-cols-4 gap-5 overflow-y-auto p-5 max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1">
         <div className="div1 box col-span-1 row-span-3">
-          <Topbar />
+          <Topbar questions={data?.getUserStats.questions} />
         </div>
         <div className="div2 box">
           <ChartBox {...chartBoxUser} />
