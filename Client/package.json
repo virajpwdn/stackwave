@@ -15,6 +15,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@apollo/client": "^4.1.5",
     "@chakra-ui/react": "^3.16.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
@@ -26,6 +27,7 @@
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "axios": "^1.8.4",
     "framer-motion": "^12.7.4",
+    "graphql": "^16.12.0",
     "gsap": "^3.12.7",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
