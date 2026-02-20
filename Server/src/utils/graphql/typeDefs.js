@@ -11,6 +11,7 @@ const typeDefs = `
   type Question {
     id: ID!
     title: String
+    createdAt: String
   }
 
   type Query {

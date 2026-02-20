@@ -23,9 +23,13 @@ const apolloServer = new ApolloServer({
 
 connectDB().then(async () => {
   await apolloServer.start();
-  app.use("/graphql", authMiddleware, expressMiddleware(apolloServer, {
-    context: async ({ req }) => ({ user: req.user })
-  }));
+  app.use(
+    "/graphql",
+    authMiddleware,
+    expressMiddleware(apolloServer, {
+      context: async ({ req }) => ({ user: req.user }),
+    }),
+  );
 
   server.listen(config.PORT, () => {
     console.log("Server is connected");
