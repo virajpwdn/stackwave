@@ -14,7 +14,7 @@ const typeDefs = `
   }
 
   type Query {
-    getUserStats(userId: ID!): UserStats
+    getUserStats: UserStats
   }
   
   `;

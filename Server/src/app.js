@@ -24,7 +24,6 @@ const allowedOrigins = [
 ];
 
 
-
 // Remove this later when deploying on ec2
 // app.set("trust proxy", 1);
 
