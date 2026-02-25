@@ -111,7 +111,6 @@ const Questions = () => {
         {toggleChat && <DocChat />}
       </div>
 
-      {/* Sidebar component - 25% width */}
       <div className="hidden md:block">
         <Sidebar />
       </div>

@@ -272,7 +272,7 @@ const ViewQuestion = () => {
   if (error) {
     return (
       <div className="flex min-h-screen bg-white text-black transition-all dark:bg-[#0e0e0e] dark:text-white">
-        <div className="hidden w-1/4 md:block">
+        <div className="hidden md:block">
           <Sidebar />
         </div>
         <div className="md:hidden">
@@ -289,14 +289,14 @@ const ViewQuestion = () => {
 
   return (
     <div className="flex min-h-screen bg-white text-black transition-all dark:bg-[#0e0e0e] dark:text-white">
-      <div className="hidden w-1/4 md:block">
+      <div className="hidden md:block">
         <Sidebar />
       </div>
       <div className="md:hidden">
         <Sidebar />
       </div>
 
-      <main className="w-full px-4 py-8 transition-all sm:px-6 md:w-3/4 lg:px-8">
+      <main className="w-full px-4 py-8 transition-all sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl">
           {question && (
             <>
