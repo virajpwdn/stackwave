@@ -11,6 +11,7 @@ import DataTable from "../components/ui/admin/DataTable";
 import RefactorAI from "../components/ui/ai/RefactorAI";
 import Login from "../components/ui/auth/Login";
 import Signup from "../components/ui/auth/Signup";
+import RAG from "../components/ui/dockyu-chat/RAG";
 import CodeEditor from "../components/ui/editor/CodeEditor";
 import Hero from "../components/ui/heropage/Hero";
 import CreateQuestion from "../components/ui/question/CreateQuestion";
@@ -115,6 +116,15 @@ const AppRoutes = () => {
             element={
               <Authentication>
                 <DataTable />
+              </Authentication>
+            }
+          />
+
+          <Route
+            path="/rag"
+            element={
+              <Authentication>
+                <RAG />
               </Authentication>
             }
           />
