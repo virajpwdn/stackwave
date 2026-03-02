@@ -17,6 +17,8 @@
     "@faker-js/faker": "^9.7.0",
     "@google/genai": "^0.8.0",
     "@google/generative-ai": "^0.24.0",
+    "@grpc/grpc-js": "^1.14.3",
+    "@grpc/proto-loader": "^0.8.0",
     "@langchain/community": "^1.1.13",
     "@langchain/core": "^1.1.24",
     "@langchain/langgraph": "^1.1.4",

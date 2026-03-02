@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const { expressMiddleware } = require("@as-integrations/express5");
+const client = require("./utils/grpc/client/client");
 
 const swaggerFile = require("../swagger-output.json");
 const errorMiddleware = require("./middleware/error.middleware");
@@ -15,14 +16,16 @@ const compilerRoutes = require("../src/router/compiler.routes");
 const roomRoutes = require("../src/router/room.routes");
 const messageRoutes = require("../src/router/message.routes");
 const answerRouter = require("../src/router/answer.routes");
-
+/**
+ * multi agent feature
+ * speech to text generation
+ */
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
   "https://stackwave-frontend-ejbk.onrender.com",
   "https://stackwave.virajpatwardhan.in",
 ];
-
 
 // Remove this later when deploying on ec2
 // app.set("trust proxy", 1);
@@ -40,6 +43,14 @@ app.use("/api/v1/compiler", compilerRoutes);
 app.use("/api/v1/room", roomRoutes);
 app.use("/api/v1/message", messageRoutes);
 app.use("/api/v1/answer", answerRouter);
+
+// testing grpc
+app.get("/", (req,res) => {
+  client.getAll(null, (err, data) => {
+    console.log("data", data),
+    res.send(data.customers)
+  })
+})
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
