@@ -9,7 +9,8 @@ const HeroNav = () => {
       <div className="cta flex gap-5">
         <Button
           size="sm"
-          className={"bg-gray-200 px-8 text-[#000] hover:text-white"}
+          className={"bg-gray-200 px-8 hover:text-white"}
+          style={{ color: "black" }}
         >
           Login
         </Button>
