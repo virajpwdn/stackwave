@@ -13,6 +13,7 @@ import Login from "../components/ui/auth/Login";
 import Signup from "../components/ui/auth/Signup";
 import RAG from "../components/ui/dockyu-chat/RAG";
 import CodeEditor from "../components/ui/editor/CodeEditor";
+import Index from "../components/ui/hero/Index";
 import Hero from "../components/ui/heropage/Hero";
 import CreateQuestion from "../components/ui/question/CreateQuestion";
 import QuestionFeed from "../components/ui/question/Questions";
@@ -30,7 +31,8 @@ const Layout = () => {
   const currUrl = window.location.pathname;
   return (
     <>
-      {currUrl !== "/hero-page" && <Navbar />}
+      {/* {(currUrl !== "/hero-page" || currUrl !== "index") && <Navbar />}*/}
+      {currUrl === "/index" ? <></> : <Navbar />}
       <main className="w-full">
         <Outlet />
       </main>
@@ -45,6 +47,7 @@ const AppRoutes = () => {
         {/* Root route uses Layout component */}
         <Route element={<Layout />}>
           {/* All these routes will be rendered inside the Layout */}
+          <Route path="/index" element={<Index />} />
           <Route path="/" element={<Hero />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
