@@ -1,23 +1,10 @@
-import { useState } from "react";
-import { useEffect } from "react";
-
 import Button from "../../Button";
 
-const Title = () => {
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-    const handleResize = () => setScreenWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  });
-
-  const isMobile = screenWidth < 768;
+const Title = ({ isMobile }) => {
   return (
-    <div className="flex flex-col items-center justify-center pt-28 text-center">
+    <div className="flex flex-col items-center justify-center px-10 pt-28 text-center">
       {isMobile ? (
-        <h1 className="text-5xl font-bold">
+        <h1 className="text-4xl font-bold">
           One Stop Solution for All Your Development Challenges
         </h1>
       ) : (
