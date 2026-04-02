@@ -47,8 +47,7 @@ const AppRoutes = () => {
         {/* Root route uses Layout component */}
         <Route element={<Layout />}>
           {/* All these routes will be rendered inside the Layout */}
-          <Route path="/index" element={<Index />} />
-          <Route path="/" element={<Hero />} />
+          <Route path="/" element={<Index />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route
