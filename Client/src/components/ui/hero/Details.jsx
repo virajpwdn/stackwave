@@ -67,6 +67,44 @@ const Details = ({ isMobile }) => {
           />
         </div>
       </div>
+
+      <h1 className="text-center text-4xl font-medium">And more...</h1>
+      <div className="bg-red-500">
+  <div className="grid grid-cols-2 justify-center gap-6">
+    {/* justify-content: center pulls both columns toward the middle */}
+    <div className="col-span-1 row-span-2 rounded-2xl bg-[#D9D9D9] p-5 h-full place-self-end">
+      <img
+        src="/hero/devhelp.jpg"
+        alt="devlopers guide"
+        className="w-[400px] rounded-2xl"
+      />
+      <p className="mb-8 mt-2 text-2xl font-semibold text-black">
+        Help others with their coding doubts
+      </p>
+    </div>
+
+    <div className="grid grid-cols-2 gap-6 place-self-start">
+      <img
+        src="/hero/devquestion.jpg"
+        className="col-span-1 w-[300px] border border-black rounded-2xl"
+        alt=""
+      />
+      <div className="flex items-center justify-center rounded-2xl bg-[#0065F4]">
+        <h3 className="text-3xl font-semibold">Ask Questions</h3>
+      </div>
+      <div className="col-span-2 flex items-center gap-10 rounded-2xl bg-[#FFF1CF]">
+        <img
+          className="w-[300px] rounded-2xl"
+          src="/hero/devgrid.jpg"
+          alt="dev question"
+        />
+        <h3 className="text-2xl font-semibold">
+          Code & Chat <br /> together in Real Time
+        </h3>
+      </div>
+    </div>
+  </div>
+</div>
     </div>
   );
 };
