@@ -1,6 +1,6 @@
 const Details = ({ isMobile }) => {
   return (
-    <div className="my-36 w-screen py-10">
+    <div id="features" className="my-36 w-screen py-10">
       <h1 className="text-center text-4xl font-medium">What is StackWave?</h1>
 
       {/* details container */}
@@ -68,43 +68,53 @@ const Details = ({ isMobile }) => {
         </div>
       </div>
 
-      <h1 className="text-center text-4xl font-medium">And more...</h1>
-      <div className="bg-red-500">
-  <div className="grid grid-cols-2 justify-center gap-6">
-    {/* justify-content: center pulls both columns toward the middle */}
-    <div className="col-span-1 row-span-2 rounded-2xl bg-[#D9D9D9] p-5 h-full place-self-end">
-      <img
-        src="/hero/devhelp.jpg"
-        alt="devlopers guide"
-        className="w-[400px] rounded-2xl"
-      />
-      <p className="mb-8 mt-2 text-2xl font-semibold text-black">
-        Help others with their coding doubts
-      </p>
-    </div>
+      <h1 className="mb-10 mt-32 text-center text-4xl font-medium">
+        And more...
+      </h1>
+      <div className="p-6 md:p-10">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-2">
+          {/* Left Section */}
+          <div className="flex h-full flex-col justify-between rounded-2xl border p-5">
+            <img
+              src="/hero/devhelp.jpg"
+              alt="Developers helping others"
+              className="w-full rounded-xl object-cover"
+            />
+            <p className="mt-4 text-center text-xl font-semibold text-black md:text-2xl">
+              Help others with their coding doubts
+            </p>
+          </div>
 
-    <div className="grid grid-cols-2 gap-6 place-self-start">
-      <img
-        src="/hero/devquestion.jpg"
-        className="col-span-1 w-[300px] border border-black rounded-2xl"
-        alt=""
-      />
-      <div className="flex items-center justify-center rounded-2xl bg-[#0065F4]">
-        <h3 className="text-3xl font-semibold">Ask Questions</h3>
+          {/* Right Section */}
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            {/* Image */}
+            <img
+              src="/hero/devquestion.jpg"
+              alt="Developers asking questions"
+              className="h-full w-full rounded-2xl border object-cover"
+            />
+
+            {/* Ask Questions */}
+            <div className="flex items-center justify-center rounded-2xl bg-[#0065F4] p-6">
+              <h3 className="text-xl font-semibold text-white md:text-2xl">
+                Ask Questions
+              </h3>
+            </div>
+
+            {/* Bottom Card */}
+            <div className="col-span-full flex flex-col items-center gap-4 rounded-2xl bg-[#FFF1CF] px-5 max-md:py-10 sm:flex-row">
+              <img
+                src="/hero/devgrid.jpg"
+                alt="Developers collaborating in real time"
+                className="w-full rounded-xl object-cover sm:w-1/2"
+              />
+              <h3 className="text-xl font-semibold md:text-2xl">
+                Code & Chat <br /> together in Real Time
+              </h3>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="col-span-2 flex items-center gap-10 rounded-2xl bg-[#FFF1CF]">
-        <img
-          className="w-[300px] rounded-2xl"
-          src="/hero/devgrid.jpg"
-          alt="dev question"
-        />
-        <h3 className="text-2xl font-semibold">
-          Code & Chat <br /> together in Real Time
-        </h3>
-      </div>
-    </div>
-  </div>
-</div>
     </div>
   );
 };
