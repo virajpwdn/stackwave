@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Details from "./Details";
 import HeroNav from "./HeroNav";
 import Title from "./Title";
+import Bottom from "./Bottom";
 
 const Index = () => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -23,6 +24,7 @@ const Index = () => {
       </div>
 
       <Details isMobile={isMobile} />
+      <Bottom isMobile={isMobile} />
     </div>
   );
 };
