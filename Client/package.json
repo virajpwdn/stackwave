@@ -9,10 +9,18 @@
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
     "format": "prettier --write  \"**/*.{ts,tsx,js,jsx,json,md,mdx,css}\"",
     "format:check": "prettier --check  \"**/*.{ts,tsx,js,jsx,json,md,mdx,css}\"",
-    "lint-staged": "lint-staged",
     "preview": "vite preview",
     "check-types": "check-types",
     "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{json,md,mdx,css,scss}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@apollo/client": "^4.1.5",
