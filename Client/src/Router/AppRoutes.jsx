@@ -32,7 +32,7 @@ const Layout = () => {
   return (
     <>
       {/* {(currUrl !== "/hero-page" || currUrl !== "index") && <Navbar />}*/}
-      {currUrl === "/" ? <></> : <Navbar />}
+      {currUrl === "/" ? null : <Navbar />}
       <main className="w-full">
         <Outlet />
       </main>

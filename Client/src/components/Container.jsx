@@ -8,7 +8,7 @@ const sizeVarient = {
 const Container = ({ children, size = "lg", className = "" }) => {
   return (
     <div
-      className={`mx-auto ${sizeVarient[size]} px-4 sm:px-6 lg:px-8 bg-sky-500 ${className}`}
+      className={`mx-auto ${sizeVarient[size]} px-4 sm:px-6 lg:px-8 ${className}`}
     >
       {children}
     </div>
