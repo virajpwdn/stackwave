@@ -5,14 +5,20 @@ const {
   isCollectionExists,
   vectorDataFetch,
   llmRetrival,
+  isTesting,
 } = require("../../../utils/langgraph/node/retrival.node");
 
 workflow.addNode("checkCol", checkCollection);
 workflow.addNode("isCollectionExists", isCollectionExists); // check collection in vector db does it exist
 workflow.addNode("vectorDataFetch", vectorDataFetch);
 workflow.addNode("llmRetrival", llmRetrival);
+workflow.addNode("testing", isTesting);
 
-workflow.addEdge(START, "checkCol");
+// workflow.addEdge(START, "checkCol");
+workflow.addEdge(START, "testing");
+workflow.addConditionalEdges("testing", (state) => {
+  return state.isTesting ? END : "checkCol";
+});
 workflow.addConditionalEdges(
   "checkCol",
   (state) => {

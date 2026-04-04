@@ -2,6 +2,73 @@ const { llmModel, vectorStore } = require("../../../utils/openai.service");
 const { contextDocuments } = require("../tools");
 const isCollection = require("../tools/check-collection");
 
+const isTesting = async (state) => {
+  try {
+    const { isTesting, userInput } = state;
+    if (isTesting) {
+      return {
+        userInput: userInput,
+        documentType: "DevOps",
+        isCollection: true,
+        vectorResponse: "Hello world",
+        llmResponse: `
+    # 🚨 Starvation in System Design
+    ## 📌 What is Starvation?
+
+    **Starvation** is a problem in system design where a process (or request/task) **never gets the resources it needs to execute**, because other processes keep getting priority over it.
+
+    👉 In simple terms:  
+    > Some tasks keep waiting forever while others keep getting served.
+
+    ---
+
+    ## 🧠 Real-Life Analogy
+
+    Imagine a restaurant:
+
+    - VIP customers always get served first.
+    - Normal customers are in a queue.
+    - New VIPs keep arriving.
+
+    👉 Result:
+    - Normal customers may **never get food** → this is **starvation**.
+
+    ---
+
+    ## ⚙️ Where Starvation Happens in Systems
+
+    ### 1. CPU Scheduling
+    - High-priority processes keep getting CPU time.
+    - Low-priority processes never execute.
+
+    ### 2. Thread/Lock Management
+    - Threads waiting for a lock may never acquire it if others keep taking it.
+
+    ### 3. Distributed Systems
+    - Some services or requests are always delayed due to load balancing or priority routing.
+
+    ### 4. Queues (Very Important for Backend)
+    - Jobs in a queue may never get processed if:
+      - Higher-priority jobs keep coming
+      - Queue is not fairly managed
+
+    ---
+
+    ## 🔥 Example (Backend System)
+
+    Imagine your StackWave app:
+
+    You have:
+    - Premium users → high priority
+    - Free users → low priority
+
+    Queue:`,
+      
+};
+    }
+  } catch (error) {}
+};
+
 const checkCollection = async (state) => {
   try {
     const { userInput } = state;
@@ -129,4 +196,5 @@ module.exports = {
   isCollectionExists,
   vectorDataFetch,
   llmRetrival,
+  isTesting
 };

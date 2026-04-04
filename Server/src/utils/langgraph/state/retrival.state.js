@@ -21,6 +21,10 @@ const StateAnnotation = Annotation.Root({
     reducer: (prev, next) => next,
     default: () => "",
   }),
+  isTesting: Annotation({
+    reducer: (prev, next) => next,
+    default: () => "",
+  }),
 });
 
 const workflow = new StateGraph(StateAnnotation);

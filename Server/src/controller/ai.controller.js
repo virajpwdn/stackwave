@@ -5,6 +5,7 @@ const AppResponse = require("../utils/ApiResponse");
 const indexingQueue = require("../utils/queue/q/indexing.queue");
 const { llmModel, vectorStore } = require("../utils/openai.service");
 const { app } = require("../utils/langgraph/graph/rag.graph");
+const AiChatModel = require("../models/ai-message.model");
 
 module.exports.refactorCodeAI = asyncHandler(async (req, res) => {
   const { prompt } = req.body;
@@ -22,7 +23,6 @@ module.exports.refactorCodeAI = asyncHandler(async (req, res) => {
 
 module.exports.indexingDocument = asyncHandler(async (req, res) => {
   const { docUrl, title } = req.body;
-  console.log("TITLE ", title);
 
   if (!docUrl) throw new AppError(400, "urls are required to index");
   if (!title) throw new AppError(400, "title is required for collection");
@@ -45,9 +45,46 @@ module.exports.retrivalQuery = asyncHandler(async (req, res) => {
     isCollection: true,
     vectorResponse: "",
     llmResponse: "",
+    isTesting: true,
   });
 
   console.log("results -> ", results);
 
+  AiChatModel.create({
+    userQuery: query,
+    aiResponse: results.llmResponse,
+    authorId: req.user._id,
+  });
+
   res.status(200).json({ response: results });
+});
+
+module.exports.aiMessageQuery = asyncHandler(async (req, res) => {
+  //
+});
+
+module.exports.llmChat = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 20;
+  const skip = (page - 1) * limit;
+  const total = await AiChatModel.countDocuments({ authorId: userId });
+
+  const results = await AiChatModel.find({ authorId: userId })
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
+
+  res.json(
+    new AppResponse(200, {
+      results: results.reverse(),
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+        hasMore: page < Math.ceil(total / limit),
+      },
+    }),
+  );
 });
