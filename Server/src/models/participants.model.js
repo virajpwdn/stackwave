@@ -5,5 +5,5 @@ const participantSchema = new mongoose.Schema({
 });
 
 
-const participantModel = mongoose.model("Participant", participantSchema);
-module.exports = participantModel;
+const ParticipantModel = mongoose.model("Participant", participantSchema);
+module.exports = ParticipantModel;

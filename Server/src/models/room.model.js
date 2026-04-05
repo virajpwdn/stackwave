@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const roomSchema = new mongoose.Schema(
+const RoomSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -33,4 +33,4 @@ const roomSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Room", roomSchema);
+module.exports = mongoose.model("Room", RoomSchema);

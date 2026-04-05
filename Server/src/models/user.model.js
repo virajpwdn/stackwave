@@ -3,15 +3,15 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const config = require("../config/config");
 
-const userSchema = new mongoose.Schema(
+const UserSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
       required: [true, "FirstName is Required"],
     },
-    role:{
+    role: {
       type: String,
-      default: "user"
+      default: "user",
     },
     lastName: {
       type: String,
@@ -87,38 +87,37 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-userSchema.statics.hashPassword = async function (password) {
+UserSchema.statics.hashPassword = async function (password) {
   if (!password) throw new Error("Password is required");
   return await bcrypt.hash(password, 10);
 };
 
-userSchema.methods.comparePassword = async function (password) {
-  
+UserSchema.methods.comparePassword = async function (password) {
   if (!password) throw new Error("Password is required");
   if (!this.password) throw new Error("Password not set on user document");
 
   return await bcrypt.compare(password, this.password);
 };
 
-userSchema.methods.generateJWT = function () {
+UserSchema.methods.generateJWT = function () {
   const token = jwt.sign(
     { _id: this._id, username: this.username, email: this.email },
     config.JWT,
     {
       expiresIn: config.JWT_EXP,
-    }
+    },
   );
   return token;
 };
 
-userSchema.statics.verifyToken = function (token) {
+UserSchema.statics.verifyToken = function (token) {
   if (!token) {
     throw new Error("Token is required");
   }
   return jwt.verify(token, config.JWT);
 };
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("User", UserSchema);

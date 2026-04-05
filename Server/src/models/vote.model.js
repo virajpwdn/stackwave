@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const voteSchema = new mongoose.Schema(
+const VoteSchema = new mongoose.Schema(
   {
     authorId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -23,4 +23,4 @@ const voteSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Vote", voteSchema);
+module.exports = mongoose.model("Vote", VoteSchema);

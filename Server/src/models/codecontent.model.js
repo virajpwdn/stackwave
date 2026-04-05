@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const codeContentSchema = new mongoose.Schema({
+const CodeContentSchema = new mongoose.Schema({
   content: {
     type: String,
     required: [true, "Content is required"],
@@ -15,4 +15,4 @@ const codeContentSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Codecontent", codeContentSchema);
+module.exports = mongoose.model("Codecontent", CodeContentSchema);

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const answerSchema = new mongoose.Schema(
+const AnswerSchema = new mongoose.Schema(
   {
     authorId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -36,4 +36,4 @@ const answerSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Answer", answerSchema);
+module.exports = mongoose.model("Answer", AnswerSchema);

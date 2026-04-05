@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const aiMessageSchema = new mongoose.Schema(
+const AiMessageSchema = new mongoose.Schema(
   {
     userQuery: {
       type: String,
@@ -16,4 +16,4 @@ const aiMessageSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-module.exports = mongoose.model("AiChat", aiMessageSchema);
+module.exports = mongoose.model("AiChat", AiMessageSchema);
