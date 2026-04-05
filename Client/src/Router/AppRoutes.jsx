@@ -12,6 +12,7 @@ import RefactorAI from "../components/ui/ai/RefactorAI";
 import Login from "../components/ui/auth/Login";
 import Signup from "../components/ui/auth/Signup";
 import RAG from "../components/ui/dockyu-chat/RAG";
+import Selection from "../components/ui/dockyu-chat/Selection";
 import CodeEditor from "../components/ui/editor/CodeEditor";
 import Index from "../components/ui/hero/Index";
 import Hero from "../components/ui/heropage/Hero";
@@ -127,6 +128,15 @@ const AppRoutes = () => {
             element={
               <Authentication>
                 <RAG />
+              </Authentication>
+            }
+          />
+
+          <Route
+            path="/document-selection"
+            element={
+              <Authentication>
+                <Selection />
               </Authentication>
             }
           />
