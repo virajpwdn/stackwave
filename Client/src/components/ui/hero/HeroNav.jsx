@@ -1,8 +1,11 @@
+import { useNavigate } from "react-router";
+
 import Button from "../../Button";
 
 const HeroNav = () => {
+  const navigate = useNavigate();
   return (
-    <div className="flex items-center justify-between px-10 py-10 md:px-36 max-w-[1440px] mx-auto">
+    <div className="mx-auto flex max-w-[1440px] items-center justify-between px-10 py-10 md:px-36">
       <h1 className="text-2xl font-semibold uppercase tracking-wide">
         stackwave
       </h1>
@@ -19,14 +22,17 @@ const HeroNav = () => {
           </li>
           <li>
             <a
-              href="#contact"
+              href="https://portfolio.virajpatwardhan.in"
               className="transition-colors hover:text-gray-900"
             >
               Contact
             </a>
           </li>
           <li>
-            <a href="#About" className="transition-colors hover:text-gray-900">
+            <a
+              href="https://portfolio.virajpatwardhan.in/projects/stackwave"
+              className="transition-colors hover:text-gray-900"
+            >
               About
             </a>
           </li>
@@ -34,10 +40,20 @@ const HeroNav = () => {
       </nav>
 
       <div className="flex gap-3">
-        <Button variant="secondary" size="sm" className="px-8">
+        <Button
+          onClick={() => navigate("/login")}
+          variant="secondary"
+          size="sm"
+          className="px-8"
+        >
           Login
         </Button>
-        <Button variant="primary" size="sm" className="px-8">
+        <Button
+          onClick={() => navigate("/signup")}
+          variant="primary"
+          size="sm"
+          className="px-8"
+        >
           Signup
         </Button>
       </div>

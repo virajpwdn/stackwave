@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
-import Container from "../../Container";
+import axios from "axios";
+
+import { BASE_URL } from "../../../config/baseurl";
 
 const DEFAULT_DOCUMENTS = ["C++", "DevOps", "HTML", "SQL", "Git", "Python"];
 
@@ -13,11 +16,13 @@ const DOC_META = {
   Python: { icon: "🐍", desc: "Scripting, ML & general purpose" },
 };
 
-const Selection = ({ onStart }) => {
+const Selection = () => {
   const [selectedDocs, setSelectedDocs] = useState([]);
   const [link, setLink] = useState("");
   const [linkAdded, setLinkAdded] = useState(false);
   const [linkError, setLinkError] = useState("");
+
+  const navigate = useNavigate();
 
   const toggleDoc = (doc) => {
     setSelectedDocs((prev) =>
@@ -34,12 +39,23 @@ const Selection = ({ onStart }) => {
     }
   };
 
-  const handleAddLink = () => {
+  const handleAddLink = async () => {
     if (!link.trim()) return setLinkError("Please enter a URL.");
     if (!isValidUrl(link.trim()))
       return setLinkError("Enter a valid URL (include https://).");
     setLinkError("");
     setLinkAdded(true);
+
+    try {
+      const response = await axios.post(
+        BASE_URL + "/ai/indexing",
+        { docUrl: link },
+        { withCredentials: true }
+      );
+      console.log("data - ", response.data);
+    } catch (error) {
+      setLinkError(error.message);
+    }
   };
 
   const handleRemoveLink = () => {
@@ -52,7 +68,8 @@ const Selection = ({ onStart }) => {
 
   const handleStart = () => {
     if (!canStart) return;
-    onStart?.({ selectedDocs, customLink: linkAdded ? link : null });
+    // onStart?.({ selectedDocs, customLink: linkAdded ? link : null });
+    navigate(`/rag`);
   };
 
   return (
@@ -181,7 +198,9 @@ const Selection = ({ onStart }) => {
                   {selectedDocs.length + (linkAdded ? 1 : 0)}
                 </span>{" "}
                 source
-                {selectedDocs.length + (linkAdded ? 1 : 0) !== 1 ? "s" : ""}{" "}
+                {selectedDocs.length + (linkAdded ? 1 : 0) !== 1
+                  ? "s"
+                  : ""}{" "}
                 selected
               </span>
             ) : (
